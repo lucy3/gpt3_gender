@@ -5,16 +5,21 @@ import csv
 from collections import Counter, defaultdict
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import random
+import os
 
 TOKENS = '/mnt/data0/lucy/gpt3_bias/logs/tokens/'
+OUTPATH = '/mnt/data0/lucy/gpt3_bias/logs/original_prompts/'
 
-def extract_people(filepath):
+def extract_people(directory, filename):
     '''
     Groups characters by character IDs in narrative non-quote text, finds the characters
     that are overall mentioned the most (top %2). Then, from that pool 
     of characters, finds characters mentioned by first name at least 50 times. 
-    We want only sentences where only 1 character is mentioned
+    We want only sentences where only 1 character or person is mentioned, 
+    and sentences are longer than 3 tokens (to ensure that we don't accidentally get
+    a quotation tag). 
     '''
+    filepath = directory + filename 
     pronouns = set(['she', 'She', 'her', 'Her', 'he', 'He', 'his', 
           'His', 'him', 'Him', 'herself', 'Herself', 'himself', 'Himself'])
     curr_character = ''
@@ -73,8 +78,9 @@ def extract_people(filepath):
                     num_people += 1
             else:
                 if num_people == 1 and not set(curr_sentence) & pronouns and \
-                        '\\\"' not in curr_sentence and '``' not in curr_sentence: 
-                    # we want a single token person in the sentence
+                        '\\\"' not in curr_sentence and '``' not in curr_sentence and \
+                        '`' not in curr_sentence and len(curr_sentence) > 3: 
+                    # we want a single token person in the non-quote sentence
                     IDs_sents[curr_sentence_ID] = curr_sentence
                 curr_sentence_ID = row['sentenceID']
                 curr_sentence = [row['normalizedWord']]
@@ -82,7 +88,8 @@ def extract_people(filepath):
                     num_people = 1
                 else: 
                     num_people = 0
-        if not set(curr_sentence) & pronouns: 
+        if num_people == 1 and not set(curr_sentence) & pronouns and \
+                        '\\\"' not in curr_sentence and '``' not in curr_sentence and len(curr_sentence) > 3:  
             IDs_sents[curr_sentence_ID] = curr_sentence
  
     # get sentence IDs that only contain one character
@@ -109,18 +116,22 @@ def extract_people(filepath):
                    if num_sents >= 20: 
                        main_characters.append((c, alias))                 
     # write to file 
+    outfile = open(OUTPATH + filename, 'w')
+    writer = csv.writer(outfile, delimiter='\t')
     for mc in main_characters: 
        sents = set(sentences[mc[1]]) & single_char_sentences
        sents = random.sample(sents, 20)
-       print(mc)
        for s_ID in sents: 
           s = IDs_sents[s_ID]
           s = TreebankWordDetokenizer().detokenize(s)
-          print(s)
+          writer.writerow([mc[0], mc[1], s])
+    outfile.close()
 
-def main(): 
-    f = 'lee_to_kill_a_mockingbird' 
-    extract_people(TOKENS + f)
+def main():
+    random.seed(0) 
+    for f in os.listdir(TOKENS):
+        print(f) 
+        extract_people(TOKENS, f)
 
 if __name__ == '__main__': 
     main()
