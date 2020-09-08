@@ -19,6 +19,7 @@ def extract_people(directory, filename):
     and sentences are longer than 3 tokens (to ensure that we don't accidentally get
     a quotation tag). 
     '''
+    num_prompts = 10
     filepath = directory + filename 
     pronouns = set(['she', 'She', 'her', 'Her', 'he', 'He', 'his', 
           'His', 'him', 'Him', 'herself', 'Herself', 'himself', 'Himself'])
@@ -113,14 +114,14 @@ def extract_people(directory, filename):
                    for s_ID in sIDs: 
                        if s_ID in single_char_sentences: 
                            num_sents += 1
-                   if num_sents >= 20: 
+                   if num_sents >= num_prompts: 
                        main_characters.append((c, alias))                 
     # write to file 
     outfile = open(OUTPATH + filename, 'w')
     writer = csv.writer(outfile, delimiter='\t')
     for mc in main_characters: 
        sents = set(sentences[mc[1]]) & single_char_sentences
-       sents = random.sample(sents, 20)
+       sents = random.sample(sents, num_prompts)
        for s_ID in sents: 
           s = IDs_sents[s_ID]
           s = TreebankWordDetokenizer().detokenize(s)
