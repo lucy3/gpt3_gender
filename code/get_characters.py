@@ -34,20 +34,20 @@ def extract_people(directory, filename):
             if row['inQuotation'] == 'I-QUOTE': continue # exclude quotations
             if row['characterId'] != '-1': 
                 if row['characterId'] != curr_character_ID and curr_character_ID is not None: 
-                   # new character 
-                   character_counts[curr_character_ID][curr_character.strip()] += 1
-                   sentences[curr_character.strip()].append(sentence_ID)
-                   curr_character_ID = row['characterId'] 
-                   curr_character = row['normalizedWord'] + ' '
-                   sentence_ID = row['sentenceID']
+                    # new character 
+                    character_counts[curr_character_ID][curr_character.strip()] += 1
+                    sentences[curr_character.strip()].append(sentence_ID)
+                    curr_character_ID = row['characterId'] 
+                    curr_character = row['normalizedWord'] + ' '
+                    sentence_ID = row['sentenceID']
                 elif row['characterId'] == curr_character_ID: 
-                   # continue a previous token for same character
-                   curr_character += row['normalizedWord'] + ' ' 
+                    # continue a previous token for same character
+                    curr_character += row['normalizedWord'] + ' ' 
                 else: 
-                   # new character 
-                   curr_character_ID = row['characterId']
-                   curr_character = row['normalizedWord'] + ' '
-                   sentence_ID = row['sentenceID']
+                    # new character 
+                    curr_character_ID = row['characterId']
+                    curr_character = row['normalizedWord'] + ' '
+                    sentence_ID = row['sentenceID']
             elif row['characterId'] == '-1' and curr_character_ID is not None: 
                 # finish off previous character
                 character_counts[curr_character_ID][curr_character.strip()] += 1
@@ -56,13 +56,13 @@ def extract_people(directory, filename):
                 sentence_ID = None
                 curr_character = ''
     if curr_character_ID is not None: 
-       character_counts[curr_character_ID][curr_character.strip()] += 1
+        character_counts[curr_character_ID][curr_character.strip()] += 1
 
     # get sentence ID to characters in sentence
     sentences_rev = defaultdict(list)
     for c in sentences: 
-       for sentence_ID in sentences[c]: 
-           sentences_rev[sentence_ID].append(c)
+        for sentence_ID in sentences[c]: 
+            sentences_rev[sentence_ID].append(c)
     # get sentence IDs to sentence tokens
     IDs_sents = {}
     with open(filepath, 'r') as csvfile: 
@@ -100,32 +100,32 @@ def extract_people(directory, filename):
     # get total number of characters mentioned
     total_mentions = 0 
     for c in character_counts:
-       num_mentions = sum(character_counts[c].values())
-       total_mentions += num_mentions
+        num_mentions = sum(character_counts[c].values())
+        total_mentions += num_mentions
     # get main characters
     main_characters = []
     for c in character_counts: 
-       num_mentions = sum(character_counts[c].values())
-       if num_mentions/float(total_mentions) >= 0.02: 
-           for alias in character_counts[c]: 
-               if alias.lower() not in pronouns and len(alias.split()) == 1:  
-                   sIDs = sentences[alias]
-                   num_sents = 0 
-                   for s_ID in sIDs: 
-                       if s_ID in single_char_sentences: 
-                           num_sents += 1
-                   if num_sents >= num_prompts: 
-                       main_characters.append((c, alias))                 
+        num_mentions = sum(character_counts[c].values())
+        if num_mentions/float(total_mentions) >= 0.02: 
+            for alias in character_counts[c]: 
+                if alias.lower() not in pronouns and len(alias.split()) == 1:  
+                    sIDs = sentences[alias]
+                    num_sents = 0 
+                    for s_ID in sIDs: 
+                        if s_ID in single_char_sentences: 
+                            num_sents += 1
+                    if num_sents >= num_prompts: 
+                        main_characters.append((c, alias))                 
     # write to file 
     outfile = open(OUTPATH + filename, 'w')
     writer = csv.writer(outfile, delimiter='\t')
     for mc in main_characters: 
-       sents = set(sentences[mc[1]]) & single_char_sentences
-       sents = random.sample(sents, num_prompts)
-       for s_ID in sents: 
-          s = IDs_sents[s_ID]
-          s = TreebankWordDetokenizer().detokenize(s)
-          writer.writerow([mc[0], mc[1], s])
+        sents = set(sentences[mc[1]]) & single_char_sentences
+        sents = random.sample(sents, num_prompts)
+        for s_ID in sents: 
+            s = IDs_sents[s_ID]
+            s = TreebankWordDetokenizer().detokenize(s)
+            writer.writerow([mc[0], mc[1], s])
     outfile.close()
 
 def main():
