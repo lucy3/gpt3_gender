@@ -1,4 +1,6 @@
 """
+Getting entities in stories
+and the pronouns associated with them. 
 """
 import os
 import csv
@@ -22,7 +24,7 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
     '''
     num_gens = 5
     for title in os.listdir(txt_path): 
-        #print(title)
+        print(title)
         char_order = [] # character, where index is generated story index
         with open(prompts_path + title, 'r') as infile: 
             reader = csv.reader(infile, delimiter='\t')
@@ -31,8 +33,8 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
                 char_name = row[1]
                 prompt = row[2]
                 char_order.extend([(char_ID, char_name)]*num_gens)
-        if len(char_order) == 0: continue
-        #print(len(char_order))
+        if len(char_order) == 0: continue 
+
         char_idx = defaultdict(list) # {character : [idx in tokens_path]}
 
         # sanity check that story has character in it
@@ -41,7 +43,7 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
             story_idx = 0
             dot_count = 0
             for line in infile: 
-                if line.strip() == '.': 
+                if line.strip() == '@': 
                     dot_count += 1
                 else: 
                     dot_count = 0 
@@ -61,7 +63,7 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
             story_idx = 0
             dot_count = 0
             for row in reader:
-                if row['normalizedWord'] == '.': 
+                if row['normalizedWord'] == '@':
                     dot_count += 1
                 else: 
                     dot_count = 0
@@ -71,15 +73,72 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
                     story_idx += 1
                     start_tokenID = int(end_tokenID) + 1
                     dot_count = 0
+        '''
         if len(idx_tokenIDs) != len(char_order): 
-            print(title, len(idx_tokenIDs), len(char_order))
+            print("PROBLEM!!!!!", len(idx_tokenIDs), len(char_order))
             continue
+        '''
+        assert len(idx_tokenIDs) == len(char_order)
+        
         char_story = defaultdict(list) # {character name: [(start token idx, end token idx)] }
         for story_idx in idx_tokenIDs: 
             char_story[char_order[story_idx][1]].append(idx_tokenIDs[story_idx])
             
         with open(LOGS + 'char_indices_0.9/' + title + '.json', 'w') as outfile: 
             json.dump(char_story, outfile)
+            
+def get_entities_dict(ents_path, title): 
+    entities = {} # { (start, end) : entity name } 
+    with open(ents_path + title + '/' + title + '.ents', 'r') as infile: 
+        for line in infile: 
+            contents = line.strip().split('\t')
+            start = int(contents[0])
+            end = int(contents[1])
+            ner = contents[2]
+            entity = contents[3]
+            if ner == 'PROP_PER': 
+                entities[(start, end)] = entity
+    return entities
+
+def get_coref_label_dict(ents_path, title, entities): 
+    coref_label = {} # { (start, end, entity name) : coref_group_id } 
+    with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
+        for line in infile: 
+            contents = line.strip().split('\t')
+            group = contents[0] 
+            entity = contents[1]
+            start = int(contents[2])
+            end = int(contents[3])
+            if (start, end) in entities: 
+                coref_label[(start, end, entities[start, end])] = group
+    return coref_label
+
+def get_coref_chain_dict(ents_path, title, pronouns, coref_label): 
+    coref_chain = defaultdict(list) # { coref_group_ID : [pronouns] } 
+    with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
+        for line in infile: 
+            contents = line.strip().split('\t')
+            group = contents[0] 
+            entity = contents[1]
+            start = int(contents[2])
+            end = int(contents[3])
+            # only groups containing proper names matter
+            if group in list(coref_label.values()): 
+                if entity.lower() in pronouns: 
+                    coref_chain[group].append(pronouns[entity.lower()])
+    return coref_chain
+
+def print_character_network(char_neighbors, char_pronouns): 
+    for char in char_neighbors: 
+        neighbor_dict = char_neighbors[char]
+        print(char_pronouns[char])
+        s = char + ' --- '
+        neighbor_names = set()
+        for neighbor in neighbor_dict: 
+            neighbor_names.add(neighbor['character_name'])
+        for name in neighbor_names: 
+            s += name + ', '
+        print(s)
 
 def get_entities_gender(ents_path, prompts_path): 
     pronouns = {'he' : 'masc', 'his' : 'masc', 'him' : 'masc', 
@@ -87,54 +146,61 @@ def get_entities_gender(ents_path, prompts_path):
               'hers' : 'fem', 'herself' : 'fem', 'they' : 'neut', 'their' : 'neut', 
               'them' : 'neut', 'theirs' : 'neut', 'theirself' : 'neut'}
     for title in os.listdir(ents_path): 
-        entities = {} # { (start, end) : entity name } 
-        with open(ents_path + title + '/' + title + '.ents', 'r') as infile: 
-            for line in infile: 
-                contents = line.strip().split('\t')
-                start = contents[0]
-                end = contents[1]
-                ner = contents[2]
-                entity = contents[3]
-                if ner == 'PROP_PER': 
-                    entities[(start, end)] = entity
-        coref_label = {} # { (start, end, entity name) : coref_group_id } 
-        with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
-            for line in infile: 
-                contents = line.strip().split('\t')
-                group = contents[0] 
-                entity = contents[1]
-                start = contents[2]
-                end = contents[3]
-                if (start, end) in entities: 
-                    coref_label[(start, end, entities[start, end])] = group
-        coref_chain = defaultdict(list) # { coref_group_ID : [pronouns] } 
-        with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
-            for line in infile: 
-                contents = line.strip().split('\t')
-                group = contents[0] 
-                entity = contents[1]
-                start = contents[2]
-                end = contents[3]
-                if group in coref_label: 
-                    if entity.lower() in pronouns: 
-                        coref_chain[group].append(pronouns[entity.lower()])            
-        all_pns = Counter()
-        char_pronouns = defaultdict(Counter)
+        print(title)
+        entities = get_entities_dict(ents_path, title)
+        coref_label = get_coref_label_dict(ents_path, title, entities)
+        coref_chain = get_coref_chain_dict(ents_path, title, pronouns, coref_label) 
+
+        char_pronouns = defaultdict(Counter) # {character name : [pronouns in all coref chains]}
         # This is a list because one name might have multiple coref chains
         char_group_ids = defaultdict(list)
-        for tup in coref_label:
-            char = tup[2]
-            char_group_ids[char].append(coref_label[tup])
+        for ent in entities:
+            char = entities[ent]
+            if (ent[0], ent[1], char) in coref_label: 
+                char_group_ids[char].append(coref_label[(ent[0], ent[1], char)])
         for char in char_group_ids: 
-            pronouns = []
+            pns = []
             for group in char_group_ids[char]: 
-                pronouns.extend(coref_chain[group])
-            pns = Counter(pronouns)
-            all_pns.update(pns)
+                pns.extend(coref_chain[group])
+            pns = Counter(pns)
             char_pronouns[char] = pns
-            print(char, pns)
-        print("OVERALL:", all_pns)
-        break
+        
+        # now, get characters associated with a character 
+        if not os.path.exists(LOGS + 'char_indices_0.9/' + title + '.json'): continue
+        with open(LOGS + 'char_indices_0.9/' + title + '.json', 'r') as infile: 
+            char_story = json.load(infile) # {character name: [(start token idx, end token idx)] }
+            
+        char_story_rev = {}
+        for char in char_story: 
+            story_indices = char_story[char] # list of story starts and ends
+            for story_idx in story_indices: 
+                char_story_rev[tuple(story_idx)] = char
+        
+        # {character name : [{"character name": "", "gender": {masc: #, fem: #, neut: #}}] }
+        char_neighbors = defaultdict(list) 
+        for ent in entities: 
+            # find story containing this entity
+            ent_start = ent[0]
+            ent_end = ent[1]
+            for story_idx in char_story_rev:
+                # get main character associated with story
+                char = char_story_rev[story_idx]
+                story_start = story_idx[0]
+                story_end = story_idx[1]
+                if ent_start >= story_start and ent_end < story_end: 
+                    # story found
+                    neighbor = entities[ent]
+                    neighbor_dict = {}
+                    neighbor_dict['character_name'] = neighbor
+                    if neighbor in char_pronouns: 
+                        neighbor_dict['gender'] = char_pronouns[neighbor]
+                    else: 
+                        neighbor_dict['gender'] = {}
+                    char_neighbors[char].append(neighbor_dict)
+                    break
+        
+        with open(LOGS + 'char_neighbors_0.9/' + title + '.json', 'w') as outfile: 
+            json.dump(char_neighbors, outfile)
         
 def main(): 
     ents_path = LOGS + 'generated_0.9_ents/'
