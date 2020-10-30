@@ -4,26 +4,36 @@
 import functools
 import json
 import logging
-from helpers import *
 from nltk import *
 import itertools
 import numpy as np
 from collections import Counter, defaultdict
 import io
+import numpy as np
+import re
+import string
+
+ROOT = '/mnt/data0/lucy/gpt3_bias/'
+LOGS = ROOT + 'logs/' 
+DATA = ROOT + 'data/'
+
+stopwords = set(open(DATA + 'jockers_stopwords', 'r').read().split(', '))
+namewords = set(open(LOGS + 'prompt_char_names.txt', 'r').read().split())
+stopwords = stopwords | namewords
+punct_chars = list((set(string.punctuation) | {'»', '–', '—', '-',"­", '\xad', '-', '◾', '®', '©','✓','▲', '◄','▼','►', '~', '|', '“', '”', '…', "'", "`", '_', '•', '*', '■'} - {"'"}))
+punct_chars.sort()
+punctuation = ''.join(punct_chars)
+replace = re.compile('[%s]' % re.escape(punctuation))
+printable = set(string.printable)
 
 logging.basicConfig(level=logging.INFO)
 
-def generate_cooccurrence_from_int_set(articles, num_topics=100):
-    matrix = np.zeros((num_topics, num_topics))
-    for topics in articles:
-        for topic in topics:
-            matrix[topic, topic] += 1
-        for (i, j) in itertools.combinations(topics, 2):
-            matrix[i, j] += 1
-            matrix[j, i] += 1
-    return matrix
-
 def find_bigrams(sentences, output_file, threshold=100, min_count=5):
+    '''
+    sentences - list of lines or sentences
+    
+    get bigrams following Mikolov et al. 2013, where min_count is discounting coeff   
+    '''
     unigram_count = get_word_count(sentences, ngrams=1, words_func=get_ngram_list)
     total_words = float(sum(unigram_count.values()))
     bigram_count = get_word_count(sentences, ngrams=2, words_func=get_ngram_list)
@@ -124,6 +134,11 @@ def convert_word_count_mallet(word_dict, sentences, output_file,
             fout.write("%s %s\n" % (doc_id, " ".join(word_cnts)))
 
 def get_mallet_input_from_words(sentences, data_dir, vocab_size=10000):
+    '''
+    sentences - list of inputs (sentences or lines)
+    data_dir - where to write the output 
+    Writes input for mallet. 
+    '''
     bigram_file = "%s/bigram_phrases.txt" % data_dir
     find_bigrams(sentences, bigram_file)
     bigram_dict = load_bigrams(bigram_file)
@@ -183,19 +198,56 @@ def load_articles(sentences, topic_dir, threshold):
     doc_topic_file = "%s/doc-topics.gz" % topic_dir
     topic_word_file = "%s/topic-words.gz" % topic_dir
     vocab = read_word_dict(vocab_file)
-    topic_map = load_topic_words(vocab, topic_word_file)
-    articles = load_doc_topics(sentences, doc_topic_file, threshold=threshold)
+    # top 10 words per topic
+    topic_map = load_topic_words(vocab, topic_word_file) 
+    # topics in each doc
+    articles = load_doc_topics(sentences, doc_topic_file, threshold=threshold) 
     return articles, vocab, topic_map
 
-def main():
-    output_dir = # TODO
-    mallet_dir = # TODO
-    num_topics = # TODO
-    cooccur_func = functools.partial(generate_cooccurrence_from_int_set,
-                                     num_topics=num_topics)
+def clean_text(text): 
+    text = text.strip().lower()
+    replace = re.compile('[%s]' % re.escape(punctuation))
+    # substitute all other punctuation with whitespace
+    text = replace.sub(' ', text)
+    # replace all whitespace with a single space
+    text = re.sub(r'\s+', ' ', text)
+    # make sure all chars are printable
+    text = ''.join([c for c in text if c in printable])
+    words = text.split()
+    # remove stopwords
+    words = [w for w in words if w not in stopwords]
+    return ' '.join(words)
 
+def main():
+    output_dir = LOGS + 'topics_0.9'
+    mallet_dir = ROOT + 'mallet-2.0.8/bin'
+    input_dir = LOGS + 'plaintext_stories_0.9/'
+    num_topics = 50
+
+    all_text = []
+    story2length = {}
+    for title in os.listdir(input_dir): 
+        with open(input_dir + title, 'r') as infile: 
+            story_idx = 0
+            dot_count = 0
+            line_count = 0
+            for line in infile: 
+                if line.strip() == '@': 
+                    dot_count += 1
+                else: 
+                    dot_count = 0
+                if dot_count == 20: 
+                    story_idx += 1
+                    story2length[title + str(story_idx)] = line_count
+                    line_count = 0
+                elif line.strip() != '':
+                    text = clean_text(line) 
+                    all_text.append(line)
+                    line_count += 1
+    print("Average number of lines per story:", np.mean(list(story2length.values())))
 
     # generate mallet topics
+    logging.info("generating mallet inputs...")
     get_mallet_input_from_words(all_text, output_dir)
 
     # run mallet to prepare topics inputs
@@ -209,13 +261,13 @@ def main():
 
 
     # load mallet outputs
+    logging.info("loading outputs...")
     articles, vocab, topic_names = load_articles(all_text, output_dir, threshold=.1)
     save_topic_names = '%s/topic_names.json' % output_dir
     with open(save_topic_names, 'w') as f:
         f.write(json.dumps(topic_names))
 
-    print(topic_names)
-
+    print(topic_names) # look at topics and top 10 words per topic 
 
 if __name__ == "__main__":
     main()

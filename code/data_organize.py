@@ -1,5 +1,6 @@
 import os
 import json
+import csv
 
 ROOT = "/mnt/data0/lucy/gpt3_bias/"
 LOGS = ROOT + 'logs/'
@@ -60,10 +61,24 @@ def format_for_booknlp(gen_path, file_list, outpath):
                                       '\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n')
         output_file.close()
 
+def get_prompt_char_names(): 
+    names = set()
+    for f in os.listdir(LOGS + 'original_prompts/'): 
+        with open(LOGS + 'original_prompts/' + f, 'r') as infile: 
+           reader = csv.reader(infile, delimiter='\t')
+           for row in reader: 
+               char_name = row[1].lower()
+               names.add(char_name)
+    with open(LOGS + 'prompt_char_names.txt', 'w') as outfile: 
+        for n in names: 
+           outfile.write(n + ' ')
+        
+
 def main(): 
     #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
-    format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'plaintext_stories_0.9/')
+    #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'plaintext_stories_0.9/')
     #get_stats()
+    get_prompt_char_names()
 
 if __name__ == "__main__":
     main()
