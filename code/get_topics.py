@@ -17,7 +17,7 @@ ROOT = '/mnt/data0/lucy/gpt3_bias/'
 LOGS = ROOT + 'logs/' 
 DATA = ROOT + 'data/'
 
-stopwords = set(open(DATA + 'jockers_stopwords', 'r').read().split(', '))
+stopwords = set(open(DATA + 'jockers_stopwords', 'r').read().lower().split(', '))
 namewords = set(open(LOGS + 'prompt_char_names.txt', 'r').read().split())
 stopwords = stopwords | namewords
 punct_chars = list((set(string.punctuation) | {'»', '–', '—', '-',"­", '\xad', '-', '◾', '®', '©','✓','▲', '◄','▼','►', '~', '|', '“', '”', '…', "'", "`", '_', '•', '*', '■'} - {"'"}))
@@ -223,14 +223,16 @@ def main():
     mallet_dir = ROOT + 'mallet-2.0.8/bin'
     input_dir = LOGS + 'plaintext_stories_0.9/'
     num_topics = 50
-
+    
     all_text = []
-    story2length = {}
-    for title in os.listdir(input_dir): 
+    num_words = []
+    story_ids = []
+    for title in sorted(os.listdir(input_dir)): 
         with open(input_dir + title, 'r') as infile: 
             story_idx = 0
             dot_count = 0
             line_count = 0
+            curr_story = '' # trying this
             for line in infile: 
                 if line.strip() == '@': 
                     dot_count += 1
@@ -238,14 +240,21 @@ def main():
                     dot_count = 0
                 if dot_count == 20: 
                     story_idx += 1
-                    story2length[title + str(story_idx)] = line_count
+                    num_words.append(len(curr_story.split()))
+                    all_text.append(curr_story)
+                    story_ids.append(title + str(story_idx))
+                    curr_story = ''
                     line_count = 0
                 elif line.strip() != '':
                     text = clean_text(line) 
-                    all_text.append(line)
+                    curr_story += text + ' ' 
                     line_count += 1
-    print("Average number of lines per story:", np.mean(list(story2length.values())))
-
+    with open(output_dir + '/story_id_order', 'w') as outfile: 
+        for story_i in story_ids: 
+            outfile.write(story_i + '\n')
+    assert len(story_ids) == len(all_text)
+    print("Average number of tokens per story:", np.mean(num_words))
+    
     # generate mallet topics
     logging.info("generating mallet inputs...")
     get_mallet_input_from_words(all_text, output_dir)
@@ -268,6 +277,7 @@ def main():
         f.write(json.dumps(topic_names))
 
     print(topic_names) # look at topics and top 10 words per topic 
+    
 
 if __name__ == "__main__":
     main()

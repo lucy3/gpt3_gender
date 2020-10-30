@@ -1,6 +1,7 @@
 import os
 import json
 import csv
+import string
 
 ROOT = "/mnt/data0/lucy/gpt3_bias/"
 LOGS = ROOT + 'logs/'
@@ -67,7 +68,7 @@ def get_prompt_char_names():
         with open(LOGS + 'original_prompts/' + f, 'r') as infile: 
            reader = csv.reader(infile, delimiter='\t')
            for row in reader: 
-               char_name = row[1].lower()
+               char_name = row[1].lower().translate(str.maketrans('', '', string.punctuation))
                names.add(char_name)
     with open(LOGS + 'prompt_char_names.txt', 'w') as outfile: 
         for n in names: 

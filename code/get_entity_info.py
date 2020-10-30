@@ -201,14 +201,31 @@ def get_entities_gender(ents_path, prompts_path):
         
         with open(LOGS + 'char_neighbors_0.9/' + title + '.json', 'w') as outfile: 
             json.dump(char_neighbors, outfile)
+
+def calculate_recurrence(tokens_path): 
+    with open(
+    for f in os.listdir(tokens_path): 
+        title = f.replace('.tokens', '')
+        with open(LOGS + 'char_indices_0.9/' + title + '.json', 'r') as infile: 
+            char_story = json.load(infile)
+        with open(tokens_path + f, 'r') as infile: 
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            for row in reader: 
+
+    # load char story
+    # get mapping from start,end idx to character name
+    # get first instance of character in prompt
+    # get ID of that character
+    # get last time the ID appears in the story
         
 def main(): 
     ents_path = LOGS + 'generated_0.9_ents/'
     tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
     txt_path = LOGS + 'plaintext_stories_0.9/'
     prompts_path = LOGS + 'original_prompts/'
-    get_characters_to_prompts(prompts_path, tokens_path, txt_path)
+    #get_characters_to_prompts(prompts_path, tokens_path, txt_path)
     #get_entities_gender(ents_path, prompts_path)
+    calculate_recurrence(tokens_path)
 
 if __name__ == '__main__': 
     main()
