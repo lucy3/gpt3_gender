@@ -7,6 +7,7 @@ import csv
 from collections import defaultdict, Counter
 import json
 import re
+import numpy as np
 
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
 
@@ -202,22 +203,108 @@ def get_entities_gender(ents_path, prompts_path):
         with open(LOGS + 'char_neighbors_0.9/' + title + '.json', 'w') as outfile: 
             json.dump(char_neighbors, outfile)
 
-def calculate_recurrence(tokens_path): 
-    with open(
-    for f in os.listdir(tokens_path): 
+def calculate_recurrence(tokens_path):
+    num_times = [] # number of times main character occurs in story
+    ranges = [] # range of tokens the main character spans
+ 
+    for f in os.listdir(tokens_path):
+        print(f) 
         title = f.replace('.tokens', '')
+        if not os.path.exists(LOGS + 'char_indices_0.9/' + title + '.json'): continue # TODO: fix this!
         with open(LOGS + 'char_indices_0.9/' + title + '.json', 'r') as infile: 
             char_story = json.load(infile)
+        start2char = {}
+        for charname in char_story: 
+            for tup in char_story[charname]: 
+                start2char[tup[0]] = charname
         with open(tokens_path + f, 'r') as infile: 
+            curr_start = None
+            charId = None
+            main_char_idx = [] # all of the indices in which the main character occurs
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-            for row in reader: 
+            for row in reader:
+                if int(row['tokenId']) in start2char: 
+                    if curr_start is not None: 
+                        num_times.append(len(main_char_idx))
+                        ranges.append(main_char_idx[-1] - main_char_idx[0])
+                    curr_start = int(row['tokenId'])
+                    charId = None
+                    main_char_idx = []
+                if row['originalWord'] == start2char[curr_start] and charId is None: 
+                    charId = row['characterId']
+                if row['characterId'] == charId: 
+                    main_char_idx.append(int(row['tokenId']))
+            num_times.append(len(main_char_idx))
+            ranges.append(main_char_idx[-1] - main_char_idx[0])
+    print(np.mean(num_times), np.mean(ranges))
 
-    # load char story
-    # get mapping from start,end idx to character name
-    # get first instance of character in prompt
-    # get ID of that character
-    # get last time the ID appears in the story
-        
+def get_gendered_topics(txt_path, prompts_path): 
+    # get main character to storyidx
+    # get main character to gender 
+    # get storyidx 
+    topic_dir = LOGS + 'topics_0.9'
+    doc_topic_file = '%s/doc-topics.gz' % topic_dir
+    doc_topics = open(doc_topic_file).read().splitlines() # list of topics
+    story_ids = open(topic_dir + '/story_id_order').read().splitlines() # story IDs 
+    story_topics = defaultdict(dict) # story ID : {topic id : value, topic id: value}
+    gender_topics = {'gender':[], 'topic':[], 'value':[]}
+    for i, doc in enumerate(doc_topics): 
+        contents = doc.split('\t')
+        topics = [float(i) for i in contents[2:]]
+        story_title_id = story_ids[i]
+        assert len(topics) == 50
+        for topic_id, value in enumerate(topics): 
+            story_topics[story_title_id][topic_id] = value
+   
+    for title in sorted(os.listdir(txt_path)): 
+        char_order = [] # character, where index is generated story index
+        num_gens = 5
+        with open(prompts_path + title, 'r') as infile: 
+            reader = csv.reader(infile, delimiter='\t')
+            for row in reader: 
+                char_ID = row[0]
+                char_name = row[1]
+                prompt = row[2]
+                char_order.extend([char_name]*num_gens)
+        if len(char_order) == 0: continue
+        with open(LOGS + 'char_neighbors_0.9/' + title + '.json', 'r') as infile: 
+            char_neighbors = json.load(infile)
+        # TODO: this seems sketch since we really need a true mapping from story id to character + character gender
+        gender_dict = {}
+        for char in char_neighbors: 
+            main_gender = None
+            neighbor_dict = char_neighbors[char]
+            s = char + ' --- '
+            neighbor_names = set()
+            for neighbor in neighbor_dict: 
+                neighbor_n = neighbor['character_name']
+                pns = defaultdict(int, neighbor['gender'])
+                total = sum(list(pns.values()))
+                if pns['masc'] > 0.75*total: 
+                    gender = 'masc'
+                elif pns['fem'] > 0.75*total: 
+                    gender = 'fem'
+                else: 
+                    gender = 'other'
+                if neighbor_n == char: 
+                    # main character
+                    main_gender = gender
+                else: 
+                    neighbor_names.add((neighbor_n, gender))
+            gender_dict[char] = main_gender
+
+        for i, char in enumerate(char_order): 
+            story_title_id = title + str(i+1)
+            topic_dict = story_topics[story_title_id]
+            if char not in gender_dict: continue # TODO: figure out what the issue is here
+            gender = gender_dict[char]
+            for topic_id in topic_dict: 
+                gender_topics['gender'].append(gender)
+                gender_topics['topic'].append(topic_id)
+                gender_topics['value'].append(topic_dict[topic_id])
+    with open(LOGS + 'gender_topics_0.9.json', 'w') as outfile: 
+        json.dump(gender_topics, outfile)
+
 def main(): 
     ents_path = LOGS + 'generated_0.9_ents/'
     tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
@@ -225,7 +312,8 @@ def main():
     prompts_path = LOGS + 'original_prompts/'
     #get_characters_to_prompts(prompts_path, tokens_path, txt_path)
     #get_entities_gender(ents_path, prompts_path)
-    calculate_recurrence(tokens_path)
+    #calculate_recurrence(tokens_path)
+    get_gendered_topics(txt_path, prompts_path)
 
 if __name__ == '__main__': 
     main()
