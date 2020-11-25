@@ -11,10 +11,13 @@ import stanza
 import numpy as np
 import json
 import string
+import csv
+from nltk.tokenize.treebank import TreebankWordDetokenizer
+from nltk.metrics.distance import edit_distance
 
 ROOT = '/mnt/data0/lucy/gpt3_bias/'
 PROMPTS = ROOT + 'logs/original_prompts/'
-BOOKS = ROOT + '/data/originals/'
+TOKENS = ROOT + '/logs/tokens/'
 STORIES = ROOT + 'logs/generated_0.9/' 
 LOGS = ROOT + 'logs/'
 
@@ -66,18 +69,31 @@ def standardize_prompts():
     return input2len_nopunct, book2prompt
 
 def get_book_excerpts(): 
-    nlp = stanza.Pipeline(lang='en', processors='tokenize')
     input2len, book2prompt = standardize_prompts() # punctuationless input to length
+    detokenizer = TreebankWordDetokenizer()
     for f in book2prompt: 
-        found = 0
-        with open(BOOKS + f + '.txt', 'r') as infile: 
-            doc = nlp(infile.read())
-            for sentence in doc.sentences: 
-                sent = sentence.text.translate(str.maketrans('', '', string.punctuation))
-                for prompt in book2prompt[f]: 
-                     if prompt.startswith(sent) or sent.startswith(prompt): 
-                         found += 1
-        print(found, len(book2prompt[f]))
+        found = set()
+        with open(TOKENS + f, 'r') as infile:
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            curr_sent = []
+            curr_sentID = None
+            for row in reader: 
+                if row['sentenceID'] != curr_sentID and curr_sentID is not None: 
+                    sent = detokenizer.detokenize(curr_sent) 
+                    sent = sent.translate(str.maketrans('', '', string.punctuation))
+                    if 'Frenshams mouth hardened' in sent: print(sent)
+                    if sent in book2prompt[f]: 
+                        found.add(sent)
+                    # detokenize curr_sent 
+                    # depunctuate 
+                    # check for sentence in book2prompt[f]
+                    curr_sent = []
+                    curr_sentID = row['sentenceID']
+                if curr_sentID is None: 
+                    curr_sentID = row['sentenceID']
+                curr_sent.append(row['originalWord'].replace('’', '\''))
+        print(len(found), len(book2prompt[f]))
+        print(set(book2prompt[f])-found)
         break
 
 def main(): 
