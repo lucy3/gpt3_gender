@@ -13,6 +13,7 @@ import json
 import string
 import csv
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+from nltk.tokenize import word_tokenize 
 from nltk.metrics.distance import edit_distance
 import edlib
 
@@ -21,6 +22,7 @@ PROMPTS = ROOT + 'logs/original_prompts/'
 TOKENS = ROOT + '/logs/tokens/'
 STORIES = ROOT + 'logs/generated_0.9/' 
 LOGS = ROOT + 'logs/'
+OUTPUT = LOGS + 'book_excerpts/'
 
 def get_generation_len(): 
     '''
@@ -43,9 +45,8 @@ def get_generation_len():
         json.dump(input2len, outfile)
 
 def clean_words(w): 
-    w = w.replace('--', ' ').replace('—', ' ')
+    w = w.replace('--', ' ').replace('—', ' ').replace('’', '\'')
     w = w.translate(str.maketrans('', '', string.punctuation))
-    w = w.replace(' ', '')
     return w
  
 def standardize_prompts(): 
@@ -61,7 +62,7 @@ def standardize_prompts():
         nopunct = clean_words(k)
         input2len_nopunct[nopunct] = input2len[k]
     prompts = set()
-    prompts_nopunct = set()
+    prompts_nopunct = defaultdict(str)
     book2prompt = defaultdict(list)
     for f in os.listdir(PROMPTS): 
         with open(PROMPTS + f, 'r') as infile:
@@ -69,70 +70,68 @@ def standardize_prompts():
                 p = line.split('\t')[2].strip()
                 prompts.add(p)
                 pnp = clean_words(p)
-                prompts_nopunct.add(pnp)
-                book2prompt[f].append(pnp)
-    assert len(prompts_nopunct - set(input2len_nopunct.keys())) == 0
-    assert len(set(input2len_nopunct.keys()) - prompts_nopunct) == 0
-    return input2len_nopunct, book2prompt
+                prompts_nopunct[p] = pnp
+                book2prompt[f].append(p)
+    assert len(set(prompts_nopunct.values()) - set(input2len_nopunct.keys())) == 0
+    assert len(set(input2len_nopunct.keys()) - set(prompts_nopunct.values())) == 0
+    return input2len_nopunct, book2prompt, prompts_nopunct
 
-def get_book_excerpts(): 
-    input2len, book2prompt = standardize_prompts() # punctuationless input to length
+def get_book_excerpts():
     detokenizer = TreebankWordDetokenizer()
-    for f in book2prompt: 
-        span = defaultdict(tuple) # prompt : (start token ID, end token ID)
-        with open(TOKENS + f, 'r') as infile:
+    input2len, book2prompt, prompts_nopunct = standardize_prompts()
+    prompt2tokens = {}
+    for prompt in prompts_nopunct:
+        toks = word_tokenize(prompt)
+        clean_toks = []
+        for tok in toks: 
+            clean_tok = clean_words(tok)
+            if clean_tok.strip() != '': 
+                clean_toks.append(clean_tok) 
+        if clean_toks[0] == 'Cap' and clean_toks[1] == 'n': 
+            # single edge case of tokenizer difference
+            clean_toks = ['Capn'] + clean_toks[2:]
+        prompt2tokens[prompt] = clean_toks
+    for f in book2prompt:
+        bookTokens = []
+        originalbookTokens = []
+        bookTokenIDs = []
+        with open(TOKENS + f, 'r') as infile: 
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-            curr_sent = []
-            start_tokenID = None
-            curr_sentID = None
             for row in reader: 
-                if row['sentenceID'] != curr_sentID and curr_sentID is not None: 
-                    sent = ''.join(curr_sent) 
-                    sent = clean_words(sent)
-                    if sent in book2prompt[f]: 
-                        span[sent] = (start_tokenID, start_tokenID + int(input2len[sent]))
-                    '''
-                    for prompt in book2prompt[f]: 
-                        ed = edlib.align(sent, prompt)['editDistance'] 
-                        if ed < best_matches[prompt][1]: 
-                            best_matches[prompt] = (sent, ed)
-                    '''
-                    curr_sent = []
-                    curr_sentID = row['sentenceID']
-                    start_tokenID = int(row['tokenId'])
-                if curr_sentID is None: 
-                    curr_sentID = row['sentenceID']
-                    start_tokenID = int(row['tokenId'])
-                curr_sent.append(row['normalizedWord'].replace('’', '\''))
-        missing = set(book2prompt[f]) - set(span.keys())
-        print(missing)
-        maybe_found = set()
-        with open(TOKENS + f, 'r') as infile:
-            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-            curr_sent = []
-            start_tokenID = None
-            curr_sentID = None
-            for row in reader: 
-                if row['sentenceID'] != curr_sentID and curr_sentID is not None: 
-                    sent = ''.join(curr_sent) 
-                    sent = clean_words(sent)
-                    for prompt in missing: 
-                        if prompt in sent: 
-                            maybe_found.add(prompt)
-                    curr_sent = []
-                    curr_sentID = row['sentenceID']
-                    start_tokenID = int(row['tokenId'])
-                if curr_sentID is None: 
-                    curr_sentID = row['sentenceID']
-                    start_tokenID = int(row['tokenId'])
-                curr_sent.append(row['normalizedWord'].replace('’', '\''))
-        print(missing-maybe_found)
-        '''
-        for prompt in best_matches: 
-            if best_matches[prompt][1] > 0: 
-                print(prompt)
-                print(best_matches[prompt])
-        '''
+                bookTokens.append(row['normalizedWord'])
+                originalbookTokens.append(row['originalWord'].replace('’', "'"))
+                bookTokenIDs.append(int(row['tokenId']))
+        for i, idx in enumerate(bookTokenIDs): 
+            assert i == idx
+        cleanIDs = []
+        cleanbookTokens = []
+        outfile = open(OUTPUT + f, 'w') 
+        for i, tok in enumerate(bookTokens): 
+            clean_tok = clean_words(tok)
+            if clean_tok.strip() != '': 
+                cleanIDs.append(bookTokenIDs[i])
+                cleanbookTokens.append(clean_tok)
+        for prompt in book2prompt[f]: 
+            found = False
+            prompt_toks = prompt2tokens[prompt]
+            prompt_len = len(prompt_toks)
+            for i in range(len(cleanbookTokens)): 
+                if cleanbookTokens[i:i + prompt_len] == prompt_toks:
+                    story_start = cleanIDs[i]
+                    story_end = story_start + int(input2len[prompts_nopunct[prompt]])
+                    story_tokens = originalbookTokens[story_start:story_end]
+                    s = 0
+                    story = ''
+                    for j, tok in enumerate(story_tokens): 
+                        if tok == '.' or tok == '?' or tok == '!': 
+                            story += detokenizer.detokenize(story_tokens[s:j+1]) + ' '
+                            s = j + 1
+                    found = True
+                    outfile.write(story + '\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n@\n')
+                    break 
+            if not found: 
+                print(f, prompt, prompt2tokens[prompt])
+        outfile.close()
 
 def main(): 
     #get_generation_len()
