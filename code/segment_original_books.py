@@ -14,6 +14,7 @@ import string
 import csv
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from nltk.metrics.distance import edit_distance
+import edlib
 
 ROOT = '/mnt/data0/lucy/gpt3_bias/'
 PROMPTS = ROOT + 'logs/original_prompts/'
@@ -41,6 +42,12 @@ def get_generation_len():
     with open(LOGS + 'generated_story_len_0.9.json', 'w') as outfile: 
         json.dump(input2len, outfile)
 
+def clean_words(w): 
+    w = w.replace('--', ' ').replace('—', ' ')
+    w = w.translate(str.maketrans('', '', string.punctuation))
+    w = w.replace(' ', '')
+    return w
+ 
 def standardize_prompts(): 
     '''
     The input file of prompts doesn't necessarily
@@ -51,7 +58,7 @@ def standardize_prompts():
         input2len = json.load(infile)
     input2len_nopunct = {}
     for k in input2len: 
-        nopunct = k.translate(str.maketrans('', '', string.punctuation))
+        nopunct = clean_words(k)
         input2len_nopunct[nopunct] = input2len[k]
     prompts = set()
     prompts_nopunct = set()
@@ -61,7 +68,7 @@ def standardize_prompts():
             for line in infile: 
                 p = line.split('\t')[2].strip()
                 prompts.add(p)
-                pnp = p.translate(str.maketrans('', '', string.punctuation))
+                pnp = clean_words(p)
                 prompts_nopunct.add(pnp)
                 book2prompt[f].append(pnp)
     assert len(prompts_nopunct - set(input2len_nopunct.keys())) == 0
@@ -72,29 +79,60 @@ def get_book_excerpts():
     input2len, book2prompt = standardize_prompts() # punctuationless input to length
     detokenizer = TreebankWordDetokenizer()
     for f in book2prompt: 
-        found = set()
+        span = defaultdict(tuple) # prompt : (start token ID, end token ID)
         with open(TOKENS + f, 'r') as infile:
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
             curr_sent = []
+            start_tokenID = None
             curr_sentID = None
             for row in reader: 
                 if row['sentenceID'] != curr_sentID and curr_sentID is not None: 
-                    sent = detokenizer.detokenize(curr_sent) 
-                    sent = sent.translate(str.maketrans('', '', string.punctuation))
-                    if 'Frenshams mouth hardened' in sent: print(sent)
+                    sent = ''.join(curr_sent) 
+                    sent = clean_words(sent)
                     if sent in book2prompt[f]: 
-                        found.add(sent)
-                    # detokenize curr_sent 
-                    # depunctuate 
-                    # check for sentence in book2prompt[f]
+                        span[sent] = (start_tokenID, start_tokenID + int(input2len[sent]))
+                    '''
+                    for prompt in book2prompt[f]: 
+                        ed = edlib.align(sent, prompt)['editDistance'] 
+                        if ed < best_matches[prompt][1]: 
+                            best_matches[prompt] = (sent, ed)
+                    '''
                     curr_sent = []
                     curr_sentID = row['sentenceID']
+                    start_tokenID = int(row['tokenId'])
                 if curr_sentID is None: 
                     curr_sentID = row['sentenceID']
-                curr_sent.append(row['originalWord'].replace('’', '\''))
-        print(len(found), len(book2prompt[f]))
-        print(set(book2prompt[f])-found)
-        break
+                    start_tokenID = int(row['tokenId'])
+                curr_sent.append(row['normalizedWord'].replace('’', '\''))
+        missing = set(book2prompt[f]) - set(span.keys())
+        print(missing)
+        maybe_found = set()
+        with open(TOKENS + f, 'r') as infile:
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            curr_sent = []
+            start_tokenID = None
+            curr_sentID = None
+            for row in reader: 
+                if row['sentenceID'] != curr_sentID and curr_sentID is not None: 
+                    sent = ''.join(curr_sent) 
+                    sent = clean_words(sent)
+                    for prompt in missing: 
+                        if prompt in sent: 
+                            maybe_found.add(prompt)
+                    curr_sent = []
+                    curr_sentID = row['sentenceID']
+                    start_tokenID = int(row['tokenId'])
+                if curr_sentID is None: 
+                    curr_sentID = row['sentenceID']
+                    start_tokenID = int(row['tokenId'])
+                curr_sent.append(row['normalizedWord'].replace('’', '\''))
+        print(missing-maybe_found)
+        '''
+        for prompt in best_matches: 
+            if best_matches[prompt][1] > 0: 
+                print(prompt)
+                print(best_matches[prompt])
+        '''
 
 def main(): 
     #get_generation_len()
