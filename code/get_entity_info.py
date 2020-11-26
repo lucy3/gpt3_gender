@@ -89,6 +89,9 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
             json.dump(char_story, outfile)
             
 def get_entities_dict(ents_path, title): 
+    '''
+    Gets the start and end tokens for every entity 
+    '''
     entities = {} # { (start, end) : entity name } 
     with open(ents_path + title + '/' + title + '.ents', 'r') as infile: 
         for line in infile: 
@@ -102,6 +105,9 @@ def get_entities_dict(ents_path, title):
     return entities
 
 def get_coref_label_dict(ents_path, title, entities): 
+    '''
+    Get the coref group for every entity 
+    '''
     coref_label = {} # { (start, end, entity name) : coref_group_id } 
     with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
         for line in infile: 
@@ -115,6 +121,11 @@ def get_coref_label_dict(ents_path, title, entities):
     return coref_label
 
 def get_coref_chain_dict(ents_path, title, pronouns, coref_label): 
+    '''
+    Get all of the pronouns associated with a 
+    coref group associated with entities 
+    '''
+    # TODO: split chains by story, so that one story's pronouns are not related to another 
     coref_chain = defaultdict(list) # { coref_group_ID : [pronouns] } 
     with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
         for line in infile: 
@@ -142,15 +153,27 @@ def print_character_network(char_neighbors, char_pronouns):
         print(s)
 
 def get_entities_gender(ents_path, prompts_path): 
+    '''
+    For each named person entity, find how GPT-3 tends to gender that name
+    based on coref chains in the text
+    
+    For each main character, what are the genders of other named people in their
+    stories? 
+
+    inputs: 
+    - path to entities
+    - path to prompts 
+    '''
+    # TODO: for each main character, what are the gender of unique people in their stories? 
     pronouns = {'he' : 'masc', 'his' : 'masc', 'him' : 'masc', 
               'himself' : 'masc', 'she' : 'fem', 'her' : 'fem', 
               'hers' : 'fem', 'herself' : 'fem', 'they' : 'neut', 'their' : 'neut', 
               'them' : 'neut', 'theirs' : 'neut', 'theirself' : 'neut'}
     for title in os.listdir(ents_path): 
         print(title)
-        entities = get_entities_dict(ents_path, title)
-        coref_label = get_coref_label_dict(ents_path, title, entities)
-        coref_chain = get_coref_chain_dict(ents_path, title, pronouns, coref_label) 
+        entities = get_entities_dict(ents_path, title) # (start, end) : entity name
+        coref_label = get_coref_label_dict(ents_path, title, entities) # entities to coref group
+        coref_chain = get_coref_chain_dict(ents_path, title, pronouns, coref_label) # coref group to pronouns
 
         char_pronouns = defaultdict(Counter) # {character name : [pronouns in all coref chains]}
         # This is a list because one name might have multiple coref chains
@@ -171,7 +194,7 @@ def get_entities_gender(ents_path, prompts_path):
         with open(LOGS + 'char_indices_0.9/' + title + '.json', 'r') as infile: 
             char_story = json.load(infile) # {character name: [(start token idx, end token idx)] }
             
-        char_story_rev = {}
+        char_story_rev = {} # story start and end to character
         for char in char_story: 
             story_indices = char_story[char] # list of story starts and ends
             for story_idx in story_indices: 
@@ -311,9 +334,9 @@ def main():
     txt_path = LOGS + 'plaintext_stories_0.9/'
     prompts_path = LOGS + 'original_prompts/'
     #get_characters_to_prompts(prompts_path, tokens_path, txt_path)
-    #get_entities_gender(ents_path, prompts_path)
-    #calculate_recurrence(tokens_path)
-    get_gendered_topics(txt_path, prompts_path)
+    get_entities_gender(ents_path, prompts_path)
+    calculate_recurrence(tokens_path)
+    #get_gendered_topics(txt_path, prompts_path)
 
 if __name__ == '__main__': 
     main()
