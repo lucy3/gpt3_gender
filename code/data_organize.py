@@ -45,7 +45,8 @@ def format_for_booknlp(gen_path, file_list, outpath):
     with open(file_list, 'r') as infile: 
         for filename in infile: 
             files.append(filename.strip())
-    for i, filename in enumerate(files): 
+    for filename in os.listdir(gen_path): 
+        if filename in files: continue # already done, TODO edit this out later 
         num_lines = 0
         bookname = filename.replace('.json', '')
         output_file = open(outpath + bookname, 'w') 
@@ -78,8 +79,9 @@ def get_prompt_char_names():
 def main(): 
     #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
     #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'plaintext_stories_0.9/')
+    format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'partial_plaintext_stories_0.9/')
     #get_stats()
-    get_prompt_char_names()
+    #get_prompt_char_names()
 
 if __name__ == "__main__":
     main()
