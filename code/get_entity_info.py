@@ -16,14 +16,13 @@ def remove_punct(s):
     regex = re.compile('[^a-zA-Z0-9]')
     return regex.sub('', s) 
 
-def get_characters_to_prompts(prompts_path, tokens_path, txt_path):
+def get_characters_to_prompts(prompts_path, tokens_path, txt_path, num_gens=5):
     '''
     Input: path to original prompts, path to tokens 
     
     Assumes that the generated stories are in the same order as the prompts,
-    with 5 prompts per story. 
+    with 5 stories per prompt. 
     '''
-    num_gens = 5
     for title in os.listdir(txt_path): 
         print(title)
         char_order = [] # character, where index is generated story index
@@ -329,13 +328,20 @@ def get_gendered_topics(txt_path, prompts_path):
         json.dump(gender_topics, outfile)
 
 def main(): 
-    ents_path = LOGS + 'generated_0.9_ents/'
-    tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
-    txt_path = LOGS + 'plaintext_stories_0.9/'
+    generated = False
+    if generated: 
+        ents_path = LOGS + 'generated_0.9_ents/'
+        tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
+        txt_path = LOGS + 'plaintext_stories_0.9/'
+    else: 
+        ents_path = LOGS + 'book_excerpts_ents/'
+        tokens_path = LOGS + 'book_excerpts_tokens/'
+        txt_path = LOGS + 'book_excerpts/'
     prompts_path = LOGS + 'original_prompts/'
-    #get_characters_to_prompts(prompts_path, tokens_path, txt_path)
-    get_entities_gender(ents_path, prompts_path)
-    calculate_recurrence(tokens_path)
+    # TODO: change outpaths!! 
+    get_characters_to_prompts(prompts_path, tokens_path, txt_path, num_gens=1)
+    #get_entities_gender(ents_path, prompts_path)
+    #calculate_recurrence(tokens_path)
     #get_gendered_topics(txt_path, prompts_path)
 
 if __name__ == '__main__': 
