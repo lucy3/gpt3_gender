@@ -227,6 +227,7 @@ def main():
     all_text = []
     num_words = []
     story_ids = []
+    # TODO: avoid including @ lines in story
     for title in sorted(os.listdir(input_dir)): 
         with open(input_dir + title, 'r') as infile: 
             story_idx = 0
