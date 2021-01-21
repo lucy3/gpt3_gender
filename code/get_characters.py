@@ -9,6 +9,7 @@ import os
 
 TOKENS = '/mnt/data0/lucy/gpt3_bias/logs/tokens/'
 OUTPATH = '/mnt/data0/lucy/gpt3_bias/logs/original_prompts/'
+REDO_PATH = '/mnt/data0/lucy/gpt3_bias/logs/redo_prompts/'
 
 def extract_people(directory, filename):
     '''
@@ -128,11 +129,31 @@ def extract_people(directory, filename):
             writer.writerow([mc[0], mc[1], s])
     outfile.close()
 
+def check_for_bad_prompts():
+    bad = 0
+    total = 0
+    for filename in os.listdir(OUTPATH):
+        outfile = open(REDO_PATH + filename, 'w') 
+        writer = csv.writer(outfile, delimiter='\t')
+        with open(OUTPATH + filename, 'r') as infile: 
+            reader = csv.reader(infile, delimiter='\t')
+            for row in reader: 
+                prompt = row[2]
+                if '-RRB-' in prompt or '-LRB-' in prompt: 
+                    s = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
+                    s = s.replace('-RRB-', ')').replace('-LRB-', '(')
+                    writer.writerow([row[0], row[1], s])
+                    bad += 1
+                total += 1
+        outfile.close()
+    print("Number of bad prompts:", bad, "out of", total)
+
 def main():
-    random.seed(0) 
-    for f in os.listdir(TOKENS):
-        print(f) 
-        extract_people(TOKENS, f)
+    #random.seed(0) 
+    #for f in os.listdir(TOKENS):
+        #print(f) 
+        #extract_people(TOKENS, f)
+    check_for_bad_prompts()
 
 if __name__ == '__main__': 
     main()

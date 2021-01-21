@@ -23,7 +23,10 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path
     Assumes that the generated stories are in the same order as the prompts,
     with num_gens stories per prompt. 
     '''
-    for title in os.listdir(txt_path): 
+    count = 0
+    char_story_count = 0
+    for filename in os.listdir(tokens_path): 
+        title = filename.replace('.tokens', '')
         print(title)
         char_order = [] # character, where index is generated story index
         with open(prompts_path + title, 'r') as infile: 
@@ -33,11 +36,12 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path
                 char_name = row[1]
                 prompt = row[2]
                 char_order.extend([(char_ID, char_name)]*num_gens)
-        if len(char_order) == 0: continue 
+        if len(char_order) == 0: 
+            print("----- No prompts -----")
+            continue 
+        count += 1
 
-        char_idx = defaultdict(list) # {character : [idx in tokens_path]}
-
-        # sanity check that story has character in it
+        # sanity check that story has the character in it
         with open(txt_path + title, 'r') as infile: 
             story = ''
             story_idx = 0
@@ -55,6 +59,7 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path
                 else: 
                     story += line
 
+        # get mapping from story idx to its token span 
         idx_tokenIDs = defaultdict(list) # { story idx : (start token ID, end token ID) }
         with open(tokens_path + title + '.tokens', 'r') as infile: 
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
@@ -74,18 +79,23 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path
                     start_tokenID = int(end_tokenID) + 1
                     dot_count = 0
         
+        # the number of stories should be the number of character prompts * num_gens
         if len(idx_tokenIDs) != len(char_order): 
             print("PROBLEM!!!!!", len(idx_tokenIDs), len(char_order))
             continue
         
         assert len(idx_tokenIDs) == len(char_order)
         
+        # mapping from character to story spans 
         char_story = defaultdict(list) # {character name: [(start token idx, end token idx)] }
         for story_idx in idx_tokenIDs: 
             char_story[char_order[story_idx][1]].append(idx_tokenIDs[story_idx])
             
         with open(char_idx_path + title + '.json', 'w') as outfile: 
+            char_story_count += 1
             json.dump(char_story, outfile)
+    print(count)
+    print(char_story_count)
             
 def get_entities_dict(ents_path, title): 
     '''
@@ -154,7 +164,7 @@ def print_character_network(char_neighbors, char_pronouns):
             print()
         break
 
-def get_entities_gender(ents_path, prompts_path, char_idx_path, char_nb_path): 
+def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path): 
     '''
     For each named person, find how GPT-3 tends to gender that name
     based on coref chains in the text
@@ -270,28 +280,12 @@ def calculate_recurrence(tokens_path, char_idx_path):
             num_times.append(len(main_char_idx))
             ranges.append(main_char_idx[-1] - main_char_idx[0])
     print(np.mean(num_times), np.mean(ranges))
-
-def get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path): 
-    # get main character to storyidx
-    # get main character to gender 
-    # get storyidx 
-    topic_dir = LOGS + 'topics_0.9' # change to topics for both datasets
-    doc_topic_file = '%s/doc-topics.gz' % topic_dir
-    doc_topics = open(doc_topic_file).read().splitlines() # list of topics
-    story_ids = open(topic_dir + '/story_id_order').read().splitlines() # story IDs 
-    story_topics = defaultdict(dict) # story ID : {topic id : value, topic id: value}
+    
+def get_topics_for_txt(txt_path, prompts_path, char_nb_path, topic_out_path, \
+                       gender_path, generated, story_topics, num_gens=5):
     gender_topics = {'gender':[], 'topic':[], 'value':[]}
-    for i, doc in enumerate(doc_topics): 
-        contents = doc.split('\t')
-        topics = [float(i) for i in contents[2:]]
-        story_title_id = story_ids[i]
-        assert len(topics) == 50
-        for topic_id, value in enumerate(topics): 
-            story_topics[story_title_id][topic_id] = value
-   
     for title in sorted(os.listdir(txt_path)): 
         char_order = [] # character, where index is generated story index
-        num_gens = 5
         with open(prompts_path + title, 'r') as infile: 
             reader = csv.reader(infile, delimiter='\t')
             for row in reader: 
@@ -302,34 +296,16 @@ def get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path):
         if len(char_order) == 0: continue
         with open(char_nb_path + title + '.json', 'r') as infile: 
             char_neighbors = json.load(infile)
-        # TODO: this seems sketch since we really need a true mapping from story id to character + character gender
-        gender_dict = {}
-        for char in char_neighbors: 
-            main_gender = None
-            neighbor_dict = char_neighbors[char]
-            s = char + ' --- '
-            neighbor_names = set()
-            for neighbor in neighbor_dict: 
-                neighbor_n = neighbor['character_name']
-                pns = defaultdict(int, neighbor['gender'])
-                total = sum(list(pns.values()))
-                if pns['masc'] > 0.75*total: 
-                    gender = 'masc'
-                elif pns['fem'] > 0.75*total: 
-                    gender = 'fem'
-                else: 
-                    gender = 'other'
-                if neighbor_n == char: 
-                    # main character
-                    main_gender = gender
-                else: 
-                    neighbor_names.add((neighbor_n, gender))
-            gender_dict[char] = main_gender
+        
+        with open(gender_path + title + '.json', 'r') as infile: 
+            gender_dict = json.load(infile)
 
         for i, char in enumerate(char_order): 
             story_title_id = title + str(i+1)
+            if not generated: 
+                story_title_id = 'ORIG_' + story_title_id
             topic_dict = story_topics[story_title_id]
-            if char not in gender_dict: continue # TODO: figure out what the issue is here
+            assert char in gender_dict 
             gender = gender_dict[char]
             for topic_id in topic_dict: 
                 gender_topics['gender'].append(gender)
@@ -338,8 +314,31 @@ def get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path):
     with open(topic_out_path, 'w') as outfile: 
         json.dump(gender_topics, outfile)
 
+def get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path, \
+                        gender_path, generated): 
+    topic_dir = LOGS + 'topics_0.9' 
+    doc_topic_file = '%s/doc-topics.gz' % topic_dir
+    doc_topics = open(doc_topic_file).read().splitlines() # list of topics
+    story_ids = open(topic_dir + '/story_id_order').read().splitlines() # story IDs 
+    story_topics = defaultdict(dict) # story ID : {topic id : value, topic id: value}
+    for i, doc in enumerate(doc_topics): 
+        contents = doc.split('\t')
+        topics = [float(i) for i in contents[2:]]
+        story_title_id = story_ids[i]
+        if (generated & (not story_title_id.startswith("ORIG_"))) or \
+            (not generated & story_title_id.startswith("ORIG_")):             
+            assert len(topics) == 50
+            for topic_id, value in enumerate(topics): 
+                story_topics[story_title_id][topic_id] = value
+    if generated: 
+        get_topics_for_txt(txt_path, prompts_path, char_nb_path, \
+                           topic_out_path, gender_path, generated, story_topics)
+    else: 
+        get_topics_for_txt(txt_path, prompts_path, char_nb_path, \
+                           topic_out_path, gender_path, generated, story_topics, num_gens=1)
+
 def main(): 
-    generated = False
+    generated = True
     if generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
@@ -347,6 +346,8 @@ def main():
         char_idx_path = LOGS + 'char_indices_0.9/'
         char_nb_path = LOGS + 'char_neighbors_0.9/'
         topic_out_path = LOGS + 'gender_topics_0.9.json'
+        gender_path = LOGS + 'main_char_gender_0.9/'
+        num_gens = 5
     else: 
         ents_path = LOGS + 'book_excerpts_ents/'
         tokens_path = LOGS + 'book_excerpts_tokens/'
@@ -354,11 +355,13 @@ def main():
         char_idx_path = LOGS + 'orig_char_indices/' 
         char_nb_path = LOGS + 'orig_char_neighbors/'
         topic_out_path = LOGS + 'orig_gender_topics.json'
+        gender_path = LOGS + 'orig_main_char_gender/'
+        num_gens = 1
     prompts_path = LOGS + 'original_prompts/' 
-    #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=1)
-    get_entities_gender(ents_path, prompts_path, char_idx_path, char_nb_path)
-    #calculate_recurrence(tokens_path, char_idx_path)
-    #get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path)
+    #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
+    #get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
+    calculate_recurrence(tokens_path, char_idx_path)
+    #get_gendered_topics(txt_path, prompts_path, char_nb_path, topic_out_path, gender_path, generated)
 
 if __name__ == '__main__': 
     main()

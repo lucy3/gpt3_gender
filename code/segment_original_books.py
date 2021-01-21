@@ -64,7 +64,9 @@ def standardize_prompts():
     prompts = set()
     prompts_nopunct = defaultdict(str)
     book2prompt = defaultdict(list)
+    num_files = 0
     for f in os.listdir(PROMPTS): 
+        num_files += 1
         with open(PROMPTS + f, 'r') as infile:
             for line in infile: 
                 p = line.split('\t')[2].strip()

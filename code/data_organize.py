@@ -2,6 +2,7 @@ import os
 import json
 import csv
 import string
+from collections import Counter
 
 ROOT = "/mnt/data0/lucy/gpt3_bias/"
 LOGS = ROOT + 'logs/'
@@ -26,9 +27,78 @@ def sanity_check_outputs(gen_path, input_path):
         num_prompts = 0
         with open(input_path + bookname, 'r') as infile: 
             num_prompts += len(infile.readlines())
-        assert num_lines == num_prompts 
+        assert num_lines == num_prompts
         total_prompts_run += num_prompts
     print(total_prompts_run)
+
+
+def sanity_check_redo_outputs(gen_path, input_path): 
+    '''
+    In this new format, each dictionary now represents a single
+    generation instead of five. So, we check that there are in fact
+    five generations per prompt, and that all prompts are accounted
+    for. 
+    '''
+    files = os.listdir(gen_path)
+    total_prompts_run = 0
+    for i, filename in enumerate(files): 
+        gen_count = Counter() # input : num of generations
+        with open(gen_path + filename, 'r') as infile: 
+            for line in infile: 
+                d = json.loads(line)
+                gen_count[d['input']] += 1
+        for input_text in gen_count:
+            # there is one input with 10 generations due to bookNLP error
+            assert gen_count[input_text] % 5 == 0 
+        num_lines = sum(list(gen_count.values()))
+        bookname = filename.replace('.json', '')
+        num_prompts = 0
+        with open(input_path + bookname, 'r') as infile: 
+            num_prompts += len(infile.readlines())
+        if len(gen_count) != num_prompts: print(filename, len(gen_count), num_prompts)
+        total_prompts_run += num_prompts
+    print(total_prompts_run)
+
+def replace_bad_outputs(redo_gen_path, old_gen_path, outpath): 
+    '''
+    old_generated_0.9
+    '''
+    for i, filename in enumerate(os.listdir(redo_gen_path)): 
+        new_gens = [] # list of dictionaries 
+        with open(redo_gen_path + filename, 'r') as infile:
+            curr_dict = {}
+            for line in infile: 
+                d = json.loads(line)
+                if curr_dict == {}:
+                    curr_dict = d
+                elif len(curr_dict['choices']) < 5:
+                    assert d['input'] == curr_dict['input']
+                    curr_dict['choices'].append(d['choices'][0])
+                else: 
+                    # add current dictionary to new_gens
+                    new_gens.append(curr_dict)
+                    # start new dictionary
+                    curr_dict = d
+            if curr_dict != {}: 
+                new_gens.append(curr_dict)
+        bad_prompts = 0
+        outfile = open(outpath + filename, 'w') 
+        with open(old_gen_path + filename, 'r') as infile: 
+            for line in infile: 
+                d = json.loads(line)
+                prompt = d['input']
+                if '-RRB-' in prompt or '-LRB-' in prompt:
+                    print(d['input'])
+                    print(new_gens[bad_prompts]['input'])
+                    print()
+                    outfile.write(json.dumps(new_gens[bad_prompts]) + '\n')
+                    bad_prompts += 1
+                else: 
+                    outfile.write(json.dumps(d) + '\n')
+        outfile.close()
+        assert bad_prompts == len(new_gens) 
+        # write out non-problematic prompts to outpath
+        # write redo prompts to same outpath
     
 def get_stats(): 
     '''
@@ -37,16 +107,11 @@ def get_stats():
     '''
     pass
 
-def format_for_booknlp(gen_path, file_list, outpath): 
+def format_for_booknlp(gen_path, outpath): 
     ''' 
     Format generated stories for bookNLP
     '''
-    files = []
-    with open(file_list, 'r') as infile: 
-        for filename in infile: 
-            files.append(filename.strip())
     for filename in os.listdir(gen_path): 
-        if filename in files: continue # already done, TODO edit this out later 
         num_lines = 0
         bookname = filename.replace('.json', '')
         output_file = open(outpath + bookname, 'w') 
@@ -78,8 +143,10 @@ def get_prompt_char_names():
 
 def main(): 
     #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
-    #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'plaintext_stories_0.9/')
-    format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'file_list', LOGS + 'partial_plaintext_stories_0.9/')
+    #sanity_check_redo_outputs(LOGS + 'redo_0.9/', LOGS + 'redo_prompts/')
+    #replace_bad_outputs(LOGS + 'redo_0.9/', LOGS + 'old_generated_0.9/', 
+    #    LOGS + 'generated_0.9/')
+    format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'plaintext_stories_0.9/')
     #get_stats()
     #get_prompt_char_names()
 

@@ -222,6 +222,7 @@ def main():
     output_dir = LOGS + 'topics_0.9'
     mallet_dir = ROOT + 'mallet-2.0.8/bin'
     input_dir = LOGS + 'plaintext_stories_0.9/'
+    orig_dir = LOGS + 'book_excerpts/'
     num_topics = 50
     
     all_text = []
@@ -250,6 +251,27 @@ def main():
                     text = clean_text(line) 
                     curr_story += text + ' ' 
                     line_count += 1
+
+    for title in sorted(os.listdir(orig_dir)): 
+        with open(orig_dir + title, 'r') as infile: 
+            story_idx = 0
+            dot_count = 0
+            curr_story = '' # trying this
+            for line in infile: 
+                if line.strip() == '@': 
+                    dot_count += 1
+                else: 
+                    dot_count = 0
+                if dot_count == 20: 
+                    story_idx += 1
+                    num_words.append(len(curr_story.split()))
+                    all_text.append(curr_story)
+                    story_ids.append('ORIG_' + title + str(story_idx))
+                    curr_story = ''
+                elif line.strip() != '':
+                    text = clean_text(line) 
+                    curr_story += text + ' ' 
+
     with open(output_dir + '/story_id_order', 'w') as outfile: 
         for story_i in story_ids: 
             outfile.write(story_i + '\n')
