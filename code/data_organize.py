@@ -100,13 +100,6 @@ def replace_bad_outputs(redo_gen_path, old_gen_path, outpath):
         # write out non-problematic prompts to outpath
         # write redo prompts to same outpath
     
-def get_stats(): 
-    '''
-    TODO: get # of characters, # of books with characters
-    average length of prompt
-    '''
-    pass
-
 def format_for_booknlp(gen_path, outpath): 
     ''' 
     Format generated stories for bookNLP
@@ -146,8 +139,7 @@ def main():
     #sanity_check_redo_outputs(LOGS + 'redo_0.9/', LOGS + 'redo_prompts/')
     #replace_bad_outputs(LOGS + 'redo_0.9/', LOGS + 'old_generated_0.9/', 
     #    LOGS + 'generated_0.9/')
-    format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'plaintext_stories_0.9/')
-    #get_stats()
+    #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'plaintext_stories_0.9/')
     #get_prompt_char_names()
 
 if __name__ == "__main__":

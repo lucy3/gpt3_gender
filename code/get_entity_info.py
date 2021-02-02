@@ -86,9 +86,10 @@ def get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path
         
         assert len(idx_tokenIDs) == len(char_order)
         # mapping from character to story spans 
-        char_story = defaultdict(list) # {character name: [(start token idx, end token idx)] }
+        char_story = defaultdict(list) # {character name: [(story_idx, start token idx, end token idx)] }
         for story_idx in idx_tokenIDs: 
-            char_story[char_order[story_idx][1]].append(idx_tokenIDs[story_idx])
+            tup = (story_idx, idx_tokenIDs[story_idx][0], idx_tokenIDs[story_idx][1])
+            char_story[char_order[story_idx][1]].append(tup)
             
         with open(char_idx_path + title + '.json', 'w') as outfile: 
             char_story_count += 1
@@ -161,7 +162,6 @@ def print_character_network(char_neighbors, char_pronouns):
         for neighbor in neighbor_dict: 
             print(neighbor['character_name'], neighbor['aliases'], neighbor['gender'])
             print()
-        break
 
 def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path): 
     '''
@@ -185,13 +185,13 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         if not os.path.exists(char_idx_path + title + '.json'): continue
         with open(char_idx_path + title + '.json', 'r') as infile: 
             char_story = json.load(infile) # {character name: [(start token idx, end token idx)] }
+        
         idx2story = {} # token id to story idx
-        story_idx = 1 # this idx is not necessarily the same order as dataset
         for char in char_story: 
             for tup in char_story[char]: 
-                for i in range(tup[0], tup[1] + 1): 
+                story_idx, start, end = tup
+                for i in range(start, end + 1): 
                     idx2story[i] = story_idx
-                story_idx += 1
         
         main_characters = set(char_story.keys())
         entities = get_entities_dict(ents_path, title, main_characters) # (start, end) : entity name
@@ -216,7 +216,8 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
             for group in char_group_ids[char]: 
                 if group in chainID2name: 
                     base_char = chainID2name[group]
-                    aliases[base_char].add(char)
+                    char_name = '_'.join(char.split('_')[:-1])
+                    aliases[base_char].add(char_name)
                 pns.extend(coref_chain[group])
             for group in char_group_ids[char]: 
                 # assign this group to base 
@@ -228,22 +229,39 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         for char in char_story: 
             story_indices = char_story[char] # list of story starts and ends
             for story_span in story_indices: 
-                story_idx = idx2story[story_span[0]]
+                story_idx = story_span[0]
                 char_story_rev[story_idx] = char
 
         # {character name : [{"character name": "", "gender": {masc: #, fem: #, neut: #}, "aliases": [name]}] }
         char_neighbors = defaultdict(list) 
+ 
+        seen_mains = set() # set of main character _ story idx
         for base_char in char_pronouns: 
             story_idx = int(base_char.split('_')[-1])
             main_char = char_story_rev[story_idx]
+            if base_char == main_char + '_' + str(story_idx): 
+                seen_mains.add(base_char)
             neighbor_dict = {}
             neighbor_dict['character_name'] = base_char
             neighbor_dict['aliases'] = list(aliases[base_char])
             neighbor_dict['gender'] = char_pronouns[base_char]
             char_neighbors[main_char].append(neighbor_dict)
-               
+           
+        # due to NER error, some main characters weren't recognized and thus have no pronouns
+        for story_idx in char_story_rev: 
+            main_char = char_story_rev[story_idx]
+            if main_char + '_' + str(story_idx) not in seen_mains:
+                neighbor_dict = {}
+                base_char = main_char + '_' + str(story_idx)
+                neighbor_dict['character_name'] = base_char
+                neighbor_dict['aliases'] = []
+                neighbor_dict['gender'] = {}
+                char_neighbors[main_char].append(neighbor_dict)
         with open(char_nb_path + title + '.json', 'w') as outfile: 
             json.dump(char_neighbors, outfile)
+
+        
+
 
 
 def calculate_recurrence(tokens_path, char_idx_path):
@@ -284,7 +302,7 @@ def calculate_recurrence(tokens_path, char_idx_path):
 def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
                        gender_path, generated, story_topics, num_gens=5):
     gender_topics = {'gender':[], 'topic':[], 'value':[]}
-    for title in sorted(os.listdir(txt_path)): 
+    for title in sorted(os.listdir(txt_path)):
         char_order = [] # character, where index is generated story index
         with open(prompts_path + title, 'r') as infile: 
             reader = csv.reader(infile, delimiter='\t')
@@ -308,10 +326,12 @@ def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
             neighbors = gender_dict[char]
             gender = None
             for neighbor in neighbors: 
-                if neighbor['character_name'] == char + '_' + str(i+1): 
+                # the story idx in char_neighbors are not necessarily the same as i 
+                if neighbor['character_name'] == char + '_' + str(i): 
                     gender = neighbor['gender_label']
             if gender is None:
-                # failed to detect main character entity 
+                # failed to detect main character entity
+                print("PROBLEM!!!!", title, char, i)
                 gender = 'other'
             for topic_id in topic_dict: 
                 gender_topics['gender'].append(gender)
@@ -344,7 +364,7 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
-    generated = False
+    generated = True
     if generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'

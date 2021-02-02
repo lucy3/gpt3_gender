@@ -30,7 +30,9 @@ def get_generation_len():
     '''
     nlp = stanza.Pipeline(lang='en', processors='tokenize')
     input2lengths = defaultdict(list)
-    for f in os.listdir(STORIES): 
+    total_tokens = 0
+    for f in os.listdir(STORIES):
+        print(f) 
         with open(STORIES + f, 'r') as infile: 
             for line in infile: 
                 d = json.loads(line)
@@ -38,9 +40,14 @@ def get_generation_len():
                     text = d['choices'][j]['text']
                     doc = nlp(text)
                     input2lengths[d['input']].append(doc.num_tokens)
+                    total_tokens += doc.num_tokens
+    print("Number of generated tokens:", total_tokens)
     input2len = defaultdict(int)
+    excerpt_tokens = 0
     for inp in input2lengths: 
         input2len[inp] = np.mean(input2lengths[inp])
+        excerpt_tokens += int(input2len[inp])
+    print("Number of excerpt tokens:", excerpt_tokens)
     with open(LOGS + 'generated_story_len_0.9.json', 'w') as outfile: 
         json.dump(input2len, outfile)
 
@@ -136,8 +143,8 @@ def get_book_excerpts():
         outfile.close()
 
 def main(): 
-    #get_generation_len()
-    get_book_excerpts()
+    get_generation_len()
+    #get_book_excerpts()
     #standardize_prompts()
 
 if __name__ == '__main__': 

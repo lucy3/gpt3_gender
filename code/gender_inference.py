@@ -79,7 +79,7 @@ def infer_gender(char_neighbor_path, outpath):
     other_gender = 0 # number of characters w/ multiple gender pronouns
     no_pronouns = 0 # number of characters w/ no pronouns
     total_char = 0
-    for title in os.listdir(char_neighbor_path): 
+    for title in os.listdir(char_neighbor_path):
         with open(char_neighbor_path + title, 'r') as infile: 
             char_neighbors = json.load(infile)
         for char in char_neighbors: 
