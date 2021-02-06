@@ -14,9 +14,10 @@ def get_name_gender(neighbor, name_ratios):
     # http://self.gutenberg.org/articles/eng/english_honorifics
     gender = None
     honorifics_fem = ['Ms.', 'Mz.', 'Ms', 'Mz', 'Miss', 'Mrs', 'Mrs.', 'Madam', 
-                  'Ma\'am', 'Dame', 'Lady', 'Mistress']
+                  'Ma\'am', 'Dame', 'Lady', 'Mistress', 'Aunt', 
+                  'Grandma', 'Grandmother', 'Queen', 'Empress', 'Princess']
     honorifics_masc = ['Mr.', 'Mister', 'Mr', 'Master', 'Sir', 'Lord', 'Esq', 'Esq.', 'Br.', 'Br', 'Brother',
-                'Fr', 'Fr.', 'Father']
+                'Fr', 'Fr.', 'Father', 'Uncle', 'Grandpa', 'Grandfather', 'King', 'Emperor', 'Prince']
     # honorifics 
     for al in neighbor['aliases']: 
         if al.split()[0] in honorifics_fem: 
@@ -34,14 +35,16 @@ def get_name_gender(neighbor, name_ratios):
     if gender is not None: 
         return gender
     # baby names
-    for al in neighbor['aliases']: 
-        if name_ratios[al] > 0.90: 
+    for al in neighbor['aliases']:
+        fn = al.split()[0] # get first token
+        if fn not in name_ratios: continue
+        if name_ratios[fn] > 0.90: 
             if gender == 'masc' or gender == 'other': 
                 # already assigned a different gender
                 gender = 'other'
             else: 
                 gender = 'fem'
-        elif name_ratios[al] < 0.10: 
+        elif name_ratios[fn] < 0.10: 
             if gender == 'fem' or gender == 'other': 
                 # already assigned a different gender
                 gender = 'other'
@@ -62,7 +65,7 @@ def get_baby_name_ratios():
                     name_m[contents[0]] += int(contents[2])
                 else: 
                     print(contents[1]) # prints nothing
-    name_ratios = Counter()
+    name_ratios = {}
     all_names = set(name_f.keys()) | set(name_m.keys())
     for name in all_names: 
         name_ratios[name] = name_f[name] / float(name_m[name] + name_f[name])
@@ -78,6 +81,7 @@ def infer_gender(char_neighbor_path, outpath):
     name_ratios = get_baby_name_ratios()
     other_gender = 0 # number of characters w/ multiple gender pronouns
     no_pronouns = 0 # number of characters w/ no pronouns
+    unknown_count = 0 # number of characters w/ no pronouns and name isn't very gendered
     total_char = 0
     for title in os.listdir(char_neighbor_path):
         with open(char_neighbor_path + title, 'r') as infile: 
@@ -104,6 +108,7 @@ def infer_gender(char_neighbor_path, outpath):
                     no_pronouns += 1
                     gender = get_name_gender(neighbor, name_ratios)
                 if gender is None: 
+                    unknown_count += 1
                     gender = 'other'
                 if gender == 'other':
                     other_gender += 1
@@ -113,6 +118,7 @@ def infer_gender(char_neighbor_path, outpath):
     print("Total characters:", total_char)
     print("No pronouns:", no_pronouns) 
     print("Other gender:", other_gender)
+    print("Unknown name, no pronouns:", unknown_count)
     
 def multi_gender_chars(): 
     '''
