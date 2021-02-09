@@ -285,8 +285,11 @@ def get_nouns_and_adj(inpath, outpath):
     TODO: for original books, need to get book excerpt segment from logs/tokens
     '''
     # get all amod and nsubj
+    gendered_pronouns = set(['he', 'He', 'she', 'She'])
     for f in os.listdir(inpath):
-        # TODO: get mapping from aliases/names to gender
+        # TODO: get mapping from named entities with story IDs to gender (char_gender jsons)
+        # TODO: get mapping from token IDs to named entities (tokenID2ne)
+        # TODO: the token ID mapping needs to be inclusive of all token IDs for that named entity
         tokens2words = {}
         ret = []
         print(f)
@@ -299,20 +302,29 @@ def get_nouns_and_adj(inpath, outpath):
                 pos = row['pos']
                 tokens2words[tid] = (w, pos) 
                 if row['deprel'] == 'amod':
-                    # TODO second column named entities 
                     htid = row['headTokenId'] 
                     ret.append((w, tid, pos, row['deprel'], htid)) 
                 elif row['deprel'] == 'nsubj':
-                    # TODO: first column she, he, named entities (get gender from neighbor chars), 
-                    # TODO: last column should be JJ or start with VB
+                    w_storyID = w + '_' + str(story_ID)
                     htid = row['headTokenId'] 
-                    ret.append((w, tid, pos, row['deprel'], htid))
+                    # first column needs to be pronoun or named entity
+                    if w in gendered_pronouns or tid in tokenID2ne: 
+                        ret.append((w, tid, pos, row['deprel'], htid))
         with open(outpath + f.replace('.tokens', ''), 'w') as outfile: 
             for tup in ret: 
                 # TODO: last column should be inferred gender 
                 w, tid, pos, deprel, htid = tup
+                hw = tokens2words[htid][0]
+                hpos = tokens2words[htid][1]
+                if deprel == 'nsubj': 
+                    # the head needs to be an adj or verb
+                    if hpos != 'JJ' and not hpos.startswith('VB'): continue
+                if deprel == 'amod': 
+                    # the head must be a named entity
+                    if htid not in tokenID2ne:
+                        continue  
                 outfile.write(w + '\t' + tid + '\t' + pos + '\t' + deprel + '\t' + htid + '\t' + \
-                    tokens2words[htid][0] + '\t' + tokens2words[htid][1] + '\n')
+                    hw + '\t' + hpos + '\n')
 
 
 def main(): 
