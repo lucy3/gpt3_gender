@@ -9,6 +9,7 @@ from collections import defaultdict, Counter
 import random
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import json
 
 ROOT = '/mnt/data0/lucy/gpt3_bias/'
 LOGS = ROOT + 'logs/'
@@ -42,11 +43,11 @@ def read_stereotypes():
         reader = csv.DictReader(infile, delimiter=',')
         for row in reader: 
             for key in row:
-               if row[key] == '': continue 
-               if key in men: 
-                   men_d[key].add(row[key])
-               elif key in women: 
-                   women_d[key].add(row[key])
+                if row[key] == '': continue 
+                if key in men: 
+                    men_d[key].add(row[key])
+                elif key in women: 
+                    women_d[key].add(row[key])
     inpath = '/mnt/data0/corpora/lexicons/empath_categories.tsv'
     with open(inpath, 'r') as infile: 
         for line in infile: 
@@ -72,46 +73,46 @@ def preprocess_text():
     # read in generated stories
     genpath = LOGS + 'plaintext_stories_0.9_tokens/'
     for f in os.listdir(genpath): 
-       new_f = 'GEN_' + f.replace('.tokens', '')
-       print(new_f)
-       outfile = open(outpath + new_f, 'w') 
-       with open(genpath + f, 'r') as infile: 
-           reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-           currSentID = -1
-           currSent = []
-           for row in reader: 
-               if row['deprel'] != 'punct' and row['originalWord'] != '@': 
-                   word = row['originalWord'].lower()
-                   if word in string.punctuation: continue 
-                   if row['sentenceID'] != currSentID: 
-                       outfile.write(' '.join(currSent) + '\n') 
-                       currSent = []
-                   currSentID = row['sentenceID']
-                   currSent.append(word)
-           outfile.write(' '.join(currSent) + '\n') 
-       outfile.close()
+        new_f = 'GEN_' + f.replace('.tokens', '')
+        print(new_f)
+        outfile = open(outpath + new_f, 'w') 
+        with open(genpath + f, 'r') as infile: 
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            currSentID = -1
+            currSent = []
+            for row in reader: 
+                if row['deprel'] != 'punct' and row['originalWord'] != '@': 
+                    word = row['originalWord'].lower()
+                    if word in string.punctuation: continue 
+                    if row['sentenceID'] != currSentID: 
+                        outfile.write(' '.join(currSent) + '\n') 
+                        currSent = []
+                    currSentID = row['sentenceID']
+                    currSent.append(word)
+            outfile.write(' '.join(currSent) + '\n') 
+        outfile.close()
 
     # read in books
     bookpath = LOGS + 'tokens/'
     for f in os.listdir(bookpath): 
-       new_f = 'ORIG_' + f
-       print(new_f)
-       outfile = open(outpath + new_f, 'w') 
-       with open(bookpath + f, 'r') as infile:
-           reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-           currSentID = -1
-           currSent = []
-           for row in reader: 
-               if row['deprel'] != 'punct': 
-                   word = row['originalWord'].lower()
-                   if word in string.punctuation: continue
-                   if row['sentenceID'] != currSentID: 
-                       outfile.write(' '.join(currSent) + '\n') 
-                       currSent = []
-                   currSentID = row['sentenceID']
-                   currSent.append(word)
-           outfile.write(' '.join(currSent) + '\n')
-       outfile.close() 
+        new_f = 'ORIG_' + f
+        print(new_f)
+        outfile = open(outpath + new_f, 'w') 
+        with open(bookpath + f, 'r') as infile:
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            currSentID = -1
+            currSent = []
+            for row in reader: 
+                if row['deprel'] != 'punct': 
+                    word = row['originalWord'].lower()
+                    if word in string.punctuation: continue
+                    if row['sentenceID'] != currSentID: 
+                        outfile.write(' '.join(currSent) + '\n') 
+                        currSent = []
+                    currSentID = row['sentenceID']
+                    currSent.append(word)
+            outfile.write(' '.join(currSent) + '\n')
+        outfile.close() 
 
 
 def train_embeddings(): 
@@ -130,16 +131,16 @@ def play_with_lexicon_words():
     nc = 0
     for k in men_d: 
         for w in men_d[k]: 
-           if w in model.wv.vocab: 
-               c += 1
-           else: 
-               nc += 1
+            if w in model.wv.vocab: 
+                c += 1
+            else: 
+                nc += 1
     for k in women_d: 
         for w in women_d[k]: 
-           if w in model.wv.vocab: 
-               c += 1
-           else: 
-               nc += 1
+            if w in model.wv.vocab: 
+                c += 1
+            else: 
+                nc += 1
     print("Found:", c, "..... Missing:", nc)
     # get categories with biggest overlap
     lexicons = {**men_d, **women_d}
@@ -191,13 +192,13 @@ def get_matrices(train, test, pole1, pole2, model):
     train_B = np.array(train_B)
     test_A = []
     for w in test[pole1]: 
-       if w in model.wv.vocab: 
-           test_A.append(model.wv[w])
+        if w in model.wv.vocab: 
+            test_A.append(model.wv[w])
     test_A = np.array(test_A)
     test_B = []
     for w in test[pole2]: 
         if w in model.wv.vocab: 
-           test_B.append(model.wv[w])
+            test_B.append(model.wv[w])
     test_B = np.array(test_B)
     return train_A, train_B, test_A, test_B
 
@@ -280,59 +281,152 @@ def evaluate_lexicon_induction():
     print(sa_fa, np.mean(sa_fa))
     print(sa_fb, np.mean(sa_fb))
 
-def get_nouns_and_adj(inpath, outpath): 
+def get_nouns_and_adj(inpath, outpath, ents_path, gender_path): 
     '''
-    TODO: for original books, need to get book excerpt segment from logs/tokens
+    inpath is tokens
+    ents_path is entities 
     '''
     # get all amod and nsubj
     gendered_pronouns = set(['he', 'He', 'she', 'She'])
     for f in os.listdir(inpath):
-        # TODO: get mapping from named entities with story IDs to gender (char_gender jsons)
-        # TODO: get mapping from token IDs to named entities (tokenID2ne)
-        # TODO: the token ID mapping needs to be inclusive of all token IDs for that named entity
+        print(f)
+        bookname = f.replace('.tokens', '')
+        if not os.path.exists(gender_path + bookname + '.json'): continue
+        with open(gender_path + bookname + '.json', 'r') as infile: 
+            gender_dict = json.load(infile)
+        # mapping from named entities w/ story IDs to gender 
+        name2gender = {}
+        for char in gender_dict: 
+            neighbors = gender_dict[char]
+            for neighbor in neighbors:
+                gender = neighbor['gender_label']
+                base_char = neighbor['character_name']
+                story_idx = base_char.split('_')[-1]
+                name2gender[base_char] = gender
+                for alias in neighbor['aliases']: 
+                    name2gender[alias + '_' + story_idx] = gender
+        
+        # set of all token IDs that are named entities 
+        ne_tokens = {}
+        with open(ents_path + bookname + '/' + bookname + '.ents', 'r') as infile: 
+            for line in infile: 
+                contents = line.strip().split('\t')
+                start = int(contents[0])
+                end = int(contents[1])
+                ner = contents[2]
+                entity = contents[3]
+                if ner == 'PROP_PER' or entity in gender_dict: 
+                    for i in range(start, end+1): 
+                        ne_tokens[i] = entity
+
         tokens2words = {}
         ret = []
-        print(f)
         with open(inpath + f, 'r') as infile: 
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
-            # TODO: calculate story id
+            story_idx = 0
+            dot_count = 0
             for row in reader:
                 tid = row['tokenId']
                 w = row['originalWord']
                 pos = row['pos']
-                tokens2words[tid] = (w, pos) 
-                if row['deprel'] == 'amod':
-                    htid = row['headTokenId'] 
-                    ret.append((w, tid, pos, row['deprel'], htid)) 
-                elif row['deprel'] == 'nsubj':
-                    w_storyID = w + '_' + str(story_ID)
-                    htid = row['headTokenId'] 
-                    # first column needs to be pronoun or named entity
-                    if w in gendered_pronouns or tid in tokenID2ne: 
-                        ret.append((w, tid, pos, row['deprel'], htid))
+                tokens2words[tid] = (w, pos, story_idx) 
+
+                if row['normalizedWord'] == '@':
+                    dot_count += 1
+                else: 
+                    dot_count = 0
+                    if row['deprel'] == 'amod' or row['deprel'] == 'nsubj':
+                        htid = row['headTokenId'] 
+                        ret.append((w, tid, pos, row['deprel'], htid, story_idx)) 
+                if dot_count == 20: 
+                    story_idx += 1
+                    dot_count = 0
         with open(outpath + f.replace('.tokens', ''), 'w') as outfile: 
             for tup in ret: 
-                # TODO: last column should be inferred gender 
-                w, tid, pos, deprel, htid = tup
-                hw = tokens2words[htid][0]
-                hpos = tokens2words[htid][1]
+                w, tid, pos, deprel, htid, story_idx = tup
+                hw, hpos, hstory_idx = tokens2words[htid]
+                # dep parse shouldn't cross stories 
+                if story_idx != hstory_idx: continue
+                gender = None
                 if deprel == 'nsubj': 
                     # the head needs to be an adj or verb
                     if hpos != 'JJ' and not hpos.startswith('VB'): continue
+                    # the word needs to be a pronoun or named entity
+                    if w.lower() == 'he':
+                       gender = 'masc'
+                    if w.lower() == 'she': 
+                       gender = 'fem'
+                    if int(tid) in ne_tokens: 
+                       gender = name2gender[ne_tokens[int(tid)] + '_' + str(story_idx)]
                 if deprel == 'amod': 
                     # the head must be a named entity
-                    if htid not in tokenID2ne:
-                        continue  
-                outfile.write(w + '\t' + tid + '\t' + pos + '\t' + deprel + '\t' + htid + '\t' + \
-                    hw + '\t' + hpos + '\n')
+                    if int(htid) in ne_tokens:
+                       gender = name2gender[ne_tokens[int(htid)] + '_' + str(story_idx)]
+                if gender == 'masc' or gender == 'fem': 
+                    outfile.write(w + '\t' + tid + '\t' + pos + '\t' + deprel + '\t' + htid + '\t' + \
+                        hw + '\t' + hpos + '\t' + str(story_idx) + '\t' + gender + '\n')
 
+def update_gen_word(gen_word, line): 
+    contents = line.strip().split('\t')
+    w = contents[0]
+    deprel = contents[3]
+    hw = contents[5]
+    gender = contents[7]
+    if deprel == 'amod': 
+        gen_word[gender].append(w)
+    elif deprel == 'nsubj': 
+        gen_word[gender].append(hw)
+    return gen_word
+
+def get_lexicon_coverage(): 
+    '''
+    How many words are in each lexicon? 
+    '''
+    # get generated words
+    genpath = LOGS + 'generated_adj_noun/'
+    gen_word = {'fem':[], 'masc':[]}
+    for f in os.listdir(genpath):
+        with open(genpath + f, 'r') as infile: 
+            for line in infile: 
+                gen_word = update_gen_word(gen_word, line)
+    # get excerpt words
+    book_word = {'fem':[], 'masc':[]}
+    origpath = LOGS + 'orig_adj_noun/'
+    for f in os.listdir(origpath):  
+        with open(origpath + f, 'r') as infile: 
+            for line in infile: 
+                gen_word = update_gen_word(gen_word, line)
+    # get lexicons
+    men_d, women_d = read_stereotypes()
+    lexicon_words = men_d['strong'] | men_d['intellectual'] | women_d['weak'] | women_d['physical']
+    # calculate overlap
+    all_words = set()
+    all_words.update(gen_word['fem'])
+    all_words.update(book_word['fem'])
+    all_words.update(gen_word['masc'])
+    all_words.update(book_word['masc'])
+    overlap = lexicon_words & all_words
+    print("All words in dataset:", len(all_words))
+    print("Size of overlap with lexicon:", len(overlap))
 
 def main(): 
     #preprocess_text()
     #train_embeddings()
     #play_with_lexicon_words()
     #evaluate_lexicon_induction()
-    get_nouns_and_adj(LOGS + 'plaintext_stories_0.9_tokens/', LOGS + 'generated_adj_noun/')
+    generated = True
+    if generated: 
+        ents_path = LOGS + 'generated_0.9_ents/'
+        tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
+        gender_path = LOGS + 'char_gender_0.9/'
+        outpath = LOGS + 'generated_adj_noun/'
+    else: 
+        ents_path = LOGS + 'book_excerpts_ents/' 
+        tokens_path = LOGS + 'book_excerpts_tokens/'
+        gender_path = LOGS + 'orig_char_gender/'
+        outpath = LOGS + 'orig_adj_noun/' 
+    get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
+    #count_lexicon_words()
 
 if __name__ == "__main__":
     main()

@@ -120,6 +120,7 @@ def get_coref_label_dict(ents_path, title, entities, idx2story):
     and group number is from the coref results. 
     '''
     coref_label = {} # { (start, end, entity name) : coref_group_id } 
+    max_group = 0
     with open(ents_path + title + '/' + title + '.predicted.conll.ents', 'r') as infile: 
         for line in infile: 
             contents = line.strip().split('\t')
@@ -128,8 +129,18 @@ def get_coref_label_dict(ents_path, title, entities, idx2story):
             start = int(contents[2])
             end = int(contents[3]) 
             chain_id = group + '_' + str(idx2story[start])
+            max_group = max(max_group, int(group))
             if (start, end) in entities: 
                 coref_label[(start, end, entities[start, end])] = chain_id
+    # some entities don't have coref chains
+    max_group += 1
+    for tup in entities: 
+        start = tup[0]
+        end = tup[1]
+        if (start, end, entities[tup]) not in coref_label: 
+           chain_id = str(max_group) + '_' + str(idx2story[start])
+           coref_label[(start, end, entities[start, end])] = chain_id
+           max_group += 1
     return coref_label
 
 def get_coref_chain_dict(ents_path, title, pronouns, coref_label, idx2story): 
@@ -197,14 +208,14 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         entities = get_entities_dict(ents_path, title, main_characters) # (start, end) : entity name
         coref_label = get_coref_label_dict(ents_path, title, entities, idx2story) # entities to coref group
         coref_chain = get_coref_chain_dict(ents_path, title, pronouns, coref_label, idx2story) # coref group to pronouns
-
+        
         char_pronouns = defaultdict(Counter) # {character name : [pronouns in all coref chains]}
         # This is a list because one name, e.g. Michelle, might have multiple coref chains to create a cluster
         char_group_ids = defaultdict(list)
         for ent in entities:
             char = entities[ent]
             story_idx = idx2story[ent[0]]
-            if (ent[0], ent[1], char) in coref_label: 
+            if (ent[0], ent[1], char) in coref_label:
                 char_group_ids[char + '_' + str(story_idx)].append(coref_label[(ent[0], ent[1], char)])
         # if "Michelle" and "Michelle Obama" are in the same coref chain together, we group their clusters together
         # We can have one name be the "base char" that other renamings of that character are then grouped with
@@ -260,10 +271,6 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         with open(char_nb_path + title + '.json', 'w') as outfile: 
             json.dump(char_neighbors, outfile)
 
-        
-
-
-
 def calculate_recurrence(tokens_path, char_idx_path):
     num_times = [] # number of times main character occurs in story
     ranges = [] # range of tokens the main character spans
@@ -315,7 +322,6 @@ def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
         
         with open(gender_path + title + '.json', 'r') as infile: 
             gender_dict = json.load(infile)
-        if len(gender_dict) == 0: continue # TODO remove this in the future
 
         for i, char in enumerate(char_order): 
             story_title_id = title + str(i+1)
@@ -326,7 +332,6 @@ def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
             neighbors = gender_dict[char]
             gender = None
             for neighbor in neighbors: 
-                # the story idx in char_neighbors are not necessarily the same as i 
                 if neighbor['character_name'] == char + '_' + str(i): 
                     gender = neighbor['gender_label']
             if gender is None:
@@ -364,7 +369,7 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
-    generated = True
+    generated = False
     if generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
@@ -384,10 +389,10 @@ def main():
         gender_path = LOGS + 'orig_char_gender/'
         num_gens = 1
     prompts_path = LOGS + 'original_prompts/' 
-    #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
-    #get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
+    get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
+    get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
     #calculate_recurrence(tokens_path, char_idx_path)
-    get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated)
+    #get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated)
 
 if __name__ == '__main__': 
     main()

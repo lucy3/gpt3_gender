@@ -21,15 +21,15 @@ def get_name_gender(neighbor, name_ratios):
     # honorifics 
     for al in neighbor['aliases']: 
         if al.split()[0] in honorifics_fem: 
-            if gender == 'masc' or gender == 'other': 
+            if gender == 'masc' or gender == 'other (name)': 
                 # already assigned a different gender
-                gender = 'other'
+                gender = 'other (name)'
             else: 
                 gender = 'fem'
         elif al.split()[0] in honorifics_masc: 
-            if gender == 'fem' or gender == 'other': 
+            if gender == 'fem' or gender == 'other (name)': 
                 # already assigned a different gender
-                gender = 'other'
+                gender = 'other (name)'
             else: 
                 gender = 'masc'
     if gender is not None: 
@@ -39,15 +39,15 @@ def get_name_gender(neighbor, name_ratios):
         fn = al.split()[0] # get first token
         if fn not in name_ratios: continue
         if name_ratios[fn] > 0.90: 
-            if gender == 'masc' or gender == 'other': 
+            if gender == 'masc' or gender == 'other (name)': 
                 # already assigned a different gender
-                gender = 'other'
+                gender = 'other (name)'
             else: 
                 gender = 'fem'
         elif name_ratios[fn] < 0.10: 
-            if gender == 'fem' or gender == 'other': 
+            if gender == 'fem' or gender == 'other (name)': 
                 # already assigned a different gender
-                gender = 'other'
+                gender = 'other (name)'
             else: 
                 gender = 'masc'
     return gender
@@ -81,8 +81,8 @@ def infer_gender(char_neighbor_path, outpath):
     name_ratios = get_baby_name_ratios()
     other_gender = 0 # number of characters w/ multiple gender pronouns
     no_pronouns = 0 # number of characters w/ no pronouns
-    unknown_count = 0 # number of characters w/ no pronouns and name isn't very gendered
     total_char = 0
+    mixed_pronouns_count = 0
     for title in os.listdir(char_neighbor_path):
         with open(char_neighbor_path + title, 'r') as infile: 
             char_neighbors = json.load(infile)
@@ -103,22 +103,22 @@ def infer_gender(char_neighbor_path, outpath):
                 elif pns['fem'] > 0.75*total: 
                     gender = 'fem'
                 elif total > 0: 
-                    gender = 'other'
+                    mixed_pronouns_count += 1
+                    gender = 'mixed pronouns'
                 if gender is None: 
                     no_pronouns += 1
                     gender = get_name_gender(neighbor, name_ratios)
                 if gender is None: 
-                    unknown_count += 1
-                    gender = 'other'
-                if gender == 'other':
+                    gender = 'other (name)'
+                if gender == 'other (name)':
                     other_gender += 1
                 neighbor['gender_label'] = gender
         with open(outpath + title, 'w') as outfile: 
-            json.dump(char_neighbors, outfile)
+            json.dump(char_neighbors, outfile) 
     print("Total characters:", total_char)
+    print("Mixed pronouns:", mixed_pronouns_count)
     print("No pronouns:", no_pronouns) 
-    print("Other gender:", other_gender)
-    print("Unknown name, no pronouns:", unknown_count)
+    print("Other/unknown gender based on name:", other_gender)
     
 def multi_gender_chars(): 
     '''
@@ -149,7 +149,7 @@ def multi_gender_chars():
                 print(char, title, genders)
     
 def main():
-    generated = True
+    generated = False
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
         char_neighbor_path = LOGS + 'char_neighbors_0.9/'
