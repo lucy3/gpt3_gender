@@ -259,9 +259,7 @@ def evaluate_lexicon_induction():
         chunks = [l[x:x+chunk_size] for x in range(0, len(l), chunk_size)]
         lexicon_shuffled[k] = chunks
     tl_fa = []
-    tl_fb = []
     sa_fa = [] 
-    sa_fb = []
     for i in range(num_splits): 
         train = defaultdict(set)
         test = defaultdict(set) 
@@ -272,14 +270,10 @@ def evaluate_lexicon_induction():
             test[k].update(lexicon_shuffled[k][i])
         # turney & littman
         tl_fa.append(turney_littman(train, test, 'strong', 'weak', model))
-        tl_fb.append(turney_littman(train, test, 'intellectual', 'physical', model))
         # semaxis
         sa_fa.append(semaxis(train, test, 'strong', 'weak', model))
-        sa_fb.append(semaxis(train, test, 'intellectual', 'physical', model))
     print(tl_fa, np.mean(tl_fa))
-    print(tl_fb, np.mean(tl_fb))
     print(sa_fa, np.mean(sa_fa))
-    print(sa_fb, np.mean(sa_fb))
 
 def get_nouns_and_adj(inpath, outpath, ents_path, gender_path): 
     '''
@@ -353,15 +347,15 @@ def get_nouns_and_adj(inpath, outpath, ents_path, gender_path):
                     if hpos != 'JJ' and not hpos.startswith('VB'): continue
                     # the word needs to be a pronoun or named entity
                     if w.lower() == 'he':
-                       gender = 'masc'
+                        gender = 'masc'
                     if w.lower() == 'she': 
-                       gender = 'fem'
+                        gender = 'fem'
                     if int(tid) in ne_tokens: 
-                       gender = name2gender[ne_tokens[int(tid)] + '_' + str(story_idx)]
+                        gender = name2gender[ne_tokens[int(tid)] + '_' + str(story_idx)]
                 if deprel == 'amod': 
                     # the head must be a named entity
                     if int(htid) in ne_tokens:
-                       gender = name2gender[ne_tokens[int(htid)] + '_' + str(story_idx)]
+                        gender = name2gender[ne_tokens[int(htid)] + '_' + str(story_idx)]
                 if gender == 'masc' or gender == 'fem': 
                     outfile.write(w + '\t' + tid + '\t' + pos + '\t' + deprel + '\t' + htid + '\t' + \
                         hw + '\t' + hpos + '\t' + str(story_idx) + '\t' + gender + '\n')
@@ -371,12 +365,21 @@ def update_gen_word(gen_word, line):
     w = contents[0]
     deprel = contents[3]
     hw = contents[5]
-    gender = contents[7]
+    gender = contents[8]
     if deprel == 'amod': 
         gen_word[gender].append(w)
     elif deprel == 'nsubj': 
         gen_word[gender].append(hw)
     return gen_word
+
+def get_sim_score(lexicon, all_words_m, model): 
+    m = []
+    for lw in lexicon: 
+        if lw in model.wv.vocab: 
+            m.append(model.wv[lw])
+    m = np.array(m)
+    sims = cosine_similarity(all_words_m, m)
+    return np.mean(sims, axis=1)
 
 def get_lexicon_coverage(): 
     '''
@@ -397,8 +400,8 @@ def get_lexicon_coverage():
             for line in infile: 
                 gen_word = update_gen_word(gen_word, line)
     # get lexicons
-    men_d, women_d = read_stereotypes()
-    lexicon_words = men_d['strong'] | men_d['intellectual'] | women_d['weak'] | women_d['physical']
+    lexicons = get_axes()
+    lexicon_words = lexicons['strong'] | lexicons['intellectual'] | lexicons['weak'] | lexicons['physical']
     # calculate overlap
     all_words = set()
     all_words.update(gen_word['fem'])
@@ -408,6 +411,31 @@ def get_lexicon_coverage():
     overlap = lexicon_words & all_words
     print("All words in dataset:", len(all_words))
     print("Size of overlap with lexicon:", len(overlap))
+    
+    # calculate average of cosine similarities of a word to all words in lexicon
+    model = Word2Vec.load(LOGS + 'fiction_word2vec_model')
+    intellect_scores = {}
+    physical_scores = {}
+    all_words_m = []
+    sorted_words = []
+    for w in all_words: 
+        w = w.lower()
+        if w in model.wv.vocab: 
+            all_words_m.append(model.wv[w])
+            sorted_words.append(w)
+    all_words_m = np.array(all_words_m)
+    # these are in the order of sorted(all_words)
+    s = get_sim_score(lexicons['intellectual'], all_words_m, model)
+    assert s.shape[0] == len(sorted_words)
+    for i, w in enumerate(sorted_words): 
+        intellect_scores[w] = float(s[i])
+    s = get_sim_score(lexicons['physical'], all_words_m, model)
+    for i, w in enumerate(sorted_words): 
+        physical_scores[w] = float(s[i])
+    with open(LOGS + 'intellect_scores.json', 'w') as outfile: 
+        json.dump(intellect_scores, outfile)
+    with open(LOGS + 'physical_scores.json', 'w') as outfile: 
+        json.dump(physical_scores, outfile)
 
 def main(): 
     #preprocess_text()
@@ -425,8 +453,8 @@ def main():
         tokens_path = LOGS + 'book_excerpts_tokens/'
         gender_path = LOGS + 'orig_char_gender/'
         outpath = LOGS + 'orig_adj_noun/' 
-    get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
-    #count_lexicon_words()
+    #get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
+    get_lexicon_coverage()
 
 if __name__ == "__main__":
     main()
