@@ -158,6 +158,7 @@ def play_with_lexicon_words():
     for cat in axes_A2: 
         b |= lexicons[cat]
     print(a & b)
+    print("Similarity between words weak and strong:", model.similarity('weak', 'strong'))
     axes_B1 = ['beautiful', 'sexual']
     axes_B2 = ['intellectual']
     print((lexicons['beautiful'] | lexicons['sexual']) & lexicons['intellectual'])
@@ -381,7 +382,22 @@ def get_sim_score(lexicon, all_words_m, model):
     sims = cosine_similarity(all_words_m, m)
     return np.mean(sims, axis=1)
 
-def get_lexicon_coverage(): 
+def get_semaxis_score(pole1, pole2, all_words_m, model):
+    pole_A = []
+    pole_B = []
+    for lw in pole1: 
+        if lw in model.wv.vocab: 
+            pole_A.append(model.wv[lw])
+    for lw in pole2: 
+        if lw in model.wv.vocab: 
+            pole_B.append(model.wv[lw])
+    pole_A = np.array(pole_A)
+    pole_B = np.array(pole_B)
+    v = np.mean(pole_A, axis=0) - np.mean(pole_B, axis=0).reshape(1, -1)
+    score = cosine_similarity(all_words_m, v)
+    return score
+
+def get_lexicon_scores(): 
     '''
     How many words are in each lexicon? 
     '''
@@ -414,8 +430,6 @@ def get_lexicon_coverage():
     
     # calculate average of cosine similarities of a word to all words in lexicon
     model = Word2Vec.load(LOGS + 'fiction_word2vec_model')
-    intellect_scores = {}
-    physical_scores = {}
     all_words_m = []
     sorted_words = []
     for w in all_words: 
@@ -427,20 +441,30 @@ def get_lexicon_coverage():
     # these are in the order of sorted(all_words)
     s = get_sim_score(lexicons['intellectual'], all_words_m, model)
     assert s.shape[0] == len(sorted_words)
+    
+    intellect_scores = {}
+    physical_scores = {}
+    strength_scores = {}
     for i, w in enumerate(sorted_words): 
         intellect_scores[w] = float(s[i])
     s = get_sim_score(lexicons['physical'], all_words_m, model)
     for i, w in enumerate(sorted_words): 
         physical_scores[w] = float(s[i])
+    s = get_semaxis_score(lexicons['strong'], lexicons['weak'], all_words_m, model)
+    for i, w in enumerate(sorted_words): 
+        strength_scores[w] = float(s[i])
+        
     with open(LOGS + 'intellect_scores.json', 'w') as outfile: 
         json.dump(intellect_scores, outfile)
     with open(LOGS + 'physical_scores.json', 'w') as outfile: 
         json.dump(physical_scores, outfile)
+    with open(LOGS + 'strength_scores.json', 'w') as outfile: 
+        json.dump(strength_scores, outfile)
 
 def main(): 
     #preprocess_text()
     #train_embeddings()
-    #play_with_lexicon_words()
+    play_with_lexicon_words()
     #evaluate_lexicon_induction()
     generated = True
     if generated: 
@@ -454,7 +478,7 @@ def main():
         gender_path = LOGS + 'orig_char_gender/'
         outpath = LOGS + 'orig_adj_noun/' 
     #get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
-    get_lexicon_coverage()
+    #get_lexicon_scores()
 
 if __name__ == "__main__":
     main()
