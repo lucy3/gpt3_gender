@@ -138,9 +138,9 @@ def get_coref_label_dict(ents_path, title, entities, idx2story):
         start = tup[0]
         end = tup[1]
         if (start, end, entities[tup]) not in coref_label: 
-           chain_id = str(max_group) + '_' + str(idx2story[start])
-           coref_label[(start, end, entities[start, end])] = chain_id
-           max_group += 1
+            chain_id = str(max_group) + '_' + str(idx2story[start])
+            coref_label[(start, end, entities[start, end])] = chain_id
+            max_group += 1
     return coref_label
 
 def get_coref_chain_dict(ents_path, title, pronouns, coref_label, idx2story): 

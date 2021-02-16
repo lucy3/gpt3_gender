@@ -6,6 +6,7 @@ gender of pronouns associated with that character
 import os
 from collections import Counter, defaultdict
 import json
+import random
 
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
 NAMES = '/mnt/data0/lucy/gpt3_bias/data/names/'
@@ -148,7 +149,34 @@ def multi_gender_chars():
             if 'masc' in genders and 'fem' in genders: 
                 print(char, title, genders)
     
+def get_gender_neutral_names(): 
+    random.seed(0)
+    name_f = Counter()
+    name_m = Counter()
+    for i in range(1900, 2020): 
+        with open(NAMES + 'yob' + str(i) + '.txt', 'r') as infile: 
+            for line in infile: 
+                contents = line.strip().split(',')
+                if contents[1] == 'F': 
+                    name_f[contents[0]] += int(contents[2])
+                elif contents[1] == 'M': 
+                    name_m[contents[0]] += int(contents[2])
+                else: 
+                    print(contents[1]) # prints nothing
+    name_ratios = {}
+    all_names = set(name_f.keys()) | set(name_m.keys())
+    g_names = []
+    for name in all_names: 
+        if name_f[name] + name_m[name] < 10000: continue
+        ratio = name_f[name] / float(name_m[name] + name_f[name])
+        if ratio < 0.55 and ratio > 0.45: 
+            if name != 'Unknown': 
+                g_names.append(name)
+    random.shuffle(g_names)
+    print(g_names[:10])
+    
 def main():
+    '''
     generated = False
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
@@ -157,7 +185,8 @@ def main():
         outpath = LOGS + 'orig_char_gender/'
         char_neighbor_path = LOGS + 'orig_char_neighbors/'
     infer_gender(char_neighbor_path, outpath)
-    
+    '''
+    get_gender_neutral_names()
 
 if __name__ == "__main__":
     main()
