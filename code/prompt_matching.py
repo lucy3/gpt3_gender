@@ -96,7 +96,7 @@ def get_paired_prompts(replaced_names):
         reader = csv.reader(infile, delimiter='\t')
         for row in reader: 
             masc_prompts.append(row)
-    avg_sims = np.zeros((4748, 8044))
+    avg_sims = np.zeros((4748, 8048))
     for r_name in replaced_names: 
         sims = np.load(inpath + r_name + '_prompt_sim.npy')
         avg_sims += sims
@@ -147,10 +147,11 @@ def get_similarities(replaced_names):
             title, story_idx, char, prompt = tup
             prompt = prompt.replace(char, name)
             new_m_prompts.append(prompt)
+        print(len(new_f_prompts), len(new_m_prompts))
         get_embed_sim(new_f_prompts, new_m_prompts, name)
 
 def main(): 
-    replaced_names = ['Quinn', 'Riley', 'Kris', 'Lennon', 'Robbie']
+    replaced_names = ['Mary', 'Elizabeth', 'Patricia', 'James', 'John', 'Robert']
     #get_similarities(replaced_names)
     get_paired_prompts(replaced_names)
 

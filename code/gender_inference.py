@@ -85,6 +85,7 @@ def infer_gender(char_neighbor_path, outpath):
     total_char = 0
     mixed_pronouns_count = 0
     for title in os.listdir(char_neighbor_path):
+        if not title.startswith('xiaolong_when_red_is_black'): continue
         with open(char_neighbor_path + title, 'r') as infile: 
             char_neighbors = json.load(infile)
         for char in char_neighbors: 
@@ -175,9 +176,25 @@ def get_gender_neutral_names():
     random.shuffle(g_names)
     print(g_names[:10])
     
+def get_popular_names(): 
+    name_f = Counter()
+    name_m = Counter()
+    for i in range(1900, 2020): 
+        with open(NAMES + 'yob' + str(i) + '.txt', 'r') as infile: 
+            for line in infile: 
+                contents = line.strip().split(',')
+                if contents[1] == 'F': 
+                    name_f[contents[0]] += int(contents[2])
+                elif contents[1] == 'M': 
+                    name_m[contents[0]] += int(contents[2])
+                else: 
+                    print(contents[1]) # prints nothing
+    print(name_f.most_common(3))
+    print(name_m.most_common(3))
+    
 def main():
     '''
-    generated = False
+    generated = True
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
         char_neighbor_path = LOGS + 'char_neighbors_0.9/'
@@ -186,7 +203,7 @@ def main():
         char_neighbor_path = LOGS + 'orig_char_neighbors/'
     infer_gender(char_neighbor_path, outpath)
     '''
-    get_gender_neutral_names()
+    get_popular_names()
 
 if __name__ == "__main__":
     main()

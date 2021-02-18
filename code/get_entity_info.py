@@ -192,6 +192,7 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
               'them' : 'neut', 'theirs' : 'neut', 'theirself' : 'neut'}
     for title in os.listdir(ents_path): 
         print(title)
+        if title != 'xiaolong_when_red_is_black': continue
         # now, get characters associated with a character 
         if not os.path.exists(char_idx_path + title + '.json'): continue
         with open(char_idx_path + title + '.json', 'r') as infile: 
@@ -369,7 +370,7 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
-    generated = False
+    generated = True
     if generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
@@ -389,7 +390,7 @@ def main():
         gender_path = LOGS + 'orig_char_gender/'
         num_gens = 1
     prompts_path = LOGS + 'original_prompts/' 
-    get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
+    #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
     get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
     #calculate_recurrence(tokens_path, char_idx_path)
     #get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated)
