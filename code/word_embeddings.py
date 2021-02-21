@@ -464,7 +464,7 @@ def get_lexicon_scores():
 def main(): 
     #preprocess_text()
     #train_embeddings()
-    play_with_lexicon_words()
+    #play_with_lexicon_words()
     #evaluate_lexicon_induction()
     generated = True
     if generated: 

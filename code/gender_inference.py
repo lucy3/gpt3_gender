@@ -72,6 +72,16 @@ def get_baby_name_ratios():
         name_ratios[name] = name_f[name] / float(name_m[name] + name_f[name])
     return name_ratios
 
+def infer_gender_books(char_neighbor_path, outpath): 
+    '''
+    Group character gender together on book excerpts 
+    - add all pronouns
+    - then honorifics
+    - then baby name list 
+    Output is same format as infer_gender() 
+    '''
+    pass
+
 def infer_gender(char_neighbor_path, outpath): 
     '''
     Ways to infer GPT-3's perception of a character's gender
@@ -198,10 +208,11 @@ def main():
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
         char_neighbor_path = LOGS + 'char_neighbors_0.9/'
+        infer_gender(char_neighbor_path, outpath)
     else: 
         outpath = LOGS + 'orig_char_gender/'
         char_neighbor_path = LOGS + 'orig_char_neighbors/'
-    infer_gender(char_neighbor_path, outpath)
+        infer_gender_books(char_neighbor_path, outpath)
     '''
     get_popular_names()
 

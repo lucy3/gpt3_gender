@@ -308,7 +308,11 @@ def calculate_recurrence(tokens_path, char_idx_path):
     print(np.mean(num_times), np.mean(ranges))
     
 def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
-                       gender_path, generated, story_topics, num_gens=5):
+                       gender_path, generated, story_topics, matched=False, num_gens=5):
+    if matched: 
+        print("doing this for matched prompts")
+        with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'r') as infile: 
+            matched_pairs = json.load(infile)
     gender_topics = {'gender':[], 'topic':[], 'value':[]}
     for title in sorted(os.listdir(txt_path)):
         char_order = [] # character, where index is generated story index
@@ -325,6 +329,10 @@ def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
             gender_dict = json.load(infile)
 
         for i, char in enumerate(char_order): 
+            if matched: 
+                # only select matched pairs 
+                if char + '_' + str(i) not in matched_pairs[title]: 
+                    continue
             story_title_id = title + str(i+1)
             if not generated: 
                 story_title_id = 'ORIG_' + story_title_id
@@ -347,7 +355,7 @@ def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
         json.dump(gender_topics, outfile)
 
 def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
-                        gender_path, generated): 
+                        gender_path, generated, matched=False): 
     topic_dir = LOGS + 'topics_0.9' 
     doc_topic_file = '%s/doc-topics.gz' % topic_dir
     doc_topics = open(doc_topic_file).read().splitlines() # list of topics
@@ -364,14 +372,24 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                 story_topics[story_title_id][topic_id] = value
     if generated: 
         get_topics_for_txt(txt_path, prompts_path, \
-                           topic_out_path, gender_path, generated, story_topics)
+                           topic_out_path, gender_path, generated, story_topics, matched=matched)
     else: 
         get_topics_for_txt(txt_path, prompts_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
     generated = True
-    if generated: 
+    matched = True
+    if matched: 
+        ents_path = LOGS + 'generated_0.9_ents/'
+        tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
+        txt_path = LOGS + 'plaintext_stories_0.9/'
+        char_idx_path = LOGS + 'char_indices_0.9/'
+        char_nb_path = LOGS + 'char_neighbors_0.9/'
+        topic_out_path = LOGS + 'gender_topics_0.9_matched.json'
+        gender_path = LOGS + 'char_gender_0.9/'
+        num_gens = 5
+    elif generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
         txt_path = LOGS + 'plaintext_stories_0.9/'
@@ -391,9 +409,9 @@ def main():
         num_gens = 1
     prompts_path = LOGS + 'original_prompts/' 
     #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
-    get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
+    #get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
     #calculate_recurrence(tokens_path, char_idx_path)
-    #get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated)
+    get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated, matched=matched)
 
 if __name__ == '__main__': 
     main()

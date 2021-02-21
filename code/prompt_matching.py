@@ -5,6 +5,8 @@ import time
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import csv 
+from collections import defaultdict
+import random
 
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
 
@@ -22,7 +24,6 @@ def get_gendered_prompts():
         char_set = {} # main character name _ story ID : gender
         for char in gender_dict: 
             neighbor_dict = gender_dict[char]
-            genders = set()
             for neighbor in neighbor_dict: 
                 is_main = False
                 gender = neighbor['gender_label']
@@ -49,15 +50,12 @@ def get_gendered_prompts():
                     char_ID = char + '_' + str(idx)
                     genders.add(char_set[char_ID])
                 if len(genders) == 1: 
+                    if '-RRB-' in prompt or '-LRB-' in prompt: 
+                        prompt = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
+                        prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
                     if 'masc' in genders: 
-                        if '-RRB-' in prompt or '-LRB-' in prompt: 
-                            s = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
-                            s = s.replace('-RRB-', ')').replace('-LRB-', '(')
                         masc_prompts.add((f, story_idx, char, prompt))
                     elif 'fem' in genders: 
-                        if '-RRB-' in prompt or '-LRB-' in prompt: 
-                            s = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
-                            s = s.replace('-RRB-', ')').replace('-LRB-', '(')
                         fem_prompts.add((f, story_idx, char, prompt))
                 story_idx += num_gens
     return fem_prompts, masc_prompts
@@ -77,7 +75,7 @@ def get_embed_sim(fem_prompts, masc_prompts, replaced_name):
     outpath = LOGS + 'prompt_matching/'
     np.save(outpath + replaced_name + '_prompt_sim.npy', sims)
     
-def get_paired_prompts(replaced_names): 
+def get_paired_prompts(): 
     '''
     Input: list of runs with different gender neutral names
     
@@ -96,13 +94,9 @@ def get_paired_prompts(replaced_names):
         reader = csv.reader(infile, delimiter='\t')
         for row in reader: 
             masc_prompts.append(row)
-    avg_sims = np.zeros((4748, 8048))
-    for r_name in replaced_names: 
-        sims = np.load(inpath + r_name + '_prompt_sim.npy')
-        avg_sims += sims
-    avg_sims = avg_sims / len(replaced_names)
+    sims = np.load(inpath + 'the_person_prompt_sim.npy')
         
-    rank = np.argsort(avg_sims, axis=1)
+    rank = np.argsort(sims, axis=1)
     count = 0
     already_seen = set() # masc prompt idx that have already been written
     with open(inpath + 'prompt_pairs.txt', 'w') as outfile: 
@@ -110,16 +104,16 @@ def get_paired_prompts(replaced_names):
         for i in range(len(fem_prompts)): 
             # find closest neighbor that isn't already found
             start = -1
-            while avg_sims[i][rank[i][start]] >= 0.85: 
+            while sims[i][rank[i][start]] >= 0.85: 
                 if rank[i][start] not in already_seen: 
-                    writer.writerow([avg_sims[i][rank[i][-1]]] + fem_prompts[i] + masc_prompts[rank[i][start]])
+                    writer.writerow([sims[i][rank[i][-1]]] + fem_prompts[i] + masc_prompts[rank[i][start]])
                     already_seen.add(rank[i][start])
                     count += 1
                     break
                 start -= 1
     print("Total pairs:", count)
     
-def get_similarities(replaced_names): 
+def get_similarities(): 
     fem_prompts, masc_prompts = get_gendered_prompts()
     fem_prompts = sorted(fem_prompts)
     masc_prompts = sorted(masc_prompts)
@@ -134,26 +128,83 @@ def get_similarities(replaced_names):
         for tup in masc_prompts:
             title, story_idx, char, prompt = tup
             writer.writerow([title, story_idx, char, prompt])
-    for name in replaced_names: 
-        print(name)
-        new_f_prompts = []
-        for tup in fem_prompts: 
-            title, story_idx, char, prompt = tup
-            prompt = prompt.replace(char, name)
-            new_f_prompts.append(prompt)
+            
+    new_f_prompts = []
+    for tup in fem_prompts: 
+        title, story_idx, char, prompt = tup
+        prompt = prompt.replace(char, 'the person')
+        if prompt.startswith('the person'): 
+            prompt = 'T' + prompt[1:]
+        new_f_prompts.append(prompt)
+
+    new_m_prompts = []
+    for tup in masc_prompts: 
+        title, story_idx, char, prompt = tup
+        prompt = prompt.replace(char, 'the person')
+        if prompt.startswith('the person'): 
+            prompt = 'T' + prompt[1:]
+        new_m_prompts.append(prompt)
+    print(len(new_f_prompts), len(new_m_prompts))
+    get_embed_sim(new_f_prompts, new_m_prompts, 'the_person')
+
+def get_same_prompt_diff_gender(): 
+    num_gens = 5
+    num_pairs = 0
+    matched_pairs = {}
+    for f in os.listdir(LOGS + 'original_prompts/'):
+        if not os.path.exists(LOGS + 'char_gender_0.9/' + f + '.json'): continue
+        with open(LOGS + 'char_gender_0.9/' + f + '.json', 'r') as infile: 
+            gender_dict = json.load(infile)
+        char_set = {} # main character name _ story ID : gender
+        for char in gender_dict: 
+            neighbor_dict = gender_dict[char]
+            for neighbor in neighbor_dict: 
+                is_main = False
+                gender = neighbor['gender_label']
+                neighbor_n = neighbor['character_name']
+                if neighbor_n.startswith(char + '_'): 
+                    # main character
+                    is_main = True
+                else: 
+                    for al in neighbor['aliases']: 
+                        if al == char: 
+                            is_main = True
+                if is_main: 
+                    if len(neighbor['gender']) == 0: 
+                        gender += ' (name)'
+                    char_set[neighbor_n] = gender 
+           
+        story_idx = 0 
         
-        new_m_prompts = []
-        for tup in masc_prompts: 
-            title, story_idx, char, prompt = tup
-            prompt = prompt.replace(char, name)
-            new_m_prompts.append(prompt)
-        print(len(new_f_prompts), len(new_m_prompts))
-        get_embed_sim(new_f_prompts, new_m_prompts, name)
+        with open(LOGS + 'original_prompts/' + f, 'r') as infile:
+            matched_pairs[f] = [] 
+            for line in infile: 
+                contents = line.strip().split('\t')
+                characterID = contents[0]
+                char = contents[1]
+                prompt = contents[2]
+                if '-RRB-' in prompt or '-LRB-' in prompt: 
+                    prompt = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
+                    prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
+                genders = defaultdict(list)
+                for idx in range(story_idx, story_idx + num_gens): 
+                    char_ID = char + '_' + str(idx)
+                    if char_set[char_ID] == 'masc' or char_set[char_ID] == 'fem': 
+                        genders[char_set[char_ID]].append(char_ID)
+                if len(genders) == 2: 
+                    n_pairs = min(len(genders['masc']), len(genders['fem']))
+                    matched_pairs[f].extend(random.sample(genders['masc'], n_pairs))
+                    matched_pairs[f].extend(random.sample(genders['fem'], n_pairs))
+                    num_pairs += n_pairs
+                story_idx += num_gens
+    with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'w') as outfile: 
+        json.dump(matched_pairs, outfile)
+    print(num_pairs)
 
 def main(): 
-    replaced_names = ['Mary', 'Elizabeth', 'Patricia', 'James', 'John', 'Robert']
-    #get_similarities(replaced_names)
-    get_paired_prompts(replaced_names)
+    #get_similarities()
+    #get_paired_prompts()
+    get_same_prompt_diff_gender()
 
 if __name__ == "__main__":
     main()
