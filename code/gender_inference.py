@@ -11,7 +11,7 @@ import random
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
 NAMES = '/mnt/data0/lucy/gpt3_bias/data/names/'
 
-def get_name_gender(neighbor, name_ratios):
+def get_name_gender(aliases_set, name_ratios):
     # http://self.gutenberg.org/articles/eng/english_honorifics
     gender = None
     honorifics_fem = ['Ms.', 'Mz.', 'Ms', 'Mz', 'Miss', 'Mrs', 'Mrs.', 'Madam', 
@@ -20,7 +20,7 @@ def get_name_gender(neighbor, name_ratios):
     honorifics_masc = ['Mr.', 'Mister', 'Mr', 'Master', 'Sir', 'Lord', 'Esq', 'Esq.', 'Br.', 'Br', 'Brother',
                 'Fr', 'Fr.', 'Father', 'Uncle', 'Grandpa', 'Grandfather', 'King', 'Emperor', 'Prince']
     # honorifics 
-    for al in neighbor['aliases']: 
+    for al in aliases_set: 
         if al.split()[0] in honorifics_fem: 
             if gender == 'masc' or gender == 'other (name)': 
                 # already assigned a different gender
@@ -36,7 +36,7 @@ def get_name_gender(neighbor, name_ratios):
     if gender is not None: 
         return gender
     # baby names
-    for al in neighbor['aliases']:
+    for al in aliases_set:
         fn = al.split()[0] # get first token
         if fn not in name_ratios: continue
         if name_ratios[fn] > 0.90: 
@@ -75,12 +75,87 @@ def get_baby_name_ratios():
 def infer_gender_books(char_neighbor_path, outpath): 
     '''
     Group character gender together on book excerpts 
-    - add all pronouns
-    - then honorifics
+    - collect all pronouns
+    - for names without pronouns, collect all honorifics 
     - then baby name list 
     Output is same format as infer_gender() 
     '''
-    pass
+    name_ratios = get_baby_name_ratios()
+    other_gender = 0 # number of characters w/ multiple gender pronouns
+    no_pronouns = 0 # number of characters w/ no pronouns
+    total_char = 0
+    mixed_pronouns_count = 0
+    for title in os.listdir(char_neighbor_path):
+        with open(char_neighbor_path + title, 'r') as infile: 
+            char_neighbors = json.load(infile)
+        char_aliases = defaultdict(set) # base char: [aliases]
+        alias2char = {} # alias to base char 
+        char_pronouns = defaultdict(Counter) # base char: {'fem': count, 'masc': count, 'neut': count}
+        all_chars = set() # set of character names
+        for char in char_neighbors: 
+            # for every main character
+            neighbor_dict = char_neighbors[char]
+            for neighbor in neighbor_dict: 
+                # for every character it co-occurs with 
+                neighbor_n = neighbor['character_name']
+                story_idx = neighbor_n.split('_')[-1]
+                name = '_'.join(neighbor_n.split('_')[:-1])
+                base_char = name
+                # main name is an alias of a character already seen
+                if name in alias2char: 
+                    base_char = alias2char[name]
+                # an alias is a base char already seen 
+                for al in neighbor['aliases']: 
+                    if al in all_chars: 
+                        base_char = al 
+                neighbor['aliases'].append(name)
+                # map all aliases to the base char 
+                for al in neighbor['aliases']: 
+                    alias2char[al] = base_char
+                pns = Counter(neighbor['gender'])
+                char_aliases[base_char].update(neighbor['aliases'])
+                char_pronouns[base_char].update(pns)
+                all_chars.add(base_char)
+        char_gender_label = defaultdict(str) # char name: gender label 
+        for base_char in all_chars: 
+            total_char += 1
+            pns = char_pronouns[base_char]
+            total = sum(list(pns.values()))
+            gender = None
+            if pns['masc'] > 0.75*total: 
+                gender = 'masc'
+            elif pns['fem'] > 0.75*total: 
+                gender = 'fem'
+            elif total > 0: 
+                mixed_pronouns_count += 1
+                gender = 'mixed pronouns'
+            if gender is None: 
+                no_pronouns += 1
+                gender = get_name_gender(char_aliases[base_char], name_ratios)
+            if gender is None: 
+                gender = 'other (name)'
+            if gender == 'other (name)':
+                other_gender += 1
+            char_gender_label[base_char] = gender
+        
+        for char in char_neighbors: 
+            # for every main character
+            neighbor_dict = char_neighbors[char]
+            for neighbor in neighbor_dict: 
+                neighbor_n = neighbor['character_name']
+                name = '_'.join(neighbor_n.split('_')[:-1])
+                if name in char_gender_label: 
+                    gender = char_gender_label[name]
+                else: 
+                    gender = char_gender_label[alias2char[name]] 
+                neighbor['gender_label'] = gender
+        
+        with open(outpath + title, 'w') as outfile: 
+            json.dump(char_neighbors, outfile) 
+    print("Total characters:", total_char)
+    print("Mixed pronouns:", mixed_pronouns_count)
+    print("No pronouns:", no_pronouns) 
+    print("Other/unknown gender based on name:", other_gender)
 
 def infer_gender(char_neighbor_path, outpath): 
     '''
@@ -95,7 +170,6 @@ def infer_gender(char_neighbor_path, outpath):
     total_char = 0
     mixed_pronouns_count = 0
     for title in os.listdir(char_neighbor_path):
-        if not title.startswith('xiaolong_when_red_is_black'): continue
         with open(char_neighbor_path + title, 'r') as infile: 
             char_neighbors = json.load(infile)
         for char in char_neighbors: 
@@ -119,7 +193,7 @@ def infer_gender(char_neighbor_path, outpath):
                     gender = 'mixed pronouns'
                 if gender is None: 
                     no_pronouns += 1
-                    gender = get_name_gender(neighbor, name_ratios)
+                    gender = get_name_gender(neighbor['aliases'], name_ratios)
                 if gender is None: 
                     gender = 'other (name)'
                 if gender == 'other (name)':
@@ -203,8 +277,7 @@ def get_popular_names():
     print(name_m.most_common(3))
     
 def main():
-    '''
-    generated = True
+    generated = False
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
         char_neighbor_path = LOGS + 'char_neighbors_0.9/'
@@ -213,8 +286,6 @@ def main():
         outpath = LOGS + 'orig_char_gender/'
         char_neighbor_path = LOGS + 'orig_char_neighbors/'
         infer_gender_books(char_neighbor_path, outpath)
-    '''
-    get_popular_names()
 
 if __name__ == "__main__":
     main()

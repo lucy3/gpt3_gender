@@ -228,7 +228,6 @@ def main():
     all_text = []
     num_words = []
     story_ids = []
-    # TODO: avoid including @ lines in story
     for title in sorted(os.listdir(input_dir)): 
         with open(input_dir + title, 'r') as infile: 
             story_idx = 0
@@ -247,7 +246,7 @@ def main():
                     story_ids.append(title + str(story_idx))
                     curr_story = ''
                     line_count = 0
-                elif line.strip() != '':
+                elif line.strip() != '' and line.strip() != '@':
                     text = clean_text(line) 
                     curr_story += text + ' ' 
                     line_count += 1
@@ -268,7 +267,7 @@ def main():
                     all_text.append(curr_story)
                     story_ids.append('ORIG_' + title + str(story_idx))
                     curr_story = ''
-                elif line.strip() != '':
+                elif line.strip() != '' and line.strip() != '@':
                     text = clean_text(line) 
                     curr_story += text + ' ' 
 

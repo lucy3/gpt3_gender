@@ -192,7 +192,6 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
               'them' : 'neut', 'theirs' : 'neut', 'theirself' : 'neut'}
     for title in os.listdir(ents_path): 
         print(title)
-        if title != 'xiaolong_when_red_is_black': continue
         # now, get characters associated with a character 
         if not os.path.exists(char_idx_path + title + '.json'): continue
         with open(char_idx_path + title + '.json', 'r') as infile: 
@@ -279,7 +278,7 @@ def calculate_recurrence(tokens_path, char_idx_path):
     for f in os.listdir(tokens_path):
         print(f) 
         title = f.replace('.tokens', '')
-        if not os.path.exists(char_idx_path + title + '.json'): continue # TODO: fix this!
+        if not os.path.exists(char_idx_path + title + '.json'): continue 
         with open(char_idx_path + title + '.json', 'r') as infile: 
             char_story = json.load(infile)
         start2char = {}
@@ -310,6 +309,7 @@ def calculate_recurrence(tokens_path, char_idx_path):
 def get_topics_for_txt(txt_path, prompts_path, topic_out_path, \
                        gender_path, generated, story_topics, matched=False, num_gens=5):
     if matched: 
+        assert generated == True
         print("doing this for matched prompts")
         with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'r') as infile: 
             matched_pairs = json.load(infile)
@@ -378,8 +378,8 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
-    generated = True
-    matched = True
+    generated = False
+    matched = False
     if matched: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
