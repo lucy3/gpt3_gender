@@ -277,7 +277,7 @@ def get_popular_names():
     print(name_m.most_common(3))
     
 def main():
-    generated = False
+    generated = True
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
         char_neighbor_path = LOGS + 'char_neighbors_0.9/'

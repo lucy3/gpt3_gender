@@ -204,7 +204,8 @@ def get_same_prompt_diff_gender():
 def main(): 
     #get_similarities()
     #get_paired_prompts()
-    get_same_prompt_diff_gender()
+    #get_same_prompt_diff_gender()
+    
 
 if __name__ == "__main__":
     main()

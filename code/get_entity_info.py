@@ -195,7 +195,7 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         # now, get characters associated with a character 
         if not os.path.exists(char_idx_path + title + '.json'): continue
         with open(char_idx_path + title + '.json', 'r') as infile: 
-            char_story = json.load(infile) # {character name: [(start token idx, end token idx)] }
+            char_story = json.load(infile) # {character name: [(story idx, start token idx, end token idx)] }
         
         idx2story = {} # token id to story idx
         for char in char_story: 
@@ -211,12 +211,13 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         
         char_pronouns = defaultdict(Counter) # {character name : [pronouns in all coref chains]}
         # This is a list because one name, e.g. Michelle, might have multiple coref chains to create a cluster
-        char_group_ids = defaultdict(list)
+        char_group_ids = defaultdict(set)
         for ent in entities:
             char = entities[ent]
             story_idx = idx2story[ent[0]]
             if (ent[0], ent[1], char) in coref_label:
-                char_group_ids[char + '_' + str(story_idx)].append(coref_label[(ent[0], ent[1], char)])
+                char_group_ids[char + '_' + str(story_idx)].add(coref_label[(ent[0], ent[1], char)])
+                
         # if "Michelle" and "Michelle Obama" are in the same coref chain together, we group their clusters together
         # We can have one name be the "base char" that other renamings of that character are then grouped with
         chainID2name = {} # one to one mapping of already-seen chain_id to base_char
@@ -378,8 +379,8 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
                            topic_out_path, gender_path, generated, story_topics, num_gens=1)
 
 def main(): 
-    generated = False
-    matched = False
+    generated = True
+    matched = True
     if matched: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
