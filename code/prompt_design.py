@@ -5,10 +5,19 @@ import time
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import csv 
-from collections import defaultdict
+from collections import defaultdict, Counter
 import random
 
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
+
+stopwords = set(open(DATA + 'jockers_stopwords', 'r').read().lower().split(', '))
+namewords = set(open(LOGS + 'prompt_char_names.txt', 'r').read().split())
+stopwords = stopwords | namewords
+punct_chars = list((set(string.punctuation) | {'»', '–', '—', '-',"­", '\xad', '-', '◾', '®', '©','✓','▲', '◄','▼','►', '~', '|', '“', '”', '…', "'", "`", '_', '•', '*', '■'} - {"'"}))
+punct_chars.sort()
+punctuation = ''.join(punct_chars)
+replace = re.compile('[%s]' % re.escape(punctuation))
+printable = set(string.printable)
 
 def get_gendered_prompts(): 
     '''
@@ -200,12 +209,12 @@ def get_same_prompt_diff_gender():
     with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'w') as outfile: 
         json.dump(matched_pairs, outfile)
     print(num_pairs)
+    
 
 def main(): 
     #get_similarities()
     #get_paired_prompts()
     #get_same_prompt_diff_gender()
-    
 
 if __name__ == "__main__":
     main()

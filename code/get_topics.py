@@ -218,7 +218,7 @@ def clean_text(text):
     words = [w for w in words if w not in stopwords]
     return ' '.join(words)
 
-def main():
+def train_lda_mallet():
     output_dir = LOGS + 'topics_0.9'
     mallet_dir = ROOT + 'mallet-2.0.8/bin'
     input_dir = LOGS + 'plaintext_stories_0.9/'
@@ -300,6 +300,70 @@ def main():
 
     print(topic_names) # look at topics and top 10 words per topic 
     
+def get_topic_prompts(): 
+    # for each unique matched prompt, calculate topic probability
+    with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'r') as infile: 
+        matched_pairs = json.load(infile)
+    topic_dir = LOGS + 'topics_0.9/' 
+    word_ids = {}
+    with open(topic_dir + 'data.word_id.dict', 'r') as infile: 
+        for line in infile: 
+            contents = line.split('\t')
+            idx = contents[0]
+            word = contents[1]
+            word_ids[idx] = word
+    
+    word_weights = defaultdict(Counter)
+    with open(topic_dir + 'word-weights', 'r') as infile: 
+        for line in infile: 
+            contents = line.split('\t') 
+            topic = contents[0]
+            if topic != '33' and topic != '35': continue
+            word = word_ids[contents[1]]
+            weight = float(contents[2])
+            word_weights[topic][word] = weight
+    for topic in word_weights: 
+        total = sum(list(word_weights[topic].values()))
+        for word in word_weights[topic]: 
+            word_weights[topic][word] = word_weights[topic][word] / total
+    
+    prompt_probs = defaultdict(Counter)
+    for f in matched_pairs: 
+        story_idx = 0
+        prompt_set = set()
+        with open(LOGS + 'original_prompts/' + f, 'r') as infile:
+            for line in infile: 
+                contents = line.strip().split('\t')
+                characterID = contents[0]
+                char = contents[1]
+                prompt = contents[2]
+                if '-RRB-' in prompt or '-LRB-' in prompt: 
+                    prompt = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
+                    prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
+                genders = defaultdict(list)
+                for idx in range(story_idx, story_idx + num_gens): 
+                    char_ID = char + '_' + str(idx)
+                    if char_ID in matched_pairs[f]: 
+                        prompt_set.add(prompt)
+                        break
+                story_idx += num_gens
+        
+        for prompt in prompt_set: 
+            # TODO: need to use same tokenization scheme as topic modeling above
+            text = prompt.split()
+            for topic in word_weights: 
+                total_prob = 0
+                for w in text: 
+                    if w in word_weights[topic]: 
+                        total_prob += word_weights[topic][w]
+                text_prob = total_prob / len(text)
+                prompt_probs[topic][(f, prompt)] = text_prob
+                
+    for topic in prompt_probs: 
+        print(prompt_probs[topic].most_common(10))
+            
+def main(): 
+    get_topic_prompts()
 
 if __name__ == "__main__":
     main()
