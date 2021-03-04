@@ -131,23 +131,22 @@ def convert_word_count_mallet(word_dict, sentences, output_file,
                      for w in words if w in word_dict]
             words.sort()
             word_cnts = [" ".join([str(wid)] * cnt) for (wid, cnt) in words]
-            fout.write("%s %s\n" % (doc_id, " ".join(word_cnts)))
+            fout.write("%s 0 %s\n" % (doc_id, " ".join(word_cnts)))
 
-def get_mallet_input_from_words(sentences, data_dir, vocab_size=10000):
+def get_mallet_input_from_words(sentences, data_dir, word_dict_path, data_input_path, bigram_file, vocab_size=10000):
     '''
     sentences - list of inputs (sentences or lines)
     data_dir - where to write the output 
     Writes input for mallet. 
     '''
-    bigram_file = "%s/bigram_phrases.txt" % data_dir
     find_bigrams(sentences, bigram_file)
     bigram_dict = load_bigrams(bigram_file)
     word_cnts = get_word_count(sentences, bigram_dict=bigram_dict, words_func=get_mixed_tokens)
     vocab_dict = get_word_dict(word_cnts, top=vocab_size, filter_regex="\w\w+")
     write_word_dict(vocab_dict, word_cnts,
-                          "%s/data.word_id.dict" % data_dir)
+                          word_dict_path)
     convert_word_count_mallet(vocab_dict, sentences,
-                              "%s/data.input" % data_dir,
+                              data_input_path,
                               words_func=functools.partial(
                                   get_mixed_tokens,
                                   bigram_dict=bigram_dict))
@@ -162,7 +161,7 @@ def read_word_dict(filename, vocab_size=-1):
                 break
             try:
                 wid, word, _ = line.strip().split("\t")
-                vocab_map[int(wid)] = word
+                vocab_map[word] = int(wid)
             except:
                 print(line)
     return vocab_map
@@ -279,7 +278,10 @@ def train_lda_mallet():
     
     # generate mallet topics
     logging.info("generating mallet inputs...")
-    get_mallet_input_from_words(all_text, output_dir)
+    bigram_file = "%s/bigram_phrases.txt" % data_dir
+    word_dict_path = "%s/data.word_id.dict" % data_dir
+    data_input_path = "%s/data.input" % data_dir
+    get_mallet_input_from_words(all_text, output_dir, word_dict_path, data_input_path, bigram_file)
 
     # run mallet to prepare topics inputs
     # users can also generate mallet-style topic inputs inputs
@@ -300,70 +302,83 @@ def train_lda_mallet():
 
     print(topic_names) # look at topics and top 10 words per topic 
     
-def get_topic_prompts(): 
-    # for each unique matched prompt, calculate topic probability
-    with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'r') as infile: 
-        matched_pairs = json.load(infile)
-    topic_dir = LOGS + 'topics_0.9/' 
-    word_ids = {}
-    with open(topic_dir + 'data.word_id.dict', 'r') as infile: 
-        for line in infile: 
-            contents = line.split('\t')
-            idx = contents[0]
-            word = contents[1]
-            word_ids[idx] = word
+def write_inference_input(): 
+    output_dir = LOGS + 'topics_0.9'
+    all_text = []
     
-    word_weights = defaultdict(Counter)
-    with open(topic_dir + 'word-weights', 'r') as infile: 
-        for line in infile: 
-            contents = line.split('\t') 
-            topic = contents[0]
-            if topic != '33' and topic != '35': continue
-            word = word_ids[contents[1]]
-            weight = float(contents[2])
-            word_weights[topic][word] = weight
-    for topic in word_weights: 
-        total = sum(list(word_weights[topic].values()))
-        for word in word_weights[topic]: 
-            word_weights[topic][word] = word_weights[topic][word] / total
-    
-    prompt_probs = defaultdict(Counter)
-    for f in matched_pairs: 
-        story_idx = 0
-        prompt_set = set()
-        with open(LOGS + 'original_prompts/' + f, 'r') as infile:
+    for title in sorted(os.listdir(LOGS + 'original_prompts/')): 
+        with open(LOGS + 'original_prompts/' + title, 'r') as infile:
             for line in infile: 
                 contents = line.strip().split('\t')
-                characterID = contents[0]
+                prompt = contents[2]
+                if '-RRB-' in prompt or '-LRB-' in prompt: 
+                    prompt = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
+                    prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
+                prompt = clean_text(prompt)
+                all_text.append(prompt)
+    
+    bigram_file = "%s/bigram_phrases.txt" % output_dir
+    word_dict_path = "%s/data.word_id.dict" % output_dir
+    data_input_path = "%s/infer_data.input" % output_dir
+    vocab_dict = read_word_dict(word_dict_path)
+    bigram_dict = load_bigrams(bigram_file)
+    convert_word_count_mallet(vocab_dict, all_text,
+                              data_input_path,
+                              words_func=functools.partial(
+                                  get_mixed_tokens,
+                                  bigram_dict=bigram_dict))
+    
+def get_topic_prompts(): 
+    '''
+    Output: nested dictionaries of {title: {char_storyID: value}}
+    '''
+    num_gens = 5
+    output_dir = LOGS + 'topics_0.9/'
+    topicID1 = 35
+    topicID2 = 33
+    
+    with open(output_dir + 'topic_names.json', 'r') as infile: 
+        topic_names = json.load(infile)
+    
+    fem_topic_value = []
+    masc_topic_value = []
+    with open(output_dir + 'infered_docs', 'r') as infile: 
+        for line in infile: 
+            if line.startswith('#'): continue
+            contents = line.split('\t')
+            doc = int(contents[0])
+            topics = [float(i) for i in contents[2:]]
+            fem_topic_value.append(topics[topicID1])
+            masc_topic_value.append(topics[topicID2])
+    idx = 0
+    topic_score_dict1 = defaultdict(Counter)
+    topic_score_dict2 = defaultdict(Counter)
+    for title in sorted(os.listdir(LOGS + 'original_prompts/')): 
+        story_idx = 0
+        with open(LOGS + 'original_prompts/' + title, 'r') as infile:
+            for line in infile: 
+                contents = line.strip().split('\t')
                 char = contents[1]
                 prompt = contents[2]
                 if '-RRB-' in prompt or '-LRB-' in prompt: 
                     prompt = prompt.replace(' -RRB-', ')').replace('-LRB- ', '(')
                     prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
-                genders = defaultdict(list)
-                for idx in range(story_idx, story_idx + num_gens): 
-                    char_ID = char + '_' + str(idx)
-                    if char_ID in matched_pairs[f]: 
-                        prompt_set.add(prompt)
-                        break
-                story_idx += num_gens
-        
-        for prompt in prompt_set: 
-            # TODO: need to use same tokenization scheme as topic modeling above
-            text = prompt.split()
-            for topic in word_weights: 
-                total_prob = 0
-                for w in text: 
-                    if w in word_weights[topic]: 
-                        total_prob += word_weights[topic][w]
-                text_prob = total_prob / len(text)
-                prompt_probs[topic][(f, prompt)] = text_prob
+                for i in range(story_idx, story_idx + num_gens): 
+                    char_ID = char + '_' + str(i)
+                    topic_score_dict1[title][char_ID] = fem_topic_value[idx]
+                    topic_score_dict2[title][char_ID] = masc_topic_value[idx]
+                story_idx += num_gens 
+                idx += 1
                 
-    for topic in prompt_probs: 
-        print(prompt_probs[topic].most_common(10))
+    with open(output_dir + str(topicID1) + '_prompt_topic_scores.json', 'w') as outfile: 
+        json.dump(topic_score_dict1, outfile)
+    with open(output_dir + str(topicID2) + '_prompt_topic_scores.json', 'w') as outfile: 
+        json.dump(topic_score_dict2, outfile)
+                
             
 def main(): 
     get_topic_prompts()
+    #write_inference_input() 
 
 if __name__ == "__main__":
     main()

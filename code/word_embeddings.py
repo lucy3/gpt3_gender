@@ -477,7 +477,7 @@ def main():
         tokens_path = LOGS + 'book_excerpts_tokens/'
         gender_path = LOGS + 'orig_char_gender/'
         outpath = LOGS + 'orig_adj_noun/' 
-    #get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
+    get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
     #get_lexicon_scores()
 
 if __name__ == "__main__":
