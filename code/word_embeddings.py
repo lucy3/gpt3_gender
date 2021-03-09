@@ -14,8 +14,9 @@ import json
 ROOT = '/mnt/data0/lucy/gpt3_bias/'
 LOGS = ROOT + 'logs/'
 
+
 class EpochLogger(CallbackAny2Vec):
-    '''Callback to log information about training'''
+    #Callback to log information about training
     def __init__(self):
         self.epoch = 0
 
@@ -31,6 +32,7 @@ class EpochLogger(CallbackAny2Vec):
 
     def on_train_end(self, model): 
         print("Training end")
+
 
 def read_stereotypes(): 
     inpath = '/mnt/data0/corpora/lexicons/fast_icwsm_2016_gender_stereotypes.csv'
@@ -276,45 +278,71 @@ def evaluate_lexicon_induction():
     print(tl_fa, np.mean(tl_fa))
     print(sa_fa, np.mean(sa_fa))
 
-def get_nouns_and_adj(inpath, outpath, ents_path, gender_path): 
+def get_nouns_and_adj(inpath, outpath, ents_path, gender_path, char_group_path, matched=False): 
     '''
     inpath is tokens
     ents_path is entities 
     '''
+    if matched: 
+        print("doing this for matched prompts")
+        with open(LOGS + 'prompt_matching/same_prompt_pairs.json', 'r') as infile: 
+            matched_pairs = json.load(infile)
+            
     # get all amod and nsubj
     gendered_pronouns = set(['he', 'He', 'she', 'She'])
     for f in os.listdir(inpath):
         print(f)
         bookname = f.replace('.tokens', '')
         if not os.path.exists(gender_path + bookname + '.json'): continue
+            
+        # mapping from named entities w/ story IDs to gender 
         with open(gender_path + bookname + '.json', 'r') as infile: 
             gender_dict = json.load(infile)
-        # mapping from named entities w/ story IDs to gender 
-        name2gender = {}
+        name2gender = {} # main char_ID or alias_ID : gender 
         for char in gender_dict: 
             neighbors = gender_dict[char]
             for neighbor in neighbors:
                 gender = neighbor['gender_label']
                 base_char = neighbor['character_name']
                 story_idx = base_char.split('_')[-1]
-                name2gender[base_char] = gender
-                for alias in neighbor['aliases']: 
-                    name2gender[alias + '_' + story_idx] = gender
+                if base_char.startswith(char + '_'): 
+                    if matched: 
+                        # only select matched pairs 
+                        if base_char not in matched_pairs[bookname]: 
+                            continue
+                    # is main character
+                    name2gender[base_char] = gender
+                    for alias in neighbor['aliases']: 
+                        name2gender[alias + '_' + story_idx] = gender
+                    
+        # get coref group IDs of main character and their aliases
+        with open(char_group_path + bookname + '.json', 'r') as infile: 
+            char_group_ids = json.load(infile)
+        groupID2gender = {} # group ID : gender of group
+        for name in name2gender: 
+            if name not in char_group_ids: continue # some entities not recognized
+            for groupID in char_group_ids[name]: 
+                just_groupID = int(groupID.split('_')[0])
+                groupID2gender[just_groupID] = name2gender[name]
         
+        # get token IDs of main character and gender-consistent pronouns and put in ne_tokens
         # set of all token IDs that are named entities 
         ne_tokens = {}
-        with open(ents_path + bookname + '/' + bookname + '.ents', 'r') as infile: 
+        with open(ents_path + bookname + '/' + bookname + '.predicted.conll.ents', 'r') as infile: 
             for line in infile: 
                 contents = line.strip().split('\t')
-                start = int(contents[0])
-                end = int(contents[1])
-                ner = contents[2]
-                entity = contents[3]
-                if ner == 'PROP_PER' or entity in gender_dict: 
+                groupID = int(contents[0])
+                start = int(contents[2])
+                end = int(contents[3])
+                entity = contents[1]
+                if groupID in groupID2gender: 
+                    # discard coref model errors
+                    if groupID2gender[groupID] == 'masc' and entity.lower() == 'she': continue
+                    if groupID2gender[groupID] == 'fem' and entity.lower() == 'he': continue
                     for i in range(start, end+1): 
                         ne_tokens[i] = entity
-
-        tokens2words = {}
+        # go through tokens file 
+        tokens2words = {} # token id: word, part of speech, story idx
         ret = []
         with open(inpath + f, 'r') as infile: 
             reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
@@ -324,18 +352,22 @@ def get_nouns_and_adj(inpath, outpath, ents_path, gender_path):
                 tid = row['tokenId']
                 w = row['originalWord']
                 pos = row['pos']
+                # do not look at words in prompt, or sentenceID = 0
+                sentenceID = row['sentenceID'] 
                 tokens2words[tid] = (w, pos, story_idx) 
 
                 if row['normalizedWord'] == '@':
                     dot_count += 1
                 else: 
                     dot_count = 0
-                    if row['deprel'] == 'amod' or row['deprel'] == 'nsubj':
+                    if (row['deprel'] == 'amod' or row['deprel'] == 'nsubj') and sentenceID != '0':
                         htid = row['headTokenId'] 
                         ret.append((w, tid, pos, row['deprel'], htid, story_idx)) 
                 if dot_count == 20: 
                     story_idx += 1
                     dot_count = 0
+        
+        # get relations where tid is in ne_tokens 
         with open(outpath + f.replace('.tokens', ''), 'w') as outfile: 
             for tup in ret: 
                 w, tid, pos, deprel, htid, story_idx = tup
@@ -347,17 +379,23 @@ def get_nouns_and_adj(inpath, outpath, ents_path, gender_path):
                     # the head needs to be an adj or verb
                     if hpos != 'JJ' and not hpos.startswith('VB'): continue
                     # the word needs to be a pronoun or named entity
-                    if w.lower() == 'he':
-                        gender = 'masc'
-                    if w.lower() == 'she': 
-                        gender = 'fem'
                     if int(tid) in ne_tokens: 
-                        gender = name2gender[ne_tokens[int(tid)] + '_' + str(story_idx)]
+                        char_ID = ne_tokens[int(tid)] + '_' + str(story_idx)
+                        if ne_tokens[int(tid)].lower() == 'he': 
+                            gender = 'masc'
+                        elif ne_tokens[int(tid)].lower() == 'she': 
+                            gender = 'fem'
+                        elif ne_tokens[int(tid)].lower() == 'they':  
+                            gender = 'mixed pronouns'
+                        elif char_ID in name2gender: 
+                            gender = name2gender[char_ID]    
                 if deprel == 'amod': 
                     # the head must be a named entity
-                    if int(htid) in ne_tokens:
-                        gender = name2gender[ne_tokens[int(htid)] + '_' + str(story_idx)]
-                if gender == 'masc' or gender == 'fem': 
+                    if int(htid) in ne_tokens: 
+                        char_ID = ne_tokens[int(htid)] + '_' + str(story_idx)
+                        if char_ID in name2gender:
+                            gender = name2gender[char_ID]
+                if gender is not None: 
                     outfile.write(w + '\t' + tid + '\t' + pos + '\t' + deprel + '\t' + htid + '\t' + \
                         hw + '\t' + hpos + '\t' + str(story_idx) + '\t' + gender + '\n')
 
@@ -367,6 +405,8 @@ def update_gen_word(gen_word, line):
     deprel = contents[3]
     hw = contents[5]
     gender = contents[8]
+    if gender != 'masc' and gender != 'fem': 
+        gender = 'other'
     if deprel == 'amod': 
         gen_word[gender].append(w)
     elif deprel == 'nsubj': 
@@ -403,13 +443,13 @@ def get_lexicon_scores():
     '''
     # get generated words
     genpath = LOGS + 'generated_adj_noun/'
-    gen_word = {'fem':[], 'masc':[]}
+    gen_word = defaultdict(list)
     for f in os.listdir(genpath):
         with open(genpath + f, 'r') as infile: 
             for line in infile: 
                 gen_word = update_gen_word(gen_word, line)
     # get excerpt words
-    book_word = {'fem':[], 'masc':[]}
+    book_word = defaultdict(list)
     origpath = LOGS + 'orig_adj_noun/'
     for f in os.listdir(origpath):  
         with open(origpath + f, 'r') as infile: 
@@ -420,10 +460,10 @@ def get_lexicon_scores():
     lexicon_words = lexicons['strong'] | lexicons['intellectual'] | lexicons['weak'] | lexicons['physical']
     # calculate overlap
     all_words = set()
-    all_words.update(gen_word['fem'])
-    all_words.update(book_word['fem'])
-    all_words.update(gen_word['masc'])
-    all_words.update(book_word['masc'])
+    for k in gen_word: 
+        all_words.update(gen_word[k])
+    for k in book_word: 
+        all_words.update(book_word[k])
     overlap = lexicon_words & all_words
     print("All words in dataset:", len(all_words))
     print("Size of overlap with lexicon:", len(overlap))
@@ -466,19 +506,28 @@ def main():
     #train_embeddings()
     #play_with_lexicon_words()
     #evaluate_lexicon_induction()
-    generated = True
-    if generated: 
+    generated = False
+    matched = False
+    if matched: 
+        ents_path = LOGS + 'generated_0.9_ents/'
+        tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
+        gender_path = LOGS + 'char_gender_0.9/'
+        outpath = LOGS + 'matched_adj_noun/'
+        char_group_path = LOGS + 'char_coref_groups/'
+    elif generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
         gender_path = LOGS + 'char_gender_0.9/'
         outpath = LOGS + 'generated_adj_noun/'
+        char_group_path = LOGS + 'char_coref_groups/'
     else: 
         ents_path = LOGS + 'book_excerpts_ents/' 
         tokens_path = LOGS + 'book_excerpts_tokens/'
         gender_path = LOGS + 'orig_char_gender/'
         outpath = LOGS + 'orig_adj_noun/' 
-    get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path)
-    #get_lexicon_scores()
+        char_group_path = LOGS + 'orig_char_coref_groups/'
+    #get_nouns_and_adj(tokens_path, outpath, ents_path, gender_path, char_group_path, matched=matched)
+    get_lexicon_scores()
 
 if __name__ == "__main__":
     main()

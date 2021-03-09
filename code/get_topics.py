@@ -365,6 +365,10 @@ def get_topic_prompts():
                     prompt = prompt.replace('-RRB-', ')').replace('-LRB-', '(')
                 for i in range(story_idx, story_idx + num_gens): 
                     char_ID = char + '_' + str(i)
+                    if fem_topic_value[idx] > 0.15: 
+                        print("-----------", prompt)
+                    if masc_topic_value[idx] > 0.15: 
+                        print("***********", prompt)
                     topic_score_dict1[title][char_ID] = fem_topic_value[idx]
                     topic_score_dict2[title][char_ID] = masc_topic_value[idx]
                 story_idx += num_gens 

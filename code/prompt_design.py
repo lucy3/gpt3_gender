@@ -7,17 +7,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import csv 
 from collections import defaultdict, Counter
 import random
+from nltk.stem import WordNetLemmatizer
 
 LOGS = '/mnt/data0/lucy/gpt3_bias/logs/'
-
-stopwords = set(open(DATA + 'jockers_stopwords', 'r').read().lower().split(', '))
-namewords = set(open(LOGS + 'prompt_char_names.txt', 'r').read().split())
-stopwords = stopwords | namewords
-punct_chars = list((set(string.punctuation) | {'»', '–', '—', '-',"­", '\xad', '-', '◾', '®', '©','✓','▲', '◄','▼','►', '~', '|', '“', '”', '…', "'", "`", '_', '•', '*', '■'} - {"'"}))
-punct_chars.sort()
-punctuation = ''.join(punct_chars)
-replace = re.compile('[%s]' % re.escape(punctuation))
-printable = set(string.printable)
+DATA = '/mnt/data0/lucy/gpt3_bias/data/'
 
 def get_gendered_prompts(): 
     '''
@@ -210,11 +203,95 @@ def get_same_prompt_diff_gender():
         json.dump(matched_pairs, outfile)
     print(num_pairs)
     
+def get_prompts_with_verbs(): 
+    num_gens = 5
+    lem = WordNetLemmatizer()
+    # load verb lexicons
+    power_verbs = set()
+    with open(DATA + 'verbs/agency_power.csv', 'r') as infile: 
+        for line in infile: 
+            contents = line.strip().split(',')
+            if contents[2] == 'power_agent': 
+                verb = lem.lemmatize(contents[0], 'v')
+                power_verbs.add(verb)
+    cognitive_verbs = set()
+    with open(DATA + 'verbs/blooms_taxonomy', 'r') as infile: 
+        for line in infile: 
+            cognitive_verbs.add(lem.lemmatize(line.strip()))
+    
+    res = defaultdict(list)
+    verb_freq = defaultdict(Counter)
+    
+    prompts_path = LOGS + 'original_prompts/'
+    for title in os.listdir(prompts_path): 
+        print(title)
+        char_order = [] # character, where index is generated story index
+        prompts = []
+        with open(prompts_path + title, 'r') as infile: 
+            reader = csv.reader(infile, delimiter='\t')
+            for row in reader: 
+                char_ID = row[0]
+                char_name = row[1]
+                prompt = row[2]
+                prompts.extend([prompt]*num_gens)
+                char_order.extend([char_name]*num_gens)
+        if len(char_order) == 0: 
+            # no prompts
+            continue 
+            
+        # get first token in story that is char name 
+        tokens2words = {} # token id: lemma, part of speech, story idx
+        ret = []
+        with open(LOGS + 'plaintext_stories_0.9_tokens/' + title + '.tokens', 'r') as infile: 
+            reader = csv.DictReader(infile, delimiter='\t', quoting=csv.QUOTE_NONE)
+            story_idx = 0
+            dot_count = 0
+            main_char_seen = False
+            for row in reader:
+                tid = row['tokenId']
+                w = row['originalWord']
+                pos = row['pos']
+                sentenceID = row['sentenceID'] 
+                tokens2words[tid] = (row['lemma'].lower(), pos, story_idx) 
+
+                if row['normalizedWord'] == '@':
+                    dot_count += 1
+                else: 
+                    dot_count = 0
+                    # only get first instance of main character in story
+                    if w == char_order[story_idx] and not main_char_seen: 
+                        main_char_seen = True
+                        if row['deprel'] == 'nsubj':
+                            htid = row['headTokenId'] 
+                            ret.append((w, tid, pos, row['deprel'], htid, story_idx)) 
+                if dot_count == 20: 
+                    story_idx += 1
+                    main_char_seen = False
+                    dot_count = 0
+                    
+        for tup in ret: 
+            w, tid, pos, deprel, htid, story_idx = tup
+            hw, hpos, hstory_idx = tokens2words[htid] 
+            if story_idx != hstory_idx: continue
+            if not hpos.startswith('VB'): continue
+            if hw in power_verbs: 
+                res['power'].append(title + '#' + w + '_' + str(story_idx))
+                verb_freq['power'][hw] += 1
+            if hw in cognitive_verbs: 
+                res['cognitive'].append(title + '#' + w + '_' + str(story_idx))
+                verb_freq['cognitive'][hw] += 1
+    for label in verb_freq: 
+        print("Total", label, sum(verb_freq[label].values()))
+        print(verb_freq[label].most_common(10))
+        
+    with open(LOGS + 'prompt_design_verbs.json', 'w') as outfile: 
+        json.dump(res, outfile)
 
 def main(): 
     #get_similarities()
     #get_paired_prompts()
     #get_same_prompt_diff_gender()
+    get_prompts_with_verbs()
 
 if __name__ == "__main__":
     main()

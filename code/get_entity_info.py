@@ -174,7 +174,7 @@ def print_character_network(char_neighbors, char_pronouns):
             print(neighbor['character_name'], neighbor['aliases'], neighbor['gender'])
             print()
 
-def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path): 
+def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path, char_group_path=None): 
     '''
     For each named person, find how GPT-3 tends to gender that name
     based on coref chains in the text
@@ -211,12 +211,19 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
         
         char_pronouns = defaultdict(Counter) # {character name : [pronouns in all coref chains]}
         # This is a list because one name, e.g. Michelle, might have multiple coref chains to create a cluster
-        char_group_ids = defaultdict(set)
+        char_group_ids = defaultdict(set) # { char_ID : set([coref_group_ids]) } 
         for ent in entities:
             char = entities[ent]
             story_idx = idx2story[ent[0]]
             if (ent[0], ent[1], char) in coref_label:
                 char_group_ids[char + '_' + str(story_idx)].add(coref_label[(ent[0], ent[1], char)])
+                
+        if char_group_path is not None: 
+            cgi_out = defaultdict(list)
+            for k in char_group_ids: 
+                cgi_out[k] = list(char_group_ids[k])
+            with open(char_group_path + title + '.json', 'w') as outfile: 
+                json.dump(cgi_out, outfile)
                 
         # if "Michelle" and "Michelle Obama" are in the same coref chain together, we group their clusters together
         # We can have one name be the "base char" that other renamings of that character are then grouped with
@@ -269,6 +276,7 @@ def get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path):
                 neighbor_dict['aliases'] = []
                 neighbor_dict['gender'] = {}
                 char_neighbors[main_char].append(neighbor_dict)
+                
         with open(char_nb_path + title + '.json', 'w') as outfile: 
             json.dump(char_neighbors, outfile)
 
@@ -380,7 +388,7 @@ def get_gendered_topics(txt_path, prompts_path, topic_out_path, \
 
 def main(): 
     generated = True
-    matched = True
+    matched = False
     if matched: 
         ents_path = LOGS + 'generated_0.9_ents/'
         tokens_path = LOGS + 'plaintext_stories_0.9_tokens/'
@@ -389,6 +397,7 @@ def main():
         char_nb_path = LOGS + 'char_neighbors_0.9/'
         topic_out_path = LOGS + 'gender_topics_0.9_matched.json'
         gender_path = LOGS + 'char_gender_0.9/'
+        char_group_path = LOGS + 'char_coref_groups/'
         num_gens = 5
     elif generated: 
         ents_path = LOGS + 'generated_0.9_ents/'
@@ -398,6 +407,7 @@ def main():
         char_nb_path = LOGS + 'char_neighbors_0.9/'
         topic_out_path = LOGS + 'gender_topics_0.9.json'
         gender_path = LOGS + 'char_gender_0.9/'
+        char_group_path = LOGS + 'char_coref_groups/'
         num_gens = 5
     else: 
         ents_path = LOGS + 'book_excerpts_ents/'
@@ -407,12 +417,13 @@ def main():
         char_nb_path = LOGS + 'orig_char_neighbors/'
         topic_out_path = LOGS + 'orig_gender_topics.json'
         gender_path = LOGS + 'orig_char_gender/'
+        char_group_path = LOGS + 'orig_char_coref_groups/'
         num_gens = 1
     prompts_path = LOGS + 'original_prompts/' 
     #get_characters_to_prompts(prompts_path, tokens_path, txt_path, char_idx_path, num_gens=num_gens)
-    #get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path)
+    get_entities_pronouns(ents_path, prompts_path, char_idx_path, char_nb_path, char_group_path=char_group_path)
     #calculate_recurrence(tokens_path, char_idx_path)
-    get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated, matched=matched)
+    #get_gendered_topics(txt_path, prompts_path, topic_out_path, gender_path, generated, matched=matched)
 
 if __name__ == '__main__': 
     main()

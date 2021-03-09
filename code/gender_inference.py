@@ -276,7 +276,28 @@ def get_popular_names():
     print(name_f.most_common(3))
     print(name_m.most_common(3))
     
+def get_missing_names(): 
+    '''
+    Some books' main charactes aren't in name list
+    '''
+    name_ratios = get_baby_name_ratios()
+    for f in os.listdir(LOGS + 'original_prompts/'): 
+        names = set()
+        with open(LOGS + 'original_prompts/' + f, 'r') as infile: 
+            for line in infile: 
+                contents = line.strip().split('\t')
+                name = contents[1]
+                names.add(name)
+        if len(names) == 0: continue
+        missing_count = 0
+        for name in names: 
+            if name not in name_ratios: 
+                missing_count += 1
+        if missing_count == len(names): 
+            print(f)
+    
 def main():
+    '''
     generated = True
     if generated: 
         outpath = LOGS + 'char_gender_0.9/'
@@ -286,6 +307,8 @@ def main():
         outpath = LOGS + 'orig_char_gender/'
         char_neighbor_path = LOGS + 'orig_char_neighbors/'
         infer_gender_books(char_neighbor_path, outpath)
+    '''
+    get_missing_names()
 
 if __name__ == "__main__":
     main()
