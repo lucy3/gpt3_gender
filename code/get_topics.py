@@ -12,6 +12,7 @@ import io
 import numpy as np
 import re
 import string
+from scipy.stats import entropy
 
 ROOT = '/mnt/data0/lucy/gpt3_bias/'
 LOGS = ROOT + 'logs/' 
@@ -378,11 +379,79 @@ def get_topic_prompts():
         json.dump(topic_score_dict1, outfile)
     with open(output_dir + str(topicID2) + '_prompt_topic_scores.json', 'w') as outfile: 
         json.dump(topic_score_dict2, outfile)
+        
+def compare_topic_dist(): 
+    '''
+    Comparing the topic distribution between the prompt and story
+    for generated books and book excerpts
+    '''
+    num_gens = 5
+            
+    gen_prompt_order = []
+    orig_prompt_order = []
+    for title in sorted(os.listdir(LOGS + 'original_prompts/')): 
+        story_idx1 = 1
+        story_idx2 = 1
+        with open(LOGS + 'original_prompts/' + title, 'r') as infile:
+            for line in infile: 
+                for idx in range(story_idx1, story_idx1 + num_gens): 
+                    gen_prompt_order.append(title + str(idx))
+                orig_prompt_order.append(title + str(story_idx2))
+                story_idx1 += num_gens
+                story_idx2 += 1
                 
+    # get prompt topic distributions
+    gen_prompt_topics = {} # { title + story_idx : [probabilities] }
+    orig_prompt_topics = {}
+    output_dir = LOGS + 'topics_0.9/'
+    with open(output_dir + 'infered_docs', 'r') as infile: 
+        story_idx1 = 0
+        story_idx2 = 0
+        for line in infile: 
+            if line.startswith('#'): continue
+            contents = line.split('\t')
+            doc = int(contents[0])
+            topics = [float(i) for i in contents[2:]]
+            for idx in range(story_idx1, story_idx1 + num_gens): 
+                gen_prompt_topics[gen_prompt_order[idx]] = topics
+            orig_prompt_topics[orig_prompt_order[story_idx2]] = topics
+            story_idx1 += num_gens
+            story_idx2 += 1
+    
+    # get book excerpt and generated story topic distributions
+    doc_topic_file = '%sdoc-topics.gz' % output_dir
+    doc_topics = open(doc_topic_file).read().splitlines() # list of topics
+    story_ids = open(output_dir + 'story_id_order').read().splitlines() # story IDs 
+    story_topics = {}
+    for i, doc in enumerate(doc_topics): 
+        contents = doc.split('\t')
+        topics = [float(i) for i in contents[2:]]
+        story_title_id = story_ids[i]
+        story_topics[story_title_id] = topics 
+        
+    assert (len(gen_prompt_topics) + len(orig_prompt_topics)) == len(story_topics)
+    
+    orig_kld_scores = []
+    for story_title_id in orig_prompt_topics: 
+        prob_dist1 = orig_prompt_topics[story_title_id]
+        prob_dist2 = story_topics['ORIG_' + story_title_id]
+        orig_kld_scores.append(entropy(prob_dist2, qk=prob_dist1))
+    print(np.mean(orig_kld_scores), np.var(orig_kld_scores))
+        
+    gen_kld_scores = []
+    for story_title_id in gen_prompt_topics: 
+        prob_dist1 = gen_prompt_topics[story_title_id]
+        prob_dist2 = story_topics[story_title_id]
+        gen_kld_scores.append(entropy(prob_dist2, qk=prob_dist1))
+    print(np.mean(gen_kld_scores), np.var(gen_kld_scores))
+    
+    np.save(LOGS + 'gen_kld_scores.npy', np.array(gen_kld_scores))
+    np.save(LOGS + 'orig_kld_scores.npy', np.array(orig_kld_scores))
             
 def main(): 
-    get_topic_prompts()
+    #get_topic_prompts()
     #write_inference_input() 
+    compare_topic_dist()
 
 if __name__ == "__main__":
     main()
