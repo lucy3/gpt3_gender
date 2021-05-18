@@ -71,7 +71,13 @@ def query_for_stories(in_folder, out_prefix, log_file_path, temp):
        logfile.write(f + '\n') 
    logfile.close()
        
-def main(): 
+def main():
+    '''
+    I had queried for stories twice: once for all of the data
+    and once for a set of prompts that I needed to redo because
+    the prompts accidentally had Penn Treebank brackets in them instead
+    of actual brackets. 
+    ''' 
     temp = 0.9
     #in_folder = ORIGINAL
     #out_prefix = LOGS + 'generated_'

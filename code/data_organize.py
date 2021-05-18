@@ -135,7 +135,7 @@ def get_prompt_char_names():
         
 
 def main(): 
-    #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
+    sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
     #sanity_check_redo_outputs(LOGS + 'redo_0.9/', LOGS + 'redo_prompts/')
     #replace_bad_outputs(LOGS + 'redo_0.9/', LOGS + 'old_generated_0.9/', 
     #    LOGS + 'generated_0.9/')
