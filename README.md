@@ -18,26 +18,29 @@ TBD by workshop date
 
 ## Data
 
-- query\_openai.py
+- query\_openai.py: for gathering GPT-3 generated stories
+- TODO: a spreadsheet of book titles and other information
 
-We need to check that our data does not contain copyrighted book materials before release. 
+We cannot release the original books because they are copyrighted. 
 
 ## Text Processing 
 
-- book\_nlp.sh
-- check\_book\_bounds.py
-- data\_organize.py
-- dataset\_viz.ipynb
-- get\_characters.py
-- get\_entity\_info.py
-- preprocessing.py
-- segment\_original\_books.py
+- book\_nlp.sh: runs [Book NLP](https://github.com/dbamman/book-nlp) over original books
+- check\_book\_bounds.py: just checks that the start and end of books annotated by humans can actually be used to find start/end 
+- data\_organize.py: various formatting and sanity checking functions
+- dataset\_viz.ipynb: TODO
+- get\_characters.py: extracts sentences that mention main characters, to use as prompts 
+- get\_entity\_info.py: groups character mentions and finds pronouns associated with them based on coreference chains 
+- preprocessing.py: for getting an idea of what books I have
+- segment\_original\_books.py: get excerpts from original books with similar length as generated stories 
 
 ### Gender 
 
 We do not recommend the use of these methods for inferring the actual gender of real people. 
 
 - gender\_inference.py
+
+TODO: add files that contain characters and pronouns and gender labels 
 
 ### Matching
 
