@@ -2,10 +2,8 @@
 
 This README is ordered according to sections in the paper, and each section describes corresponding scripts and materials involved in their production. 
 
-Some TODOs for Lucy by end of May, once the semester is over: 
+Some TODOs for Lucy by end of May: 
 
-- comment every code file 
-- delete deprecated code from unused experiments to avoid confusion
 - describe each section below, and what parts of each script correspond to information in the paper 
 - upload non-copyrighted intermediate files 
 
@@ -14,7 +12,7 @@ Using topic modeling and lexicon-based word similarity, we find that stories gen
 
 ## Requirements 
 
-TBD by workshop date 
+See `requirements.txt`. I think I may have switched machines/environments at some point during this project, so let me know if something does not work with these packages. 
 
 ## Data
 
@@ -34,6 +32,8 @@ We cannot release the original books because they are copyrighted.
 - preprocessing.py: for getting an idea of what books I have
 - segment\_original\_books.py: get excerpts from original books with similar length as generated stories 
 
+The coreference model is the same as that used in [Sims et al. 2020](https://github.com/mbwsims/literary-information-propagation/blob/master/run_pipeline.sh).
+
 ### Gender 
 
 We do not recommend the use of these methods for inferring the actual gender of real people. 
@@ -44,15 +44,20 @@ TODO: add files that contain characters and pronouns and gender labels
 
 ### Matching
 
-- prompt\_design.py
+- prompt\_design.py: prompt matching (note: there are some deprecated functions in here, see function comments)
 
 ## Topics
 
-- mallet.sh
-- get\_topics.py
-- character\_viz.ipynb
+- mallet.sh: taken from [this repo](https://github.com/ddemszky/textbook-analysis), runs topic modeling
+- get\_topics.py: gets topics for documents/stories, modified from [this repo](https://github.com/ddemszky/textbook-analysis)
+- character\_viz.ipynb: TODO
+
+TODO: add topic assignments files 
 
 ## Lexicons
 
-- word\_embeddings.py
-- character\_viz.ipynb
+- word\_embeddings.py: functions for the word embedding part of this paper 
+- prompt\_design.py: getting prompts with specific verbs 
+- character\_viz.ipynb: TODO
+
+Ethan Fast's stereotype lexicon is available upon request. Power verbs can be found [here](https://homes.cs.washington.edu/~msap/movie-bias/), Bloom's taxonomy verbs are in the verb folder of this repo, and Empath categories are [here](https://github.com/Ejhfast/empath-client/blob/master/empath/data/categories.tsv). 
