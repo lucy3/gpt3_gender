@@ -36,7 +36,7 @@ The coreference model is the same as that used in [Sims et al. 2020](https://git
 
 ### Gender 
 
-We do not recommend the use of these methods for inferring the actual gender of real people. 
+We do not recommend the use of these methods for inferring the actual gender of real people. Please see the paper's section on gender and the other papers I cite in that section. 
 
 - gender\_inference.py
 
