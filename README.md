@@ -19,7 +19,7 @@ See `requirements.txt`. I think I may have switched machines/environments at som
 - query\_openai.py: for gathering GPT-3 generated stories
 - TODO: a spreadsheet of book titles and other information
 
-We cannot release the original books because they are copyrighted. 
+We cannot release the original books because they are copyrighted. Generated stories may also output [copyrighted content](https://bair.berkeley.edu/blog/2020/12/20/lmmem/).
 
 ## Text Processing 
 
