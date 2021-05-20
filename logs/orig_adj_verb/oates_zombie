@@ -1,0 +1,13 @@
+Quentin	14	NNP	nsubj	16	do	VB	0	masc
+Quentin	1196	NNP	nsubj	1199	making	VBG	0	masc
+he	1209	PRP	nsubj	1211	dreams	VBZ	0	masc
+sad	1512	JJ	amod	1515	Quentin	NNP	0	masc
+tvrong	1740	JJ	amod	1741	Quentin	NNP	1	masc
+Quentin	5346	NNP	nsubj	5349	do	VB	4	masc
+tvrong	8095	JJ	amod	8096	Quentin	NNP	6	masc
+Quentin	9573	NNP	nsubj	9572	says	VBZ	6	masc
+Quentin	9616	NNP	nsubj	9618	do	VB	7	masc
+Quentin	12232	NNP	nsubj	12231	says	VBZ	8	masc
+Quentin	12271	NNP	nsubj	12269	laughs	VBZ	8	masc
+Quentin	12650	NNP	nsubj	12653	awaits	VBZ	9	masc
+he	12652	PRP	nsubj	12653	awaits	VBZ	9	masc

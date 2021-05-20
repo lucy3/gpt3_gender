@@ -1,0 +1,120 @@
+Zack	1074	NNP	nsubj	1077	tugging	VBG	0	mixed pronouns
+he	1093	PRP	nsubj	1094	's	VBZ	0	masc
+she	1926	PRP	nsubj	1927	crept	VBD	1	fem
+She	2192	PRP	nsubj	2194	old	JJ	1	fem
+She	2232	PRP	nsubj	2234	small	JJ	1	fem
+she	2245	PRP	nsubj	2246	bears	VBZ	1	fem
+He	2517	PRP	nsubj	2518	refers	VBZ	1	masc
+Zack	2772	NNP	nsubj	2774	got	VBD	1	mixed pronouns
+Zack	2878	NNP	nsubj	2879	got	VBD	1	mixed pronouns
+strong	3194	JJ	amod	3195	Zack	NNP	2	mixed pronouns
+Zack	4679	NNP	nsubj	4681	calling	VBG	3	mixed pronouns
+Zack	4708	NNP	nsubj	4710	come	VB	3	mixed pronouns
+Zack	5507	NNP	nsubj	5508	began	VBD	3	mixed pronouns
+Zack	5568	NNP	nsubj	5569	started	VBD	3	mixed pronouns
+he	5912	PRP	nsubj	5914	gon	VBG	3	masc
+Zack	6120	NNP	nsubj	6121	entered	VBD	3	mixed pronouns
+he	6226	PRP	nsubj	6227	carries	VBZ	3	masc
+Zack	6588	NNP	nsubj	6592	fuckin	VBG	4	mixed pronouns
+Zack	6839	NNP	nsubj	6842	make	VB	4	mixed pronouns
+strong	7562	JJ	amod	7563	Zack	NNP	4	mixed pronouns
+Zack	8338	NNP	nsubj	8340	got	VBD	5	mixed pronouns
+Zack	8444	NNP	nsubj	8445	got	VBD	5	mixed pronouns
+Zack	10071	NNP	nsubj	10073	show	VB	6	mixed pronouns
+Zack	12648	NNP	nsubj	12651	coming	VBG	8	mixed pronouns
+Zack	13181	NNP	nsubj	13182	pay	VB	8	mixed pronouns
+Zack	14415	NNP	nsubj	14417	show	VB	9	mixed pronouns
+she	15106	PRP	nsubj	15107	crept	VBD	9	fem
+She	15372	PRP	nsubj	15374	old	JJ	9	fem
+She	15412	PRP	nsubj	15414	small	JJ	9	fem
+she	15425	PRP	nsubj	15426	bears	VBZ	9	fem
+Mets	15532	NNPS	nsubj	15533	told	VBD	10	fem
+She	15934	PRP	nsubj	15935	told	VBD	10	fem
+she	16020	PRP	nsubj	16021	asked	VBD	10	fem
+she	16080	PRP	nsubj	16081	heard	VBD	10	fem
+she	16096	PRP	nsubj	16098	yelling	VBG	10	fem
+Mets	16132	NNPS	nsubj	16133	yelled	VBD	10	fem
+Mets	16248	NNPS	nsubj	16251	warned	VBN	10	fem
+Mets	16306	NNPS	nsubj	16307	shouted	VBD	10	fem
+Mets	16485	NNPS	nsubj	16486	told	VBD	11	fem
+She	16500	PRP	nsubj	16501	told	VBD	11	fem
+she	16534	PRP	nsubj	16535	stopped	VBD	11	fem
+Mets	16592	NNPS	nsubj	16593	told	VBD	11	fem
+She	16619	PRP	nsubj	16620	said	VBD	11	fem
+she	16635	PRP	nsubj	16636	added	VBD	11	fem
+She	16648	PRP	nsubj	16650	talking	VBG	11	fem
+she	16655	PRP	nsubj	16658	miss	VB	11	fem
+Mets	17186	NNPS	nsubj	17189	warned	VBN	12	fem
+Mets	17244	NNPS	nsubj	17245	shouted	VBD	12	fem
+Mets	18148	NNPS	nsubj	18150	short	JJ	12	fem
+She	18224	PRP	nsubj	18225	knew	VBD	12	fem
+she	18226	PRP	nsubj	18227	had	VBD	12	fem
+She	18240	PRP	nsubj	18241	knew	VBD	12	fem
+she	18293	PRP	nsubj	18295	wanted	VBD	12	fem
+she	18338	PRP	nsubj	18339	was	VBD	12	fem
+She	18344	PRP	nsubj	18345	was	VBD	12	fem
+she	18360	PRP	nsubj	18363	be	VB	12	fem
+she	18446	PRP	nsubj	18448	done	VBN	13	fem
+She	18485	PRP	nsubj	18486	sounds	VBZ	13	fem
+She	18534	PRP	nsubj	18538	savvy	JJ	13	fem
+she	18643	PRP	nsubj	18644	managed	VBD	13	fem
+she	18762	PRP	nsubj	18763	told	VBD	13	fem
+Mets	18800	NNPS	nsubj	18802	short	JJ	13	fem
+She	18876	PRP	nsubj	18877	knew	VBD	13	fem
+she	18878	PRP	nsubj	18879	had	VBD	13	fem
+She	18892	PRP	nsubj	18893	knew	VBD	13	fem
+she	18945	PRP	nsubj	18947	wanted	VBD	13	fem
+she	18990	PRP	nsubj	18991	was	VBD	13	fem
+She	18996	PRP	nsubj	18997	was	VBD	13	fem
+she	19012	PRP	nsubj	19015	be	VB	13	fem
+Mets	19826	NNPS	nsubj	19827	got	VBD	14	fem
+She	19900	PRP	nsubj	19902	heard	VBN	14	fem
+She	19910	PRP	nsubj	19912	heard	VBD	14	fem
+Mets	20032	NNS	nsubj	20033	started	VBD	14	fem
+she	20050	PRP	nsubj	20051	told	VBD	14	fem
+she	20081	PRP	nsubj	20082	knew	VBD	14	fem
+she	20087	PRP	nsubj	20088	shouted	VBD	14	fem
+Mets	20254	NNS	nsubj	20255	asked	VBD	14	fem
+Mets	20302	NNPS	nsubj	20303	warned	VBD	14	fem
+Mets	20596	NNPS	nsubj	20597	told	VBD	14	fem
+Mets	20992	NNPS	nsubj	20993	started	VBD	15	fem
+Mets	21214	NNS	nsubj	21215	asked	VBD	15	fem
+Mets	21262	NNPS	nsubj	21263	warned	VBD	15	fem
+Mets	21556	NNPS	nsubj	21557	told	VBD	15	fem
+She	21958	PRP	nsubj	21959	told	VBD	15	fem
+she	22044	PRP	nsubj	22045	asked	VBD	15	fem
+she	22104	PRP	nsubj	22105	heard	VBD	15	fem
+she	22120	PRP	nsubj	22122	yelling	VBG	15	fem
+Mets	22156	NNPS	nsubj	22157	yelled	VBD	15	fem
+Mets	22272	NNPS	nsubj	22275	warned	VBN	15	fem
+Mets	22330	NNPS	nsubj	22331	shouted	VBD	15	fem
+Mets	22561	NNPS	nsubj	22562	asked	VBD	16	fem
+Mets	22842	NNS	nsubj	22843	started	VBD	16	fem
+Mets	23064	NNS	nsubj	23065	asked	VBD	16	fem
+Mets	23112	NNPS	nsubj	23113	warned	VBD	16	fem
+Mets	23406	NNPS	nsubj	23407	told	VBD	16	fem
+Mets	23587	NNPS	nsubj	23588	warned	VBD	17	fem
+Mets	23881	NNPS	nsubj	23882	told	VBD	17	fem
+She	24283	PRP	nsubj	24284	told	VBD	17	fem
+she	24369	PRP	nsubj	24370	asked	VBD	17	fem
+she	24429	PRP	nsubj	24430	heard	VBD	17	fem
+she	24445	PRP	nsubj	24447	yelling	VBG	17	fem
+Mets	24481	NNPS	nsubj	24482	yelled	VBD	17	fem
+Mets	24597	NNPS	nsubj	24600	warned	VBN	17	fem
+Mets	24655	NNPS	nsubj	24656	shouted	VBD	17	fem
+she	26356	PRP	nsubj	26357	told	VBD	18	fem
+She	26387	PRP	nsubj	26388	asked	VBD	18	fem
+Mets	26484	NNPS	nsubj	26485	asked	VBD	18	fem
+Mets	26526	NNPS	nsubj	26527	reminded	VBD	19	fem
+She	26589	PRP	nsubj	26590	said	VBD	19	fem
+She	26645	PRP	nsubj	26646	laughed	VBD	19	fem
+she	27629	PRP	nsubj	27630	told	VBD	19	fem
+She	27660	PRP	nsubj	27661	asked	VBD	19	fem
+Mets	27757	NNPS	nsubj	27758	asked	VBD	19	fem
+She	27779	PRP	nsubj	27780	asked	VBD	19	fem
+She	27906	PRP	nsubj	27908	heard	VBN	19	fem
+She	27916	PRP	nsubj	27918	heard	VBD	19	fem
+Mets	28038	NNS	nsubj	28039	started	VBD	19	fem
+she	28056	PRP	nsubj	28057	told	VBD	19	fem
+she	28087	PRP	nsubj	28088	knew	VBD	19	fem
+she	28093	PRP	nsubj	28094	shouted	VBD	19	fem

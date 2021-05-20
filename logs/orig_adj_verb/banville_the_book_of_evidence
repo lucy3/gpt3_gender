@@ -1,0 +1,444 @@
+She	1423	PRP	nsubj	1424	seemed	VBD	1	fem
+She	1428	PRP	nsubj	1429	made	VBD	1	fem
+she	1443	PRP	nsubj	1444	makes	VBZ	1	fem
+she	3240	PRP	nsubj	3241	supposed	VBD	2	fem
+she	3380	PRP	nsubj	3381	was	VBD	2	fem
+Daphne	3418	NNP	nsubj	3419	walking	VBG	2	fem
+she	3442	PRP	nsubj	3443	had	VBD	2	fem
+she	3582	PRP	nsubj	3587	vivid	JJ	2	fem
+Daphne	4710	NNP	nsubj	4711	naked	JJ	3	fem
+She	4753	PRP	nsubj	4754	shrugged	VBD	3	fem
+she	4758	PRP	nsubj	4759	said	VBD	3	fem
+She	4790	PRP	nsubj	4791	stepped	VBD	3	fem
+She	4820	PRP	nsubj	4821	laughed	VBD	3	fem
+she	4829	PRP	nsubj	4830	said	VBD	3	fem
+Daphne	6128	NNP	nsubj	6129	smiled	VBD	4	fem
+She	6149	PRP	nsubj	6150	rose	VBD	4	fem
+she	6168	PRP	nsubj	6169	came	VBD	4	fem
+she	6183	PRP	nsubj	6185	wearing	VBG	4	fem
+She	6271	PRP	nsubj	6272	took	VBD	4	fem
+Daphne	7410	NNP	nsubj	7420	stood	VBD	4	fem
+She	7512	PRP	nsubj	7514	sitting	VBG	4	fem
+She	7537	PRP	nsubj	7538	drained	VBD	4	fem
+She	7583	PRP	nsubj	7584	began	VBD	4	fem
+Daphne	7628	NNP	nsubj	7629	laid	VBD	4	fem
+she	7642	PRP	nsubj	7644	smiling	VBG	4	fem
+she	7652	PRP	nsubj	7654	listening	VBG	4	fem
+she	7691	PRP	nsubj	7693	see	VB	4	fem
+She	7707	PRP	nsubj	7708	hesitated	VBD	4	fem
+Daphne	7741	NNP	nsubj	7744	lay	VBD	4	fem
+Daphne	7779	NNP	nsubj	7782	lived	VBD	5	fem
+he	8908	PRP	nsubj	8911	meet	VB	5	masc
+he	8919	PRP	nsubj	8921	went	VBD	5	masc
+He	9120	PRP	nsubj	9121	behaved	VBD	5	masc
+He	9127	PRP	nsubj	9128	behaved	VBD	5	masc
+he	9154	PRP	nsubj	9155	looked	VBD	5	masc
+He	9168	PRP	nsubj	9170	smiled	VBD	5	masc
+Daphne	9289	NNP	nsubj	9291	sitting	VBG	6	fem
+She	9305	PRP	nsubj	9306	wore	VBD	6	fem
+Daphne	9442	NNP	nsubj	9443	smiled	VBD	6	fem
+She	9463	PRP	nsubj	9464	rose	VBD	6	fem
+she	9482	PRP	nsubj	9483	came	VBD	6	fem
+she	9497	PRP	nsubj	9499	wearing	VBG	6	fem
+She	9585	PRP	nsubj	9586	took	VBD	6	fem
+Daphne	10724	NNP	nsubj	10734	stood	VBD	6	fem
+Daphne	10816	NNP	nsubj	10817	making	VBG	7	fem
+She	10821	PRP	nsubj	10822	maintains	VBZ	7	fem
+she	10836	PRP	nsubj	10837	told	VBD	7	fem
+she	10843	PRP	nsubj	10844	spoke	VBD	7	fem
+she	10878	PRP	nsubj	10880	having	VBG	7	fem
+She	10899	PRP	nsubj	10900	gave	VBD	7	fem
+she	10920	PRP	nsubj	10921	said	VBD	7	fem
+she	10961	PRP	nsubj	10963	ready	JJ	7	fem
+She	11047	PRP	nsubj	11048	shrugged	VBD	7	fem
+she	11055	PRP	nsubj	11056	said	VBD	7	fem
+She	11132	PRP	nsubj	11133	explained	VBD	7	fem
+she	11779	PRP	nsubj	11780	said	VBD	7	fem
+she	11835	PRP	nsubj	11836	said	VBD	7	fem
+she	12821	PRP	nsubj	12822	supposed	VBD	8	fem
+she	12961	PRP	nsubj	12962	was	VBD	8	fem
+Daphne	12999	NNP	nsubj	13000	walking	VBG	8	fem
+she	13023	PRP	nsubj	13024	had	VBD	8	fem
+she	13163	PRP	nsubj	13168	vivid	JJ	8	fem
+She	13979	PRP	nsubj	13981	sitting	VBG	9	fem
+She	14004	PRP	nsubj	14005	drained	VBD	9	fem
+She	14050	PRP	nsubj	14051	began	VBD	9	fem
+Daphne	14095	NNP	nsubj	14096	laid	VBD	9	fem
+she	14109	PRP	nsubj	14111	smiling	VBG	9	fem
+she	14119	PRP	nsubj	14121	listening	VBG	9	fem
+she	14158	PRP	nsubj	14160	see	VB	9	fem
+She	14174	PRP	nsubj	14175	hesitated	VBD	9	fem
+Daphne	14208	NNP	nsubj	14211	lay	VBD	9	fem
+She	14222	PRP	nsubj	14223	pulled	VBD	9	fem
+she	14256	PRP	nsubj	14257	seem	VB	9	fem
+Daphne	14286	NNP	nsubj	14288	breathed	VBD	9	fem
+she	14304	PRP	nsubj	14305	frowned	VBD	9	fem
+Daphne	14686	NNP	nsubj	14695	holding	VBG	9	fem
+She	14751	PRP	nsubj	14752	laughed	VBD	9	fem
+Daphne	14786	NNP	nsubj	14787	put	VBD	9	fem
+she	15400	PRP	nsubj	15401	supposed	VBD	9	fem
+she	15540	PRP	nsubj	15541	was	VBD	9	fem
+Charlie	15566	NNP	nsubj	15567	stood	VBD	10	masc
+Charlie	15715	NNP	nsubj	15716	made	VBD	10	masc
+Charlie	16035	NNP	nsubj	16036	frowned	VBD	10	masc
+Charlie	16798	NNP	nsubj	16800	watching	VBG	10	masc
+Charlie	17000	NNP	nsubj	17001	made	VBD	11	masc
+Charlie	17320	NNP	nsubj	17321	frowned	VBD	11	masc
+Charlie	18083	NNP	nsubj	18085	watching	VBG	11	masc
+Charlie	18598	NNP	nsubj	18600	shifting	VBG	12	masc
+he	18632	PRP	nsubj	18633	was	VBD	12	masc
+Charlie	19068	NNP	nsubj	19069	frowned	VBD	12	masc
+he	19081	PRP	nsubj	19083	thinking	VBG	12	masc
+Charlie	19978	NNP	nsubj	19985	trying	VBG	12	masc
+Charlie	20185	NNP	nsubj	20187	caught	VBN	13	masc
+He	20221	PRP	nsubj	20222	had	VBD	13	masc
+he	20233	PRP	nsubj	20236	exposed	VBN	13	masc
+he	20267	PRP	nsubj	20268	held	VBD	13	masc
+he	20276	PRP	nsubj	20277	turned	VBD	13	masc
+he	20313	PRP	nsubj	20314	had	VBD	13	masc
+Charlie	20373	NNP	nsubj	20377	saying	VBG	13	masc
+he	20375	PRP	nsubj	20377	saying	VBG	13	masc
+Charlie	20386	NNP	nsubj	20387	blushed	VBD	13	masc
+he	20441	PRP	nsubj	20442	look	VB	13	masc
+He	20457	PRP	nsubj	20458	laughed	VBD	13	masc
+he	20470	PRP	nsubj	20471	said	VBD	13	masc
+Charlie	20473	NNP	nsubj	20479	shook	VBD	13	masc
+he	20510	PRP	nsubj	20511	put	VBD	13	masc
+Charlie	20602	NNP	nsubj	20604	shifting	VBG	13	masc
+he	20636	PRP	nsubj	20637	was	VBD	13	masc
+Charlie	21072	NNP	nsubj	21073	frowned	VBD	13	masc
+he	21085	PRP	nsubj	21087	thinking	VBG	13	masc
+he	21804	PRP	nsubj	21806	saying	VBG	14	masc
+He	21824	PRP	nsubj	21827	worried	JJ	14	masc
+he	21830	PRP	nsubj	21832	going	VBG	14	masc
+He	21836	PRP	nsubj	21837	stood	VBD	14	masc
+he	21852	PRP	nsubj	21854	afraid	JJ	14	masc
+he	21863	PRP	nsubj	21864	took	VBD	14	masc
+he	21886	PRP	nsubj	21887	turn	VB	14	masc
+Charlie	22016	NNP	nsubj	22019	rattling	VBG	14	masc
+he	22026	PRP	nsubj	22027	opened	VBD	14	masc
+Charlie	22067	NNP	nsubj	22068	said	VBD	14	masc
+he	22079	PRP	nsubj	22080	ignored	VBD	14	masc
+Charlie	22231	NNP	nsubj	22238	standing	VBG	14	masc
+Charlie	22443	NNP	nsubj	22445	caught	VBN	14	masc
+Charlie	22631	NNP	nsubj	22635	saying	VBG	14	masc
+Charlie	22644	NNP	nsubj	22645	blushed	VBD	14	masc
+Charlie	22731	NNP	nsubj	22737	shook	VBD	14	masc
+Charlie	22860	NNP	nsubj	22862	shifting	VBG	14	masc
+he	22894	PRP	nsubj	22895	was	VBD	14	masc
+Charlie	23997	NNP	nsubj	23999	notice	VB	15	masc
+She	24837	PRP	nsubj	24838	maintains	VBZ	15	fem
+she	24852	PRP	nsubj	24853	told	VBD	15	fem
+she	24859	PRP	nsubj	24860	spoke	VBD	15	fem
+she	24894	PRP	nsubj	24896	having	VBG	15	fem
+She	24915	PRP	nsubj	24916	gave	VBD	15	fem
+she	24936	PRP	nsubj	24937	said	VBD	15	fem
+she	24977	PRP	nsubj	24979	ready	JJ	15	fem
+Charlie	25121	NNP	nsubj	25124	said	VBD	16	masc
+he	25233	PRP	nsubj	25234	entered	VBD	16	masc
+He	25253	PRP	nsubj	25254	put	VBD	16	masc
+he	25279	PRP	nsubj	25280	sat	VBD	16	masc
+He	25319	PRP	nsubj	25320	did	VBD	16	masc
+He	25322	PRP	nsubj	25324	grey	JJ	16	masc
+he	25343	PRP	nsubj	25344	wore	VBD	16	masc
+He	25348	PRP	nsubj	25349	ran	VBD	16	masc
+He	25362	PRP	nsubj	25364	been	VBN	16	masc
+he	25368	PRP	nsubj	25369	said	VBD	16	masc
+he	25395	PRP	nsubj	25396	meant	VBD	16	masc
+He	25401	PRP	nsubj	25402	kept	VBD	16	masc
+He	25446	PRP	nsubj	25449	bemused	JJ	16	masc
+He	25489	PRP	nsubj	25490	shrugged	VBD	16	masc
+he	25497	PRP	nsubj	25499	listening	VBG	16	masc
+He	25626	PRP	nsubj	25627	looked	VBD	16	masc
+Charlie	25664	NNP	nsubj	25667	said	VBD	16	masc
+he	25693	PRP	nsubj	25695	listening	VBG	16	masc
+Charlie	25841	NNP	nsubj	25842	stood	VBD	16	masc
+he	25852	PRP	nsubj	25853	said	VBD	16	masc
+He	25862	PRP	nsubj	25864	glaring	VBG	16	masc
+he	25877	PRP	nsubj	25878	said	VBD	16	masc
+Charlie	25990	NNP	nsubj	25991	made	VBD	16	masc
+Charlie	26310	NNP	nsubj	26311	frowned	VBD	16	masc
+Charlie	26665	NNP	nsubj	26668	said	VBD	17	masc
+he	27042	PRP	nsubj	27043	appeared	VBD	17	masc
+he	27077	PRP	nsubj	27078	said	VBD	17	masc
+he	27105	PRP	nsubj	27106	said	VBD	17	masc
+he	27201	PRP	nsubj	27202	backed	VBD	17	masc
+he	27246	PRP	nsubj	27247	came	VBD	17	masc
+Charlie	27308	NNP	nsubj	27309	looked	VBD	17	masc
+Charlie	28334	NNP	nsubj	28336	act	VB	18	masc
+he	28357	PRP	nsubj	28358	kept	VBD	18	masc
+he	28400	PRP	nsubj	28401	got	VBD	18	masc
+he	28423	PRP	nsubj	28425	kept	VBN	18	masc
+He	28431	PRP	nsubj	28432	liked	VBD	18	masc
+He	28457	PRP	nsubj	28458	took	VBD	18	masc
+he	28522	PRP	nsubj	28524	sink	VB	18	masc
+he	28581	PRP	nsubj	28582	took	VBD	18	masc
+he	28595	PRP	nsubj	28596	put	VBD	18	masc
+he	28637	PRP	nsubj	28640	diffident	JJ	18	masc
+he	28656	PRP	nsubj	28658	offering	VBG	18	masc
+he	28666	PRP	nsubj	28667	assured	VBD	18	masc
+he	28689	PRP	nsubj	28690	fancied	VBD	18	masc
+he	28735	PRP	nsubj	28736	said	VBD	18	masc
+Charlie	29358	NNP	nsubj	29359	helped	VBD	18	masc
+He	29363	PRP	nsubj	29365	worrying	VBG	18	masc
+he	29390	PRP	nsubj	29391	was	VBD	18	masc
+Charlie	29454	NNP	nsubj	29455	lived	VBD	18	masc
+He	29489	PRP	nsubj	29492	answer	VB	18	masc
+he	29507	PRP	nsubj	29508	shook	VBD	18	masc
+he	29526	PRP	nsubj	29527	walked	VBD	18	masc
+Charlie	29573	NNP	nsubj	29574	said	VBD	18	masc
+Charlie	29616	NNP	nsubj	29617	said	VBD	18	masc
+He	29625	PRP	nsubj	29626	went	VBD	18	masc
+He	29830	PRP	nsubj	29832	standing	VBG	18	masc
+He	29837	PRP	nsubj	29838	wore	VBD	18	masc
+he	29854	PRP	nsubj	29855	said	VBD	18	masc
+Anna	31350	NNP	nsubj	31351	struck	VBD	20	mixed pronouns
+He	31412	PRP	nsubj	31413	turned	VBD	20	masc
+he	31423	PRP	nsubj	31424	said	VBD	20	masc
+He	31438	PRP	nsubj	31439	smiled	VBD	20	masc
+He	31447	PRP	nsubj	31448	was	VBD	20	masc
+He	31453	PRP	nsubj	31455	sorry	JJ	20	masc
+he	31457	PRP	nsubj	31458	said	VBD	20	masc
+He	31473	PRP	nsubj	31475	understand	VB	20	masc
+he	31485	PRP	nsubj	31487	got	VBN	20	masc
+He	31495	PRP	nsubj	31496	smiled	VBD	20	masc
+he	31510	PRP	nsubj	31511	said	VBD	20	masc
+Behrens	31555	NNP	nsubj	31557	saying	VBG	20	mixed pronouns
+He	31601	PRP	nsubj	31602	laughed	VBD	20	masc
+he	31609	PRP	nsubj	31610	said	VBD	20	masc
+He	31617	PRP	nsubj	31618	fiddled	VBD	20	masc
+he	31635	PRP	nsubj	31638	thought	VBN	20	masc
+he	31663	PRP	nsubj	31665	cheated	VBN	20	masc
+she	31716	PRP	nsubj	31715	was	VBD	20	fem
+Anna	31806	NNP	nsubj	31807	excused	VBD	20	mixed pronouns
+she	31818	PRP	nsubj	31820	phoned	VBN	20	fem
+he	31880	PRP	nsubj	31881	asked	VBD	20	masc
+he	31900	PRP	nsubj	31901	meant	VBD	20	masc
+he	31902	PRP	nsubj	31904	passed	VBN	20	masc
+he	31908	PRP	nsubj	31909	sat	VBD	20	masc
+He	31926	PRP	nsubj	31927	lifted	VBD	20	masc
+he	31933	PRP	nsubj	31934	were	VBD	20	masc
+Behrens	31959	NNP	nsubj	31962	get	VB	20	mixed pronouns
+he	31971	PRP	nsubj	31972	murmured	VBD	20	masc
+Anna	31983	NNP	nsubj	31984	walked	VBD	20	mixed pronouns
+Anna	32034	NNP	nsubj	32035	said	VBD	20	mixed pronouns
+She	32114	PRP	nsubj	32115	shrugged	VBD	20	fem
+she	32119	PRP	nsubj	32120	said	VBD	20	fem
+She	32151	PRP	nsubj	32152	stepped	VBD	20	fem
+She	32181	PRP	nsubj	32182	laughed	VBD	20	fem
+she	32190	PRP	nsubj	32191	said	VBD	20	fem
+Anna	32925	NNP	nsubj	32926	answered	VBD	21	mixed pronouns
+She	32958	PRP	nsubj	32959	rose	VBD	21	fem
+she	32977	PRP	nsubj	32978	came	VBD	21	fem
+she	32992	PRP	nsubj	32994	wearing	VBG	21	fem
+She	33080	PRP	nsubj	33081	took	VBD	21	fem
+Anna	33093	NNP	nsubj	33094	answered	VBD	21	mixed pronouns
+She	34321	PRP	nsubj	34323	sitting	VBG	21	fem
+She	34346	PRP	nsubj	34347	drained	VBD	21	fem
+She	34392	PRP	nsubj	34393	began	VBD	21	fem
+she	34451	PRP	nsubj	34453	smiling	VBG	21	fem
+she	34461	PRP	nsubj	34463	listening	VBG	21	fem
+Anna	34486	NNP	nsubj	34488	standing	VBG	21	mixed pronouns
+she	34500	PRP	nsubj	34502	see	VB	21	fem
+She	34516	PRP	nsubj	34517	hesitated	VBD	21	fem
+She	34564	PRP	nsubj	34565	pulled	VBD	21	fem
+Anna	34602	NNP	nsubj	34603	came	VBD	22	mixed pronouns
+Anna	34646	NNP	nsubj	34647	answered	VBD	22	mixed pronouns
+She	34679	PRP	nsubj	34680	rose	VBD	22	fem
+she	34698	PRP	nsubj	34699	came	VBD	22	fem
+she	34713	PRP	nsubj	34715	wearing	VBG	22	fem
+She	34801	PRP	nsubj	34802	took	VBD	22	fem
+Anna	34814	NNP	nsubj	34815	answered	VBD	22	mixed pronouns
+She	36042	PRP	nsubj	36044	sitting	VBG	22	fem
+She	36067	PRP	nsubj	36068	drained	VBD	22	fem
+She	36113	PRP	nsubj	36114	began	VBD	22	fem
+she	36172	PRP	nsubj	36174	smiling	VBG	22	fem
+she	36182	PRP	nsubj	36184	listening	VBG	22	fem
+Anna	36207	NNP	nsubj	36209	standing	VBG	22	mixed pronouns
+Anna	36234	NNP	nsubj	36236	spoke	VBD	23	mixed pronouns
+She	36238	PRP	nsubj	36240	pale	JJ	23	fem
+she	36255	PRP	nsubj	36257	aged	VBN	23	fem
+Anna	36381	NNP	nsubj	36382	struck	VBD	23	mixed pronouns
+He	36443	PRP	nsubj	36444	turned	VBD	23	masc
+he	36454	PRP	nsubj	36455	said	VBD	23	masc
+He	36469	PRP	nsubj	36470	smiled	VBD	23	masc
+He	36478	PRP	nsubj	36479	was	VBD	23	masc
+He	36484	PRP	nsubj	36486	sorry	JJ	23	masc
+he	36488	PRP	nsubj	36489	said	VBD	23	masc
+He	36504	PRP	nsubj	36506	understand	VB	23	masc
+he	36516	PRP	nsubj	36518	got	VBN	23	masc
+He	36526	PRP	nsubj	36527	smiled	VBD	23	masc
+he	36541	PRP	nsubj	36542	said	VBD	23	masc
+Behrens	36586	NNP	nsubj	36588	saying	VBG	23	mixed pronouns
+She	36590	PRP	nsubj	36596	know	VBP	23	fem
+She	36618	PRP	nsubj	36619	wanted	VBD	23	fem
+He	36632	PRP	nsubj	36633	laughed	VBD	23	masc
+he	36640	PRP	nsubj	36641	said	VBD	23	masc
+He	36648	PRP	nsubj	36649	fiddled	VBD	23	masc
+he	36666	PRP	nsubj	36669	thought	VBN	23	masc
+he	36694	PRP	nsubj	36696	cheated	VBN	23	masc
+she	36747	PRP	nsubj	36746	was	VBD	23	fem
+Anna	36837	NNP	nsubj	36838	excused	VBD	23	mixed pronouns
+she	36849	PRP	nsubj	36851	phoned	VBN	23	fem
+he	36911	PRP	nsubj	36912	asked	VBD	23	masc
+he	36931	PRP	nsubj	36932	meant	VBD	23	masc
+he	36933	PRP	nsubj	36935	passed	VBN	23	masc
+he	36939	PRP	nsubj	36940	sat	VBD	23	masc
+He	36957	PRP	nsubj	36958	lifted	VBD	23	masc
+he	36964	PRP	nsubj	36965	were	VBD	23	masc
+Behrens	36990	NNP	nsubj	36993	get	VB	23	mixed pronouns
+he	37002	PRP	nsubj	37003	murmured	VBD	23	masc
+Anna	37014	NNP	nsubj	37015	walked	VBD	23	mixed pronouns
+Anna	37065	NNP	nsubj	37066	said	VBD	23	mixed pronouns
+She	37145	PRP	nsubj	37146	shrugged	VBD	23	fem
+she	37150	PRP	nsubj	37151	said	VBD	23	fem
+She	37182	PRP	nsubj	37183	stepped	VBD	23	fem
+She	37212	PRP	nsubj	37213	laughed	VBD	23	fem
+she	37221	PRP	nsubj	37222	said	VBD	23	fem
+She	37860	PRP	nsubj	37861	gave	VBD	24	fem
+she	37871	PRP	nsubj	37872	said	VBD	24	fem
+She	37886	PRP	nsubj	37888	taken	VBN	24	fem
+She	37936	PRP	nsubj	37937	shrugged	VBD	24	fem
+She	37939	PRP	nsubj	37940	supposed	VBD	24	fem
+she	37969	PRP	nsubj	37970	asked	VBD	24	fem
+she	37985	PRP	nsubj	37986	looked	VBD	24	fem
+She	37996	PRP	nsubj	37997	led	VBD	24	fem
+Anna	38066	NNP	nsubj	38067	opened	VBD	24	mixed pronouns
+Anna	38236	NNP	nsubj	38237	snatched	VBD	24	mixed pronouns
+She	38248	PRP	nsubj	38249	laughed	VBD	24	fem
+she	38256	PRP	nsubj	38257	said	VBD	24	fem
+She	38277	PRP	nsubj	38278	watched	VBD	24	fem
+she	38295	PRP	nsubj	38296	said	VBD	24	fem
+she	38346	PRP	nsubj	38347	said	VBD	24	fem
+She	38349	PRP	nsubj	38351	peering	VBG	24	fem
+She	38359	PRP	nsubj	38360	clicked	VBD	24	fem
+she	38369	PRP	nsubj	38371	left	VBD	24	fem
+she	38409	PRP	nsubj	38410	mean	VB	24	fem
+Behrens	38708	NNP	nsubj	38709	came	VBD	24	mixed pronouns
+He	38729	PRP	nsubj	38730	moved	VBD	24	masc
+He	38780	PRP	nsubj	38781	had	VBD	24	masc
+He	38814	PRP	nsubj	38815	took	VBD	24	masc
+he	38835	PRP	nsubj	38837	trying	VBG	24	masc
+he	38850	PRP	nsubj	38851	said	VBD	24	masc
+Behrens	38937	NNP	nsubj	38938	cutting	VBG	24	mixed pronouns
+he	38963	PRP	nsubj	38965	killed	VBN	24	masc
+He	38999	PRP	nsubj	39000	talked	VBD	24	masc
+He	39024	PRP	nsubj	39025	sighed	VBD	24	masc
+He	39031	PRP	nsubj	39034	impressed	JJ	24	masc
+Anna	39038	NNP	nsubj	39040	spoke	VBD	24	mixed pronouns
+She	39042	PRP	nsubj	39044	pale	JJ	24	fem
+she	39059	PRP	nsubj	39061	aged	VBN	24	fem
+Anna	39185	NNP	nsubj	39186	struck	VBD	24	mixed pronouns
+He	39247	PRP	nsubj	39248	turned	VBD	24	masc
+he	39258	PRP	nsubj	39259	said	VBD	24	masc
+He	39273	PRP	nsubj	39274	smiled	VBD	24	masc
+He	39282	PRP	nsubj	39283	was	VBD	24	masc
+He	39288	PRP	nsubj	39290	sorry	JJ	24	masc
+he	39292	PRP	nsubj	39293	said	VBD	24	masc
+He	39308	PRP	nsubj	39310	understand	VB	24	masc
+he	39320	PRP	nsubj	39322	got	VBN	24	masc
+He	39330	PRP	nsubj	39331	smiled	VBD	24	masc
+he	39345	PRP	nsubj	39346	said	VBD	24	masc
+Behrens	39390	NNP	nsubj	39392	saying	VBG	24	mixed pronouns
+Anna	39634	NNP	nsubj	39635	wore	VBD	25	mixed pronouns
+She	39739	PRP	nsubj	39740	wore	VBD	25	fem
+Anna	39820	NNP	nsubj	39821	came	VBD	25	mixed pronouns
+Anna	39864	NNP	nsubj	39865	answered	VBD	25	mixed pronouns
+She	39897	PRP	nsubj	39898	rose	VBD	25	fem
+she	39916	PRP	nsubj	39917	came	VBD	25	fem
+she	39931	PRP	nsubj	39933	wearing	VBG	25	fem
+She	40019	PRP	nsubj	40020	took	VBD	25	fem
+Anna	40032	NNP	nsubj	40033	answered	VBD	25	mixed pronouns
+Anna	41010	NNP	nsubj	41011	walked	VBD	26	mixed pronouns
+Anna	41061	NNP	nsubj	41062	said	VBD	26	mixed pronouns
+She	41141	PRP	nsubj	41142	shrugged	VBD	26	fem
+she	41146	PRP	nsubj	41147	said	VBD	26	fem
+She	41178	PRP	nsubj	41179	stepped	VBD	26	fem
+She	41208	PRP	nsubj	41209	laughed	VBD	26	fem
+she	41217	PRP	nsubj	41218	said	VBD	26	fem
+she	42398	PRP	nsubj	42397	was	VBD	27	fem
+Anna	42488	NNP	nsubj	42489	excused	VBD	27	mixed pronouns
+she	42500	PRP	nsubj	42502	phoned	VBN	27	fem
+he	42562	PRP	nsubj	42563	asked	VBD	27	masc
+he	42582	PRP	nsubj	42583	meant	VBD	27	masc
+he	42584	PRP	nsubj	42586	passed	VBN	27	masc
+he	42590	PRP	nsubj	42591	sat	VBD	27	masc
+He	42608	PRP	nsubj	42609	lifted	VBD	27	masc
+he	42615	PRP	nsubj	42616	were	VBD	27	masc
+Behrens	42641	NNP	nsubj	42644	get	VB	27	mixed pronouns
+he	42653	PRP	nsubj	42654	murmured	VBD	27	masc
+Anna	42665	NNP	nsubj	42666	walked	VBD	27	mixed pronouns
+Anna	42716	NNP	nsubj	42717	said	VBD	27	mixed pronouns
+She	42796	PRP	nsubj	42797	shrugged	VBD	27	fem
+she	42801	PRP	nsubj	42802	said	VBD	27	fem
+She	42833	PRP	nsubj	42834	stepped	VBD	27	fem
+She	42863	PRP	nsubj	42864	laughed	VBD	27	fem
+she	42872	PRP	nsubj	42873	said	VBD	27	fem
+Anna	43954	NNP	nsubj	43955	snatched	VBD	28	mixed pronouns
+She	43966	PRP	nsubj	43967	laughed	VBD	28	fem
+she	43974	PRP	nsubj	43975	said	VBD	28	fem
+She	43995	PRP	nsubj	43996	watched	VBD	28	fem
+she	44013	PRP	nsubj	44014	said	VBD	28	fem
+she	44064	PRP	nsubj	44065	said	VBD	28	fem
+She	44067	PRP	nsubj	44069	peering	VBG	28	fem
+She	44077	PRP	nsubj	44078	clicked	VBD	28	fem
+she	44087	PRP	nsubj	44089	left	VBD	28	fem
+she	44127	PRP	nsubj	44128	mean	VB	28	fem
+Behrens	44426	NNP	nsubj	44427	came	VBD	28	mixed pronouns
+He	44447	PRP	nsubj	44448	moved	VBD	28	masc
+He	44498	PRP	nsubj	44499	had	VBD	28	masc
+He	44532	PRP	nsubj	44533	took	VBD	28	masc
+he	44553	PRP	nsubj	44555	trying	VBG	28	masc
+he	44568	PRP	nsubj	44569	said	VBD	28	masc
+Behrens	44655	NNP	nsubj	44656	cutting	VBG	28	mixed pronouns
+he	44681	PRP	nsubj	44683	killed	VBN	28	masc
+He	44717	PRP	nsubj	44718	talked	VBD	28	masc
+He	44742	PRP	nsubj	44743	sighed	VBD	28	masc
+He	44749	PRP	nsubj	44752	impressed	JJ	28	masc
+Anna	44756	NNP	nsubj	44758	spoke	VBD	28	mixed pronouns
+She	44760	PRP	nsubj	44762	pale	JJ	28	fem
+she	44777	PRP	nsubj	44779	aged	VBN	28	fem
+Anna	44903	NNP	nsubj	44904	struck	VBD	28	mixed pronouns
+He	44965	PRP	nsubj	44966	turned	VBD	28	masc
+he	44976	PRP	nsubj	44977	said	VBD	28	masc
+He	44991	PRP	nsubj	44992	smiled	VBD	28	masc
+He	45000	PRP	nsubj	45001	was	VBD	28	masc
+He	45006	PRP	nsubj	45008	sorry	JJ	28	masc
+he	45010	PRP	nsubj	45011	said	VBD	28	masc
+He	45026	PRP	nsubj	45028	understand	VB	28	masc
+he	45038	PRP	nsubj	45040	got	VBN	28	masc
+He	45048	PRP	nsubj	45049	smiled	VBD	28	masc
+he	45063	PRP	nsubj	45064	said	VBD	28	masc
+Behrens	45108	NNP	nsubj	45110	saying	VBG	28	mixed pronouns
+He	45154	PRP	nsubj	45155	laughed	VBD	28	masc
+he	45162	PRP	nsubj	45163	said	VBD	28	masc
+He	45170	PRP	nsubj	45171	fiddled	VBD	28	masc
+he	45188	PRP	nsubj	45191	thought	VBN	28	masc
+he	45216	PRP	nsubj	45218	cheated	VBN	28	masc
+she	45269	PRP	nsubj	45268	was	VBD	28	fem
+Anna	45359	NNP	nsubj	45360	excused	VBD	28	mixed pronouns
+she	45371	PRP	nsubj	45373	phoned	VBN	28	fem
+he	45433	PRP	nsubj	45434	asked	VBD	28	masc
+he	45453	PRP	nsubj	45454	meant	VBD	28	masc
+he	45455	PRP	nsubj	45457	passed	VBN	28	masc
+he	45461	PRP	nsubj	45462	sat	VBD	28	masc
+He	45479	PRP	nsubj	45480	lifted	VBD	28	masc
+he	45486	PRP	nsubj	45487	were	VBD	28	masc
+Behrens	45512	NNP	nsubj	45515	get	VB	28	mixed pronouns
+he	45524	PRP	nsubj	45525	murmured	VBD	28	masc
+Anna	45536	NNP	nsubj	45537	walked	VBD	28	mixed pronouns
+Anna	45584	NNP	nsubj	45586	standing	VBG	29	mixed pronouns
+she	45598	PRP	nsubj	45600	see	VB	29	fem
+She	45614	PRP	nsubj	45615	hesitated	VBD	29	fem
+She	45662	PRP	nsubj	45663	pulled	VBD	29	fem
+she	45696	PRP	nsubj	45697	seem	VB	29	fem
+she	45744	PRP	nsubj	45745	frowned	VBD	29	fem
+Anna	46141	NNP	nsubj	46142	got	VBD	29	mixed pronouns
+Anna	46184	NNP	nsubj	46185	murmured	VBD	29	mixed pronouns
+She	46191	PRP	nsubj	46192	laughed	VBD	29	fem
+Anna	46630	NNP	nsubj	46631	lifted	VBD	29	mixed pronouns
+Anna	46751	NNP	nsubj	46760	acted	VBD	29	mixed pronouns
+she	46840	PRP	nsubj	46841	supposed	VBD	29	fem
+she	46980	PRP	nsubj	46981	was	VBD	29	fem
+she	47042	PRP	nsubj	47043	had	VBD	29	fem
+she	47182	PRP	nsubj	47187	vivid	JJ	29	fem

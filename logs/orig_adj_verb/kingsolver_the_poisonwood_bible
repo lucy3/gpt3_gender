@@ -1,0 +1,835 @@
+She	6	PRP	nsubj	7	moved	VBD	0	fem
+she	25	PRP	nsubj	26	rented	VBD	0	fem
+She	46	PRP	nsubj	47	took	VBD	0	fem
+Mother	109	NN	nsubj	110	toted	VBD	0	fem
+Mother	158	NNP	nsubj	159	said	VBD	0	fem
+she	160	PRP	nsubj	161	aimed	VBD	0	fem
+Mother	199	NN	nsubj	201	taken	VBN	0	fem
+Mother	764	NNP	nsubj	765	wanted	VBD	0	fem
+she	906	PRP	nsubj	907	shows	VBZ	0	fem
+Mother	1034	NN	nsubj	1035	has	VBZ	0	fem
+She	1089	PRP	nsubj	1090	owes	VBZ	0	fem
+she	1102	PRP	nsubj	1104	sad	JJ	0	fem
+She	1170	PRP	nsubj	1171	took	VBD	0	fem
+Mother	1184	NN	nsubj	1186	going	VBG	0	fem
+Mother	1229	NNP	nsubj	1230	care	VB	1	fem
+She	1258	PRP	nsubj	1262	raised	VBD	1	fem
+Mother	1528	NN	nsubj	1530	written	VBN	1	fem
+she	1649	PRP	nsubj	1650	throw	VB	1	fem
+She	2420	PRP	nsubj	2421	talks	VBZ	1	fem
+she	2425	PRP	nsubj	2430	throw	VB	1	fem
+she	2587	PRP	nsubj	2589	going	VBG	1	fem
+Mother	2750	NN	nsubj	2751	seems	VBZ	2	fem
+Mother	2940	NNP	nsubj	2941	took	VBD	2	fem
+She	2946	PRP	nsubj	2947	moved	VBD	2	fem
+she	2965	PRP	nsubj	2966	rented	VBD	2	fem
+She	2986	PRP	nsubj	2987	took	VBD	2	fem
+Mother	3049	NN	nsubj	3050	toted	VBD	2	fem
+Mother	3098	NNP	nsubj	3099	said	VBD	2	fem
+she	3100	PRP	nsubj	3101	aimed	VBD	2	fem
+Mother	3139	NN	nsubj	3141	taken	VBN	2	fem
+Mother	3704	NNP	nsubj	3705	wanted	VBD	2	fem
+she	3846	PRP	nsubj	3847	shows	VBZ	2	fem
+Mother	3974	NN	nsubj	3975	has	VBZ	2	fem
+She	4029	PRP	nsubj	4030	owes	VBZ	2	fem
+she	4042	PRP	nsubj	4044	sad	JJ	2	fem
+She	4110	PRP	nsubj	4111	took	VBD	2	fem
+Mother	4124	NN	nsubj	4126	going	VBG	2	fem
+Mother	4358	NN	nsubj	4359	says	VBZ	3	fem
+Mother	4673	NN	nsubj	4674	looked	VBD	3	fem
+Mother	5645	NN	nsubj	5646	tried	VBD	4	fem
+She	5684	PRP	nsubj	5685	procured	VBD	4	fem
+she	6221	PRP	nsubj	6224	vain	JJ	4	fem
+she	6250	PRP	nsubj	6252	put	VB	4	fem
+she	6275	PRP	nsubj	6276	feels	VBZ	4	fem
+she	6336	PRP	nsubj	6337	claims	VBZ	4	fem
+she	6372	PRP	nsubj	6373	kept	VBD	4	fem
+she	6391	PRP	nsubj	6394	painted	VBN	4	fem
+she	6592	PRP	nsubj	6593	kept	VBD	4	fem
+she	6621	PRP	nsubj	6622	had	VBD	4	fem
+she	6632	PRP	nsubj	6633	chattered	VBD	4	fem
+she	6678	PRP	nsubj	6679	whispered	VBD	4	fem
+He	7339	PRP	nsubj	7340	wants	VBZ	5	masc
+he	7400	PRP	nsubj	7401	broods	VBZ	5	masc
+He	7417	PRP	nsubj	7418	reminds	VBZ	5	masc
+Mother	8016	NN	nsubj	8018	taking	VBG	6	fem
+she	8039	PRP	nsubj	8042	trying	VBG	6	fem
+she	8057	PRP	nsubj	8059	stopped	VBD	6	fem
+she	8066	PRP	nsubj	8067	tended	VBD	6	fem
+he	8179	PRP	nsubj	8180	claimed	VBD	6	masc
+he	8181	PRP	nsubj	8182	knew	VBD	6	masc
+he	8269	PRP	nsubj	8270	asked	VBD	6	masc
+he	8342	PRP	nsubj	8344	learned	VBD	6	masc
+he	8377	PRP	nsubj	8378	raised	VBD	6	masc
+he	8410	PRP	nsubj	8411	had	VBD	6	masc
+He	8424	PRP	nsubj	8425	kept	VBD	6	masc
+He	8432	PRP	nsubj	8433	stood	VBD	6	masc
+He	8439	PRP	nsubj	8440	laid	VBD	6	masc
+he	8535	PRP	nsubj	8537	taken	VBN	6	masc
+he	8550	PRP	nsubj	8551	said	VBD	6	masc
+she	8606	PRP	nsubj	8607	gets	VBZ	6	fem
+he	8708	PRP	nsubj	8710	interpret	VB	6	masc
+he	8820	PRP	nsubj	8821	said	VBD	6	masc
+he	8838	PRP	nsubj	8839	arranged	VBD	6	masc
+he	8859	PRP	nsubj	8862	sad	JJ	6	masc
+He	8866	PRP	nsubj	8867	clicked	VBD	6	masc
+He	9087	PRP	nsubj	9088	explains	VBZ	6	masc
+he	9273	PRP	nsubj	9275	have	VB	6	masc
+He	9283	PRP	nsubj	9284	enjoys	VBZ	6	masc
+he	9311	PRP	nsubj	9312	seems	VBZ	6	masc
+He	9341	PRP	nsubj	9342	nodded	VBD	6	masc
+He	9366	PRP	nsubj	9367	pointed	VBD	6	masc
+Mother	9438	NN	nsubj	9441	theirs	JJ	7	fem
+she	9562	PRP	nsubj	9563	chose	VBD	7	fem
+Mother	9573	NNP	nsubj	9574	hesitated	VBD	7	fem
+she	9601	PRP	nsubj	9602	felt	VBD	7	fem
+she	9603	PRP	nsubj	9604	had	VBD	7	fem
+she	9610	PRP	nsubj	9611	said	VBD	7	fem
+Mother	10821	NNP	nsubj	10822	carried	VBD	8	fem
+he	12132	PRP	nsubj	12134	building	VBG	8	masc
+Mother	12262	NN	nsubj	12264	wandered	VBN	9	fem
+She	12280	PRP	nsubj	12281	coughed	VBD	9	fem
+she	12302	PRP	nsubj	12305	look	VB	9	fem
+she	12354	PRP	nsubj	12355	turned	VBD	9	fem
+She	12849	PRP	nsubj	12850	needed	VBD	9	fem
+he	13640	PRP	nsubj	13641	found	VBD	9	masc
+He	13980	PRP	nsubj	13983	sure	JJ	10	masc
+He	14009	PRP	nsubj	14012	jolly	JJ	10	masc
+he	14030	PRP	nsubj	14033	let	VB	10	masc
+He	14081	PRP	nsubj	14083	park	VB	10	masc
+He	14206	PRP	nsubj	14207	maketh	VBP	10	masc
+he	14352	PRP	nsubj	14353	's	VBZ	10	masc
+he	14367	PRP	nsubj	14368	was	VBD	10	masc
+he	14404	PRP	nsubj	14405	owned	VBD	10	masc
+He	14566	PRP	nsubj	14567	did	VBD	10	masc
+he	14696	PRP	nsubj	14698	serve	VB	10	masc
+he	14871	PRP	nsubj	14872	left	VBD	10	masc
+He	14962	PRP	nsubj	14963	ran	VBD	10	masc
+He	14979	PRP	nsubj	14981	suffered	VBN	10	masc
+he	15041	PRP	nsubj	15042	wrote	VBD	10	masc
+He	15062	PRP	nsubj	15065	tell	VB	10	masc
+he	15075	PRP	nsubj	15079	intact	JJ	10	masc
+Jesus	15368	NNP	nsubj	15369	Is	VBZ	11	masc
+Jesus	15394	NNP	nsubj	15395	protected	VBD	11	masc
+He	17961	PRP	nsubj	17964	abide	VB	13	masc
+he	17972	PRP	nsubj	17975	inclined	JJ	13	masc
+He	18052	PRP	nsubj	18055	begin	VB	13	masc
+he	18066	PRP	nsubj	18067	was	VBD	13	masc
+he	18129	PRP	nsubj	18130	granted	VBD	13	masc
+he	18135	PRP	nsubj	18136	sat	VBD	13	masc
+He	18149	PRP	nsubj	18150	adjusted	VBD	13	masc
+He	18159	PRP	nsubj	18160	took	VBD	13	masc
+He	18189	PRP	nsubj	18190	flicked	VBD	13	masc
+he	18307	PRP	nsubj	18309	endorse	VB	13	masc
+he	18421	PRP	nsubj	18422	declared	VBD	13	masc
+she	18583	PRP	nsubj	18585	missing	VBG	13	fem
+he	19836	PRP	nsubj	19837	is	VBZ	15	masc
+he	19858	PRP	nsubj	19859	announced	VBD	15	masc
+He	19961	PRP	nsubj	19962	performed	VBD	15	masc
+Jesus	20767	NNP	nsubj	20768	lived	VBD	16	masc
+Jesus	21339	NNP	nsubj	21341	looking	VBG	17	masc
+He	21350	PRP	nsubj	21352	see	VB	17	masc
+He	21357	PRP	nsubj	21359	see	VB	17	masc
+he	21627	PRP	nsubj	21628	was	VBD	17	masc
+he	21635	PRP	nsubj	21636	mad	JJ	17	masc
+he	21660	PRP	nsubj	21661	was	VBD	17	masc
+He	21673	PRP	nsubj	21674	put	VBD	17	masc
+he	21693	PRP	nsubj	21694	said	VBD	17	masc
+he	21702	PRP	nsubj	21704	going	VBG	17	masc
+he	21718	PRP	nsubj	21719	said	VBD	17	masc
+he	21795	PRP	nsubj	21796	put	VBD	17	masc
+He	21919	PRP	nsubj	21920	said	VBD	17	masc
+He	21933	PRP	nsubj	21934	made	VBD	17	masc
+he	21947	PRP	nsubj	21948	said	VBD	17	masc
+He	21950	PRP	nsubj	21951	held	VBD	17	masc
+he	21987	PRP	nsubj	21988	said	VBD	17	masc
+He	21998	PRP	nsubj	21999	opened	VBD	17	masc
+he	22012	PRP	nsubj	22013	said	VBD	17	masc
+He	22038	PRP	nsubj	22039	said	VBD	17	masc
+Jesus	24279	NNP	nsubj	24281	real	JJ	19	masc
+Rachel	24464	NNP	nsubj	24465	informs	VBZ	20	fem
+She	24478	PRP	nsubj	24481	right	JJ	20	fem
+Rachel	25216	NNP	nsubj	25218	pull	VB	20	fem
+she	25227	PRP	nsubj	25228	pleased	VBD	20	fem
+She	25533	PRP	nsubj	25534	reminds	VBZ	20	fem
+Rachel	25890	NNP	nsubj	25895	points	VBZ	21	fem
+she	26682	PRP	nsubj	26684	craved	VBD	21	fem
+Rachel	26689	NNP	nsubj	26690	drifted	VBD	21	fem
+Rachel	26837	NNP	nsubj	26838	screamed	VBD	21	fem
+Rachel	28830	NNP	nsubj	28832	hysterical	JJ	23	fem
+He	29062	PRP	nsubj	29063	views	VBZ	23	masc
+He	29110	PRP	nsubj	29111	makes	VBZ	23	masc
+he	29596	PRP	nsubj	29597	prepares	VBZ	23	masc
+he	29643	PRP	nsubj	29645	letting	VBG	23	masc
+he	29826	PRP	nsubj	29827	hate	VB	23	masc
+he	29876	PRP	nsubj	29877	said	VBD	23	masc
+Rachel	30004	NNP	nsubj	30007	want	VB	24	fem
+she	30019	PRP	nsubj	30020	stayed	VBD	24	fem
+Rachel	30172	NNP	nsubj	30175	talk	VB	24	fem
+he	30222	PRP	nsubj	30224	sneaking	VBG	24	masc
+he	30235	PRP	nsubj	30237	staying	VBG	24	masc
+He	30312	PRP	nsubj	30313	allowed	VBD	24	masc
+he	30803	PRP	nsubj	30804	was	VBD	24	masc
+he	30825	PRP	nsubj	30826	stood	VBD	24	masc
+he	30932	PRP	nsubj	30933	said	VBD	24	masc
+he	31008	PRP	nsubj	31009	said	VBD	24	masc
+he	31027	PRP	nsubj	31028	paused	VBD	24	masc
+he	31043	PRP	nsubj	31044	talked	VBD	24	masc
+he	31053	PRP	nsubj	31054	said	VBD	24	masc
+he	31103	PRP	nsubj	31104	saying	VBG	24	masc
+he	31124	PRP	nsubj	31125	spoke	VBD	24	masc
+He	31168	PRP	nsubj	31170	saying	VBG	24	masc
+He	31211	PRP	nsubj	31214	mad	JJ	24	masc
+she	31276	PRP	nsubj	31278	tie	VB	24	fem
+He	31321	PRP	nsubj	31322	was	VBD	24	masc
+Rachel	31408	NNP	nsubj	31409	claims	VBZ	25	fem
+Rachel	31712	NNP	nsubj	31721	had	VBN	25	fem
+she	31729	PRP	nsubj	31730	got	VBD	25	fem
+she	31778	PRP	nsubj	31780	throw	VB	25	fem
+She	31815	PRP	nsubj	31816	seemed	VBD	25	fem
+she	31819	PRP	nsubj	31820	needed	VBD	25	fem
+she	31836	PRP	nsubj	31837	monogrammed	VBD	25	fem
+she	31859	PRP	nsubj	31861	stopped	VBD	25	fem
+he	32190	PRP	nsubj	32191	went	VBD	25	masc
+he	32211	PRP	nsubj	32212	had	VBD	25	masc
+he	32218	PRP	nsubj	32219	walked	VBD	25	masc
+Rachel	32581	NNP	nsubj	32584	helped	VBD	26	fem
+Rachel	32663	NNP	nsubj	32664	asked	VBD	26	fem
+Rachel	33438	NNP	nsubj	33441	grasp	VB	27	fem
+Rachel	33671	NNP	nsubj	33672	wore	VBD	27	fem
+she	33678	PRP	nsubj	33681	vain	JJ	27	fem
+she	33707	PRP	nsubj	33709	put	VB	27	fem
+she	33732	PRP	nsubj	33733	feels	VBZ	27	fem
+she	33793	PRP	nsubj	33794	claims	VBZ	27	fem
+she	33829	PRP	nsubj	33830	kept	VBD	27	fem
+she	33848	PRP	nsubj	33851	painted	VBN	27	fem
+Rachel	33962	NNP	nsubj	33964	worldly	JJ	27	fem
+Rachel	34041	NNP	nsubj	34042	leaned	VBD	27	fem
+she	34049	PRP	nsubj	34050	kept	VBD	27	fem
+she	34078	PRP	nsubj	34079	had	VBD	27	fem
+she	34089	PRP	nsubj	34090	chattered	VBD	27	fem
+Rachel	34114	NNP	nsubj	34115	adores	VBZ	27	fem
+she	34135	PRP	nsubj	34136	whispered	VBD	27	fem
+,	35977	,	amod	35976	Rachel	NNP	29	fem
+Rachel	36010	NNP	nsubj	36012	putting	VBG	29	fem
+She	36376	PRP	nsubj	36377	said	VBD	29	fem
+she	36397	PRP	nsubj	36400	get	VB	29	fem
+he	36411	PRP	nsubj	36413	getting	VBG	29	masc
+she	36459	PRP	nsubj	36460	expect	VB	29	fem
+She	36501	PRP	nsubj	36504	lonely	JJ	29	fem
+she	36557	PRP	nsubj	36560	arranged	VBN	29	fem
+she	36576	PRP	nsubj	36579	have	VBP	29	fem
+she	36872	PRP	nsubj	36873	has	VBZ	29	fem
+she	37057	PRP	nsubj	37058	throw	VB	29	fem
+She	37116	PRP	nsubj	37117	said	VBD	30	fem
+she	37137	PRP	nsubj	37140	get	VB	30	fem
+he	37151	PRP	nsubj	37153	getting	VBG	30	masc
+she	37199	PRP	nsubj	37200	expect	VB	30	fem
+She	37241	PRP	nsubj	37244	lonely	JJ	30	fem
+Leah	37280	NNP	nsubj	37283	free	JJ	30	mixed pronouns
+she	37297	PRP	nsubj	37300	arranged	VBN	30	fem
+she	37316	PRP	nsubj	37319	have	VBP	30	fem
+she	37612	PRP	nsubj	37613	has	VBZ	30	fem
+Leah	37719	NNP	nsubj	37723	drive	VB	30	mixed pronouns
+he	37853	PRP	nsubj	37855	rolled	VBD	31	masc
+He	37875	PRP	nsubj	37876	warned	VBD	31	masc
+he	37906	PRP	nsubj	37908	loves	VBZ	31	masc
+he	39325	PRP	nsubj	39327	select	VB	31	masc
+he	39341	PRP	nsubj	39342	sit	VB	31	masc
+Leah	39440	NNP	nsubj	39442	suppose	VB	32	mixed pronouns
+She	40531	PRP	nsubj	40532	pulled	VBD	33	fem
+she	40539	PRP	nsubj	40541	wipe	VB	33	fem
+She	40555	PRP	nsubj	40556	sounded	VBD	33	fem
+Leah	40930	NNP	nsubj	40931	asked	VBD	33	mixed pronouns
+Leah	40969	NNP	nsubj	40970	said	VBD	33	mixed pronouns
+Leah	41105	NNP	nsubj	41106	asked	VBD	33	mixed pronouns
+Leah	41244	NNP	nsubj	41245	smoked	VBD	33	mixed pronouns
+she	41256	PRP	nsubj	41257	asked	VBD	33	fem
+Leah	41355	NNP	nsubj	41356	gripe	VB	33	mixed pronouns
+She	41419	PRP	nsubj	41422	looked	VBD	33	fem
+Leah	41459	NNP	nsubj	41460	said	VBD	33	mixed pronouns
+he	41490	PRP	nsubj	41491	was	VBD	33	masc
+he	41564	PRP	nsubj	41566	had	VBD	33	masc
+Leah	41628	NNP	nsubj	41629	said	VBD	33	mixed pronouns
+he	41635	PRP	nsubj	41636	believed	VBD	33	masc
+he	41643	PRP	nsubj	41645	doing	VBG	33	masc
+He	41650	PRP	nsubj	41653	give	VB	33	masc
+he	41663	PRP	nsubj	41664	lasted	VBD	33	masc
+he	41668	PRP	nsubj	41669	did	VBD	33	masc
+he	41681	PRP	nsubj	41684	die	VB	33	masc
+she	41728	PRP	nsubj	41730	know	VB	33	fem
+Leah	41740	NNP	nsubj	41741	sounding	VBG	33	mixed pronouns
+Leah	41876	NNP	nsubj	41878	stoop	VB	34	mixed pronouns
+Leah	42106	NNP	nsubj	42108	say	VB	34	mixed pronouns
+she	42276	PRP	nsubj	42277	took	VBD	34	fem
+she	42607	PRP	nsubj	42610	get	VB	34	fem
+she	42628	PRP	nsubj	42629	has	VBZ	34	fem
+Leah	42939	NNP	nsubj	42940	took	VBD	35	mixed pronouns
+Anatole	43910	NNP	nsubj	43911	carried	VBD	35	mixed pronouns
+he	43923	PRP	nsubj	43924	spoke	VBD	35	masc
+he	43932	PRP	nsubj	43933	read	VBD	35	masc
+Anatole	43946	NNP	nsubj	43947	said	VBD	35	mixed pronouns
+Leah	44079	NNP	nsubj	44081	gone	VBN	35	mixed pronouns
+Leah	44244	NNP	nsubj	44248	move	VB	36	mixed pronouns
+she	44273	PRP	nsubj	44274	said	VBD	36	fem
+Leah	44324	NNP	nsubj	44325	slung	VBD	36	mixed pronouns
+Leah	44487	NNP	nsubj	44489	climb	VB	36	mixed pronouns
+Leah	44710	NNP	nsubj	44711	came	VBD	36	mixed pronouns
+she	44728	PRP	nsubj	44729	slept	VBD	36	fem
+Leah	44927	NNP	nsubj	44929	is	VBZ	36	mixed pronouns
+Leah	45101	NNP	nsubj	45105	have	VBP	36	mixed pronouns
+She	45113	PRP	nsubj	45114	stayed	VBD	36	fem
+she	45148	PRP	nsubj	45150	did	VBD	36	fem
+Anatole	45234	NNP	nsubj	45235	found	VBD	36	mixed pronouns
+he	45268	PRP	nsubj	45269	came	VBD	36	masc
+Anatole	45277	NNP	nsubj	45278	was	VBD	36	mixed pronouns
+he	45283	PRP	nsubj	45285	seen	VBN	36	masc
+he	45319	PRP	nsubj	45322	made	VBN	36	masc
+Anatole	45345	NNP	nsubj	45346	found	VBD	36	mixed pronouns
+he	45366	PRP	nsubj	45369	get	VB	36	masc
+he	45391	PRP	nsubj	45394	gets	VBZ	36	masc
+he	45420	PRP	nsubj	45421	woke	VBD	36	masc
+he	45444	PRP	nsubj	45445	saw	VBD	36	masc
+He	45448	PRP	nsubj	45449	thought	VBD	36	masc
+Anatole	45927	NNP	nsubj	45928	found	VBD	37	mixed pronouns
+he	45961	PRP	nsubj	45962	came	VBD	37	masc
+Anatole	45970	NNP	nsubj	45971	was	VBD	37	mixed pronouns
+he	45976	PRP	nsubj	45978	seen	VBN	37	masc
+he	46012	PRP	nsubj	46015	made	VBN	37	masc
+Anatole	46038	NNP	nsubj	46039	found	VBD	37	mixed pronouns
+he	46059	PRP	nsubj	46062	get	VB	37	masc
+he	46084	PRP	nsubj	46087	gets	VBZ	37	masc
+he	46113	PRP	nsubj	46114	woke	VBD	37	masc
+he	46137	PRP	nsubj	46138	saw	VBD	37	masc
+He	46141	PRP	nsubj	46142	thought	VBD	37	masc
+Leah	47227	NNP	nsubj	47228	is	VBZ	38	mixed pronouns
+he	47518	PRP	nsubj	47519	sees	VBZ	38	masc
+He	47527	PRP	nsubj	47528	laughs	VBZ	38	masc
+He	47630	PRP	nsubj	47632	marked	JJ	38	masc
+he	47655	PRP	nsubj	47659	reads	VBZ	38	masc
+Anatole	47705	NNP	nsubj	47708	inhabit	VBP	38	mixed pronouns
+he	47720	PRP	nsubj	47722	give	VB	38	masc
+Mother	47842	NN	nsubj	47845	gave	VBD	38	mixed pronouns
+she	47886	PRP	nsubj	47887	fives	VBZ	38	fem
+She	47892	PRP	nsubj	47895	good	JJ	38	fem
+She	47904	PRP	nsubj	47905	came	VBD	38	fem
+Mother	47963	NNP	nsubj	47964	has	VBZ	38	mixed pronouns
+she	47969	PRP	nsubj	47971	suffers	VBZ	38	fem
+she	47975	PRP	nsubj	47976	talks	VBZ	38	fem
+Leah	47993	NNP	nsubj	47994	has	VBZ	38	mixed pronouns
+she	48023	PRP	nsubj	48024	is	VBZ	38	fem
+she	48404	PRP	nsubj	48406	chosen	VBN	38	fem
+Leah	48715	NNP	nsubj	48716	did	VBD	39	mixed pronouns
+Leah	48903	NNP	nsubj	48904	rolled	VBD	39	mixed pronouns
+Leah	48944	NNP	nsubj	48945	said	VBD	39	mixed pronouns
+Leah	49103	NNP	nsubj	49104	says	VBZ	39	mixed pronouns
+she	49145	PRP	nsubj	49147	right	JJ	39	fem
+she	49152	PRP	nsubj	49153	said	VBD	39	fem
+Leah	49234	NNP	nsubj	49235	pulled	VBD	39	mixed pronouns
+Leah	49500	NNP	nsubj	49501	ran	VBD	39	mixed pronouns
+he	49584	PRP	nsubj	49585	know	VB	39	masc
+he	49630	PRP	nsubj	49631	made	VBD	39	masc
+he	49638	PRP	nsubj	49639	cut	VBD	39	masc
+Adah	50018	NNP	nsubj	50022	Christian	JJ	40	fem
+he	50264	PRP	nsubj	50265	found	VBD	40	masc
+He	50357	PRP	nsubj	50360	cutting	VBG	40	masc
+he	50364	PRP	nsubj	50367	chew	VB	40	masc
+he	50372	PRP	nsubj	50376	vain	JJ	40	masc
+he	50392	PRP	nsubj	50394	standing	VBG	40	masc
+he	50406	PRP	nsubj	50409	seen	VBN	40	masc
+he	50597	PRP	nsubj	50598	said	VBD	40	masc
+he	50760	PRP	nsubj	50761	got	VBD	40	masc
+he	50781	PRP	nsubj	50782	said	VBD	40	masc
+he	50944	PRP	nsubj	50945	had	VBD	40	masc
+he	50952	PRP	nsubj	50953	handed	VBD	40	masc
+he	51072	PRP	nsubj	51074	looked	VBD	40	masc
+He	51167	PRP	nsubj	51168	held	VBD	40	masc
+He	51273	PRP	nsubj	51274	smiled	VBD	40	masc
+he	51430	PRP	nsubj	51431	said	VBD	40	masc
+he	51453	PRP	nsubj	51454	pointed	VBD	40	masc
+He	51743	PRP	nsubj	51744	said	VBD	41	masc
+he	52257	PRP	nsubj	52260	gone	VBN	41	masc
+he	52268	PRP	nsubj	52270	waited	VBD	41	masc
+he	52274	PRP	nsubj	52276	carry	VB	41	masc
+she	52287	PRP	nsubj	52289	get	VB	41	fem
+he	52833	PRP	nsubj	52834	had	VBD	41	masc
+he	52879	PRP	nsubj	52880	said	VBD	41	masc
+Adah	52893	NNP	nsubj	52895	safe	JJ	41	fem
+He	53025	PRP	nsubj	53028	answer	VB	41	masc
+he	53047	PRP	nsubj	53050	heard	VBN	41	masc
+he	53055	PRP	nsubj	53057	said	VBD	41	masc
+He	53110	PRP	nsubj	53111	sounded	VBD	41	masc
+She	53573	PRP	nsubj	53574	said	VBD	42	fem
+she	53594	PRP	nsubj	53597	get	VB	42	fem
+he	53608	PRP	nsubj	53610	getting	VBG	42	masc
+she	53656	PRP	nsubj	53657	expect	VB	42	fem
+She	53698	PRP	nsubj	53701	lonely	JJ	42	fem
+she	53754	PRP	nsubj	53757	arranged	VBN	42	fem
+she	53773	PRP	nsubj	53776	have	VBP	42	fem
+she	54069	PRP	nsubj	54070	has	VBZ	42	fem
+Adah	54140	NNP	nsubj	54143	had	VBD	42	fem
+Adah	54170	NNP	nsubj	54172	fly	VB	42	fem
+she	54254	PRP	nsubj	54255	throw	VB	42	fem
+Adah	54340	NNP	nsubj	54341	stopped	VBD	43	fem
+she	54542	PRP	nsubj	54543	is	VBZ	43	fem
+She	54546	PRP	nsubj	54547	wears	VBZ	43	fem
+she	54556	PRP	nsubj	54558	look	VB	43	fem
+she	54608	PRP	nsubj	54610	step	VB	43	fem
+she	54650	PRP	nsubj	54651	carried	VBD	43	fem
+good	55441	JJ	amod	55443	Price	NNP	43	fem
+she	55638	PRP	nsubj	55640	walks	VBZ	43	fem
+she	55684	PRP	nsubj	55686	win	VB	43	fem
+she	56441	PRP	nsubj	56442	got	VBD	44	fem
+she	56490	PRP	nsubj	56492	throw	VB	44	fem
+She	56527	PRP	nsubj	56528	seemed	VBD	44	fem
+she	56531	PRP	nsubj	56532	needed	VBD	44	fem
+she	56548	PRP	nsubj	56549	monogrammed	VBD	44	fem
+she	56571	PRP	nsubj	56573	stopped	VBD	44	fem
+Adah	56592	NNP	nsubj	56595	dragged	VBD	44	fem
+he	56902	PRP	nsubj	56903	went	VBD	44	masc
+he	56923	PRP	nsubj	56924	had	VBD	44	masc
+he	56930	PRP	nsubj	56931	walked	VBD	44	masc
+he	57018	PRP	nsubj	57020	startle	VB	44	masc
+he	57026	PRP	nsubj	57027	spent	VBD	44	masc
+Adah	57186	NNP	nsubj	57187	rooted	VBN	44	fem
+she	57211	PRP	nsubj	57215	care	VB	44	fem
+She	57240	PRP	nsubj	57241	feels	VBZ	44	fem
+She	57265	PRP	nsubj	57268	watch	VB	44	fem
+she	57275	PRP	nsubj	57278	putting	VBG	44	fem
+Adah	57289	NNP	nsubj	57291	weird	JJ	44	fem
+she	57423	PRP	nsubj	57424	feel	VB	45	fem
+he	57484	PRP	nsubj	57485	boiled	VBD	45	masc
+he	57569	PRP	nsubj	57570	brought	VBD	45	masc
+he	57670	PRP	nsubj	57671	strokes	VBZ	45	masc
+he	57686	PRP	nsubj	57687	looks	VBZ	45	masc
+he	57892	PRP	nsubj	57893	comes	VBZ	45	masc
+he	57929	PRP	nsubj	57930	forbade	VBD	45	masc
+he	57973	PRP	nsubj	57974	stays	VBZ	45	masc
+He	58067	PRP	nsubj	58068	said	VBD	45	masc
+he	58094	PRP	nsubj	58095	said	VBD	45	masc
+He	58113	PRP	nsubj	58114	reminds	VBZ	45	masc
+he	58237	PRP	nsubj	58238	had	VBD	45	masc
+He	58242	PRP	nsubj	58243	took	VBD	45	masc
+he	58258	PRP	nsubj	58261	reticent	JJ	45	masc
+he	58343	PRP	nsubj	58344	said	VBD	45	masc
+she	58379	PRP	nsubj	58380	think	VB	45	fem
+he	58410	PRP	nsubj	58411	said	VBD	45	masc
+he	58441	PRP	nsubj	58443	tolerate	VB	45	masc
+he	58508	PRP	nsubj	58510	giving	VBG	45	masc
+Adah	59141	NNP	nsubj	59143	weird	JJ	46	fem
+Mother	59254	NN	nsubj	59255	had	VBD	46	fem
+he	59509	PRP	nsubj	59510	gets	VBZ	46	masc
+he	59516	PRP	nsubj	59517	washes	VBZ	46	masc
+He	59538	PRP	nsubj	59539	washes	VBZ	46	masc
+he	59560	PRP	nsubj	59561	looks	VBZ	46	masc
+he	59572	PRP	nsubj	59573	puts	VBZ	46	masc
+he	59588	PRP	nsubj	59589	has	VBZ	46	masc
+He	59772	PRP	nsubj	59773	said	VBD	46	masc
+he	59793	PRP	nsubj	59794	said	VBD	46	masc
+He	59801	PRP	nsubj	59802	showed	VBD	46	masc
+he	59954	PRP	nsubj	59957	sick	JJ	46	masc
+he	59959	PRP	nsubj	59960	ate	VBD	46	masc
+he	59975	PRP	nsubj	59976	took	VBD	46	masc
+he	59980	PRP	nsubj	59983	eat	VB	46	masc
+He	59986	PRP	nsubj	59987	hid	VBD	46	masc
+He	59993	PRP	nsubj	59994	said	VBD	46	masc
+He	60089	PRP	nsubj	60090	says	VBZ	46	masc
+he	60128	PRP	nsubj	60131	believe	VB	46	masc
+he	60139	PRP	nsubj	60140	said	VBD	46	masc
+He	60411	PRP	nsubj	60413	big	JJ	46	masc
+He	63086	PRP	nsubj	63087	said	VBD	48	masc
+Anatole	64904	NNP	nsubj	64905	earned	VBD	50	mixed pronouns
+he	64930	PRP	nsubj	64935	earned	VBN	50	masc
+Anatole	65145	NNP	nsubj	65146	told	VBD	50	mixed pronouns
+he	65166	PRP	nsubj	65167	held	VBD	50	masc
+he	65302	PRP	nsubj	65303	left	VBD	50	masc
+Anatole	65315	NNP	nsubj	65316	claimed	VBD	50	mixed pronouns
+He	65324	PRP	nsubj	65327	spent	VBN	50	masc
+Anatole	65421	NNP	nsubj	65425	confiscated	VBN	50	mixed pronouns
+Anatole	65478	NNP	nsubj	65479	told	VBD	50	mixed pronouns
+he	65488	PRP	nsubj	65489	had	VBD	50	masc
+Anatole	65728	NNP	nsubj	65729	behaved	VBD	50	mixed pronouns
+he	65994	PRP	nsubj	65995	alternated	VBD	50	masc
+He	65997	PRP	nsubj	65998	told	VBD	50	masc
+he	66068	PRP	nsubj	66069	corrected	VBD	50	masc
+he	66278	PRP	nsubj	66279	had	VBD	50	masc
+Anatole	66554	NNP	nsubj	66555	observed	VBN	51	mixed pronouns
+Anatole	67813	NNP	nsubj	67815	lost	VBN	51	mixed pronouns
+he	69723	PRP	nsubj	69726	have	VB	53	masc
+Anatole	70100	NNP	nsubj	70101	leaned	VBD	53	mixed pronouns
+Anatole	70202	NNP	nsubj	70205	fail	VBP	53	mixed pronouns
+Anatole	70230	NNP	nsubj	70231	sighed	VBD	53	mixed pronouns
+Anatole	70302	NNP	nsubj	70303	sighed	VBD	53	mixed pronouns
+Anatole	70490	NNP	nsubj	70491	went	VBD	53	mixed pronouns
+Anatole	70700	NNP	nsubj	70701	looking	VBG	53	mixed pronouns
+Anatole	70790	NNP	nsubj	70791	paused	VBD	53	mixed pronouns
+he	70806	PRP	nsubj	70807	said	VBD	53	masc
+he	70894	PRP	nsubj	70895	asked	VBD	53	masc
+Anatole	70900	NNP	nsubj	70906	sit	VB	53	mixed pronouns
+Anatole	70976	NNP	nsubj	70979	pray	VBP	53	mixed pronouns
+he	70995	PRP	nsubj	70996	said	VBD	53	masc
+Anatole	71124	NNP	nsubj	71125	said	VBD	53	mixed pronouns
+Anatole	71225	NNP	nsubj	71227	blinked	VBD	53	mixed pronouns
+he	71233	PRP	nsubj	71235	wondering	VBG	53	masc
+Anatole	71588	NNP	nsubj	71589	came	VBD	54	mixed pronouns
+he	71745	PRP	nsubj	71748	think	VB	54	masc
+Anatole	71944	NNP	nsubj	71945	reminds	VBZ	54	mixed pronouns
+he	72474	PRP	nsubj	72476	laughed	VBD	54	masc
+He	72483	PRP	nsubj	72487	African	JJ	54	masc
+Anatole	72514	NNP	nsubj	72515	explained	VBD	54	mixed pronouns
+Anatole	72709	NNP	nsubj	72712	grow	VBP	54	mixed pronouns
+Anatole	72871	NNP	nsubj	72872	says	VBZ	54	mixed pronouns
+Anatole	72907	NNP	nsubj	72911	keen	JJ	55	mixed pronouns
+she	73372	PRP	nsubj	73374	brought	VBD	55	fem
+She	73922	PRP	nsubj	73923	appointed	VBD	55	fem
+She	73948	PRP	nsubj	73949	pledged	VBD	55	fem
+She	74044	PRP	nsubj	74045	resembled	VBD	55	fem
+she	74056	PRP	nsubj	74057	whined	VBD	55	fem
+Anatole	75797	NNP	nsubj	75799	surprised	VBD	57	mixed pronouns
+he	75824	PRP	nsubj	75825	got	VBD	57	masc
+he	75845	PRP	nsubj	75846	said	VBD	57	masc
+Anatole	75865	NNP	nsubj	75866	speak	VB	57	mixed pronouns
+he	76008	PRP	nsubj	76009	had	VBD	57	masc
+he	76016	PRP	nsubj	76017	handed	VBD	57	masc
+Anatole	76123	NNP	nsubj	76124	smiled	VBD	57	mixed pronouns
+he	76136	PRP	nsubj	76138	looked	VBD	57	masc
+He	76231	PRP	nsubj	76232	held	VBD	57	masc
+He	76337	PRP	nsubj	76338	smiled	VBD	57	masc
+he	76494	PRP	nsubj	76495	said	VBD	57	masc
+he	76517	PRP	nsubj	76518	pointed	VBD	57	masc
+He	76680	PRP	nsubj	76681	shook	VBD	57	masc
+Anatole	76871	NNP	nsubj	76872	smiled	VBD	57	mixed pronouns
+Anatole	76922	NNP	nsubj	76923	said	VBD	57	mixed pronouns
+Anatole	77084	NNP	nsubj	77085	stared	VBD	57	mixed pronouns
+Anatole	77157	NNP	nsubj	77159	consider	VB	57	mixed pronouns
+Anatole	77207	NNP	nsubj	77209	felt	VBD	57	mixed pronouns
+Anatole	77289	NNP	nsubj	77290	said	VBD	57	mixed pronouns
+Anatole	77452	NNP	nsubj	77453	banished	VBD	58	mixed pronouns
+Anatole	77548	NNP	nsubj	77549	moves	VBZ	58	mixed pronouns
+he	77617	PRP	nsubj	77618	comes	VBZ	58	masc
+Anatole	77639	NNP	nsubj	77642	take	VB	58	mixed pronouns
+he	77654	PRP	nsubj	77655	forbade	VBD	58	masc
+he	77698	PRP	nsubj	77699	stays	VBZ	58	masc
+He	77792	PRP	nsubj	77793	said	VBD	58	masc
+he	77819	PRP	nsubj	77820	said	VBD	58	masc
+He	77838	PRP	nsubj	77839	reminds	VBZ	58	masc
+Anatole	77898	NNP	nsubj	77900	comes	VBZ	58	mixed pronouns
+he	77962	PRP	nsubj	77963	had	VBD	58	masc
+He	77967	PRP	nsubj	77968	took	VBD	58	masc
+he	77983	PRP	nsubj	77986	reticent	JJ	58	masc
+he	78068	PRP	nsubj	78069	said	VBD	58	masc
+Anatole	78292	NNP	nsubj	78293	had	VBD	58	mixed pronouns
+Anatole	79130	NNP	nsubj	79131	banished	VBD	59	mixed pronouns
+Anatole	79226	NNP	nsubj	79227	moves	VBZ	59	mixed pronouns
+he	79295	PRP	nsubj	79296	comes	VBZ	59	masc
+Anatole	79317	NNP	nsubj	79320	take	VB	59	mixed pronouns
+he	79332	PRP	nsubj	79333	forbade	VBD	59	masc
+he	79376	PRP	nsubj	79377	stays	VBZ	59	masc
+He	79470	PRP	nsubj	79471	said	VBD	59	masc
+he	79497	PRP	nsubj	79498	said	VBD	59	masc
+He	79516	PRP	nsubj	79517	reminds	VBZ	59	masc
+Anatole	79576	NNP	nsubj	79578	comes	VBZ	59	mixed pronouns
+he	79640	PRP	nsubj	79641	had	VBD	59	masc
+He	79645	PRP	nsubj	79646	took	VBD	59	masc
+he	79661	PRP	nsubj	79664	reticent	JJ	59	masc
+he	79746	PRP	nsubj	79747	said	VBD	59	masc
+Anatole	79970	NNP	nsubj	79971	had	VBD	59	mixed pronouns
+Nathan	80536	NNP	nsubj	80538	overlooked	VBD	60	masc
+he	80548	PRP	nsubj	80550	chew	VB	60	masc
+Nathan	80661	NNP	nsubj	80662	was	VBD	60	masc
+He	80746	PRP	nsubj	80748	brought	VBD	60	masc
+he	82001	PRP	nsubj	82002	claimed	VBD	60	masc
+he	82003	PRP	nsubj	82004	knew	VBD	60	masc
+he	82091	PRP	nsubj	82092	asked	VBD	60	masc
+he	82098	PRP	nsubj	82101	put	VB	60	masc
+private	82240	JJ	amod	82238	Nathan	NNP	61	masc
+he	82244	PRP	nsubj	82245	looked	VBD	61	masc
+he	82252	PRP	nsubj	82255	seen	VBN	61	masc
+he	82319	PRP	nsubj	82320	arrived	VBD	61	masc
+she	82591	PRP	nsubj	82592	wailed	VBD	61	fem
+she	82603	PRP	nsubj	82604	wet	JJ	61	fem
+She	82618	PRP	nsubj	82620	screamed	VBD	61	fem
+Nathan	82709	NNP	nsubj	82710	believed	VBD	61	masc
+Nathan	82772	NNP	nsubj	82773	resented	VBD	61	masc
+he	82804	PRP	nsubj	82805	gave	VBD	61	masc
+Nathan	82890	NNP	nsubj	82892	overlooked	VBD	61	masc
+he	82902	PRP	nsubj	82904	chew	VB	61	masc
+Nathan	83015	NNP	nsubj	83016	was	VBD	61	masc
+He	83100	PRP	nsubj	83102	brought	VBD	61	masc
+Nathan	83834	NNP	nsubj	83836	missed	VBD	62	masc
+he	83870	PRP	nsubj	83871	's	VBZ	62	masc
+he	83885	PRP	nsubj	83886	was	VBD	62	masc
+he	83922	PRP	nsubj	83923	owned	VBD	62	masc
+Nathan	84063	NNP	nsubj	84067	exempted	VBN	62	masc
+He	84084	PRP	nsubj	84085	did	VBD	62	masc
+Nathan	84192	NNP	nsubj	84193	included	VBD	62	masc
+he	84214	PRP	nsubj	84216	serve	VB	62	masc
+Nathan	84253	NNP	nsubj	84254	found	VBD	62	masc
+he	84389	PRP	nsubj	84390	left	VBD	62	masc
+He	84480	PRP	nsubj	84481	ran	VBD	62	masc
+He	84497	PRP	nsubj	84499	suffered	VBN	62	masc
+he	84559	PRP	nsubj	84560	wrote	VBD	62	masc
+He	84580	PRP	nsubj	84583	tell	VB	62	masc
+he	84593	PRP	nsubj	84597	intact	JJ	62	masc
+Nathan	85000	NNP	nsubj	85001	believed	VBD	63	masc
+Nathan	85063	NNP	nsubj	85064	resented	VBD	63	masc
+he	85095	PRP	nsubj	85096	gave	VBD	63	masc
+Nathan	85181	NNP	nsubj	85183	overlooked	VBD	63	masc
+he	85193	PRP	nsubj	85195	chew	VB	63	masc
+Nathan	85306	NNP	nsubj	85307	was	VBD	63	masc
+He	85391	PRP	nsubj	85393	brought	VBD	63	masc
+Nathan	87915	NNP	nsubj	87917	retracted	VBD	65	masc
+he	88002	PRP	nsubj	88004	endorse	VB	65	masc
+he	88019	PRP	nsubj	88021	have	VB	65	masc
+Nathan	88025	NNP	nsubj	88026	burned	VBD	65	masc
+Nathan	88102	NNP	nsubj	88104	accept	VB	65	masc
+he	88116	PRP	nsubj	88117	declared	VBD	65	masc
+Nathan	88137	NNP	nsubj	88138	felt	VBD	65	masc
+she	88278	PRP	nsubj	88280	missing	VBG	65	fem
+Nathan	89584	NNP	nsubj	89585	brought	VBD	66	masc
+Nathan	89634	NNP	nsubj	89636	been	VBN	66	masc
+he	89644	PRP	nsubj	89647	escaping	VBG	66	masc
+he	89796	PRP	nsubj	89798	do	VB	66	masc
+He	89800	PRP	nsubj	89801	meant	VBD	66	masc
+he	89890	PRP	nsubj	89892	looked	VBD	66	masc
+private	89996	JJ	amod	89994	Nathan	NNP	66	masc
+he	90000	PRP	nsubj	90001	looked	VBD	66	masc
+he	90008	PRP	nsubj	90011	seen	VBN	66	masc
+he	90075	PRP	nsubj	90076	arrived	VBD	66	masc
+she	90347	PRP	nsubj	90348	wailed	VBD	66	fem
+she	90359	PRP	nsubj	90360	wet	JJ	66	fem
+She	90374	PRP	nsubj	90376	screamed	VBD	66	fem
+Nathan	90465	NNP	nsubj	90466	believed	VBD	66	masc
+Nathan	90528	NNP	nsubj	90529	resented	VBD	66	masc
+he	90560	PRP	nsubj	90561	gave	VBD	66	masc
+Nathan	90646	NNP	nsubj	90648	overlooked	VBD	66	masc
+he	90658	PRP	nsubj	90660	chew	VB	66	masc
+Nathan	90771	NNP	nsubj	90772	was	VBD	66	masc
+He	90856	PRP	nsubj	90858	brought	VBD	66	masc
+Nathan	91313	NNP	nsubj	91314	take	VB	67	masc
+He	92050	PRP	nsubj	92053	bearing	VBG	67	masc
+he	92163	PRP	nsubj	92164	told	VBD	67	masc
+he	92166	PRP	nsubj	92167	refused	VBD	67	masc
+he	92177	PRP	nsubj	92179	preaching	VBG	67	masc
+he	92340	PRP	nsubj	92341	declared	VBD	67	masc
+he	92524	PRP	nsubj	92525	eats	VBZ	67	masc
+Nathan	92939	NNP	nsubj	92940	felt	VBD	68	masc
+she	93080	PRP	nsubj	93082	missing	VBG	68	fem
+he	94259	PRP	nsubj	94260	granted	VBD	69	masc
+he	94265	PRP	nsubj	94266	sat	VBD	69	masc
+He	94279	PRP	nsubj	94280	adjusted	VBD	69	masc
+He	94289	PRP	nsubj	94290	took	VBD	69	masc
+Nathan	94316	NNP	nsubj	94317	talked	VBD	69	masc
+He	94319	PRP	nsubj	94320	flicked	VBD	69	masc
+Nathan	94350	NNP	nsubj	94352	retracted	VBD	69	masc
+he	94454	PRP	nsubj	94456	have	VB	69	masc
+Nathan	94460	NNP	nsubj	94461	burned	VBD	69	masc
+Nathan	94537	NNP	nsubj	94539	accept	VB	69	masc
+he	94551	PRP	nsubj	94552	declared	VBD	69	masc
+Nathan	94572	NNP	nsubj	94573	felt	VBD	69	masc
+she	94713	PRP	nsubj	94715	missing	VBG	69	fem
+Lumumba	97562	NNP	nsubj	97563	kneels	VBZ	71	masc
+Lumumba	97932	NNP	nsubj	97934	free	JJ	71	masc
+Lumumba	98373	NNP	nsubj	98374	paid	VBD	71	masc
+Lumumba	100451	NNP	nsubj	100464	agree	VBP	73	masc
+Lumumba	100466	NNP	nsubj	100468	difficult	JJ	73	masc
+same	100734	JJ	amod	100736	Lumumba	NNP	73	masc
+he	100774	PRP	nsubj	100777	heard	VBN	73	masc
+Lumumba	100820	NNP	nsubj	100822	screamed	VBN	73	masc
+Lumumba	101371	NNP	nsubj	101372	escaped	VBD	73	masc
+Lumumba	101418	NNP	nsubj	101419	was	VBD	73	masc
+Lumumba	102011	NNP	nsubj	102012	paid	VBD	74	masc
+He	102908	PRP	nsubj	102911	bearing	VBG	74	masc
+He	103441	PRP	nsubj	103442	gave	VBD	75	masc
+Lumumba	103478	NNP	nsubj	103480	free	JJ	75	masc
+Lumumba	103919	NNP	nsubj	103920	paid	VBD	75	masc
+Lumumba	104757	NNP	nsubj	104758	was	VBD	76	masc
+he	104959	PRP	nsubj	104961	much	JJ	76	masc
+He	104977	PRP	nsubj	104978	flicks	VBZ	76	masc
+he	105112	PRP	nsubj	105114	restore	VB	76	masc
+He	105165	PRP	nsubj	105166	paces	VBZ	76	masc
+he	105203	PRP	nsubj	105204	starts	VBZ	76	masc
+Lumumba	105215	NNP	nsubj	105216	kneels	VBZ	76	masc
+He	105548	PRP	nsubj	105549	gave	VBD	76	masc
+Lumumba	105585	NNP	nsubj	105587	free	JJ	76	masc
+Lumumba	106026	NNP	nsubj	106027	paid	VBD	76	masc
+Lumumba	106362	NNP	nsubj	106364	has	VBZ	77	masc
+he	106791	PRP	nsubj	106793	made	VBD	77	masc
+he	107086	PRP	nsubj	107087	pleased	VBD	77	masc
+he	107093	PRP	nsubj	107096	killed	VBN	77	masc
+Lumumba	107931	NNP	nsubj	107933	screamed	VBN	78	masc
+Lumumba	108482	NNP	nsubj	108483	escaped	VBD	78	masc
+Lumumba	108529	NNP	nsubj	108530	was	VBD	78	masc
+he	108731	PRP	nsubj	108733	much	JJ	78	masc
+He	108749	PRP	nsubj	108750	flicks	VBZ	78	masc
+Lumumba	109014	NNP	nsubj	109015	paid	VBD	79	masc
+He	109911	PRP	nsubj	109914	bearing	VBG	79	masc
+he	110385	PRP	nsubj	110386	eats	VBZ	79	masc
+Nelson	110570	NNP	nsubj	110571	raked	VBD	80	masc
+Nelson	110607	NNP	nsubj	110608	kept	VBD	80	masc
+he	110866	PRP	nsubj	110867	know	VB	80	masc
+he	110912	PRP	nsubj	110913	made	VBD	80	masc
+he	110920	PRP	nsubj	110921	cut	VBD	80	masc
+Nelson	111101	NNP	nsubj	111110	waited	VBD	80	masc
+Nelson	111265	NNP	nsubj	111266	knew	VBD	80	masc
+He	111279	PRP	nsubj	111280	stopped	VBD	80	masc
+Nelson	111391	NNP	nsubj	111392	raised	VBD	80	masc
+Nelson	111958	NNP	nsubj	111959	knelt	VBD	80	masc
+He	111969	PRP	nsubj	111970	opened	VBD	80	masc
+he	111984	PRP	nsubj	111985	loved	VBD	80	masc
+he	111997	PRP	nsubj	111998	sings	VBZ	80	masc
+Nelson	112133	NNP	nsubj	112134	shoved	VBD	80	masc
+He	112138	PRP	nsubj	112140	come	VB	80	masc
+He	112159	PRP	nsubj	112160	tore	VBD	80	masc
+Nelson	112204	NNP	nsubj	112205	glowered	VBD	81	masc
+Nelson	112246	NNP	nsubj	112247	stared	VBD	81	masc
+Nelson	112319	NNP	nsubj	112322	going	VBG	81	masc
+he	112343	PRP	nsubj	112344	say	VB	81	masc
+he	112357	PRP	nsubj	112358	say	VB	81	masc
+he	112367	PRP	nsubj	112368	hesitated	VBD	81	masc
+Nelson	112381	NNP	nsubj	112382	kept	VBD	81	masc
+He	112389	PRP	nsubj	112392	believe	VB	81	masc
+he	112649	PRP	nsubj	112651	doing	VBG	81	masc
+he	112668	PRP	nsubj	112671	imagine	VB	81	masc
+he	112673	PRP	nsubj	112677	serving	VBG	81	masc
+he	112776	PRP	nsubj	112778	boast	VB	81	masc
+he	112782	PRP	nsubj	112786	calling	VBG	81	masc
+he	112808	PRP	nsubj	112809	continues	VBZ	81	masc
+he	112841	PRP	nsubj	112842	shouts	VBZ	81	masc
+he	112861	PRP	nsubj	112862	come	VB	81	masc
+he	112953	PRP	nsubj	112954	picks	VBZ	81	masc
+he	112982	PRP	nsubj	112983	grows	VBZ	81	masc
+Nelson	113082	NNP	nsubj	113085	come	VB	81	masc
+he	113093	PRP	nsubj	113096	told	VBN	81	masc
+Nelson	113250	NNP	nsubj	113251	spent	VBD	81	masc
+He	113283	PRP	nsubj	113284	is	VBZ	81	masc
+he	113295	PRP	nsubj	113297	clean	VB	81	masc
+He	113422	PRP	nsubj	113423	went	VBD	81	masc
+he	113437	PRP	nsubj	113439	comes	VBZ	81	masc
+she	113458	PRP	nsubj	113460	pick	VB	81	fem
+she	113470	PRP	nsubj	113473	hollowing	VBG	81	fem
+Nelson	113876	NNP	nsubj	113878	stacked	VBD	82	masc
+he	113890	PRP	nsubj	113891	said	VBD	82	masc
+he	113908	PRP	nsubj	113909	arranged	VBD	82	masc
+he	113929	PRP	nsubj	113932	sad	JJ	82	masc
+He	113936	PRP	nsubj	113937	clicked	VBD	82	masc
+Nelson	114059	NNP	nsubj	114058	says	VBZ	82	masc
+Nelson	114121	NNP	nsubj	114120	says	VBZ	82	masc
+He	114157	PRP	nsubj	114158	explains	VBZ	82	masc
+Nelson	114328	NNP	nsubj	114336	write	VB	82	masc
+he	114343	PRP	nsubj	114345	have	VB	82	masc
+He	114353	PRP	nsubj	114354	enjoys	VBZ	82	masc
+Nelson	114365	NNP	nsubj	114370	apt	JJ	82	masc
+he	114381	PRP	nsubj	114382	seems	VBZ	82	masc
+He	114411	PRP	nsubj	114412	nodded	VBD	82	masc
+He	114436	PRP	nsubj	114437	pointed	VBD	82	masc
+he	114452	PRP	nsubj	114453	said	VBD	82	masc
+Nelson	114523	NNP	nsubj	114524	explained	VBD	82	masc
+Nelson	114585	NNP	nsubj	114586	said	VBD	82	masc
+he	114617	PRP	nsubj	114618	asked	VBD	82	masc
+He	114644	PRP	nsubj	114647	recognize	VB	82	masc
+he	114661	PRP	nsubj	114662	found	VBD	82	masc
+Nelson	114697	NNP	nsubj	114699	incapable	JJ	82	masc
+he	114740	PRP	nsubj	114744	first	JJ	82	masc
+he	114766	PRP	nsubj	114767	leaped	VBD	82	masc
+he	114775	PRP	nsubj	114776	knocked	VBD	82	masc
+he	114785	PRP	nsubj	114786	repeated	VBD	82	masc
+He	114792	PRP	nsubj	114794	touched	VBD	82	masc
+He	114819	PRP	nsubj	114820	shook	VBD	82	masc
+he	114874	PRP	nsubj	114875	stammered	VBD	82	masc
+Nelson	114961	NNP	nsubj	114962	righted	VBD	82	masc
+He	114975	PRP	nsubj	114976	leaned	VBD	82	masc
+Nelson	115066	NNP	nsubj	115067	glowered	VBD	82	masc
+Nelson	115108	NNP	nsubj	115109	stared	VBD	82	masc
+Nelson	115181	NNP	nsubj	115184	going	VBG	82	masc
+he	115205	PRP	nsubj	115206	say	VB	82	masc
+he	115219	PRP	nsubj	115220	say	VB	82	masc
+he	115229	PRP	nsubj	115230	hesitated	VBD	82	masc
+Nelson	115243	NNP	nsubj	115244	kept	VBD	82	masc
+He	115251	PRP	nsubj	115254	believe	VB	82	masc
+Nelson	115534	NNP	nsubj	115536	taken	VBN	83	masc
+He	115547	PRP	nsubj	115548	makes	VBZ	83	masc
+she	115618	PRP	nsubj	115620	worked	VBN	83	fem
+she	115627	PRP	nsubj	115629	aims	VBZ	83	fem
+Nelson	115642	NNP	nsubj	115643	shows	VBZ	83	masc
+she	115694	PRP	nsubj	115696	beginning	VBG	83	fem
+She	115810	PRP	nsubj	115811	claims	VBZ	83	fem
+she	115832	PRP	nsubj	115836	breaking	VBG	83	fem
+She	115841	PRP	nsubj	115842	fails	VBZ	83	fem
+she	115904	PRP	nsubj	115905	goes	VBZ	83	fem
+she	115914	PRP	nsubj	115916	leave	VB	83	fem
+she	116733	PRP	nsubj	116735	take	VB	84	fem
+Nelson	117478	NNP	nsubj	117479	says	VBZ	85	masc
+she	118048	PRP	nsubj	118050	make	VB	85	fem
+She	118084	PRP	nsubj	118086	toss	VB	85	fem
+She	118103	PRP	nsubj	118105	did	VBD	85	fem
+she	118135	PRP	nsubj	118136	loved	VBD	85	fem
+she	118197	PRP	nsubj	118199	ran	VBD	85	fem
+Nelson	119131	NNP	nsubj	119132	explained	VBD	86	masc
+Nelson	119242	NNP	nsubj	119243	says	VBZ	86	masc
+Nelson	119368	NNP	nsubj	119369	jumped	VBD	86	masc
+Nelson	119399	NNP	nsubj	119402	proud	JJ	86	masc
+He	119439	PRP	nsubj	119440	sat	VBD	86	masc
+he	119458	PRP	nsubj	119460	stand	VB	86	masc
+he	119651	PRP	nsubj	119652	got	VBD	86	masc
+he	119659	PRP	nsubj	119660	tried	VBD	86	masc
+he	119723	PRP	nsubj	119725	had	VBD	86	masc
+She	119955	PRP	nsubj	119956	kept	VBD	86	fem
+he	119971	PRP	nsubj	119972	was	VBD	86	masc
+He	119977	PRP	nsubj	119978	stopped	VBD	86	masc
+she	119984	PRP	nsubj	119985	was	VBD	86	fem
+He	120096	PRP	nsubj	120097	said	VBD	86	masc
+he	120160	PRP	nsubj	120161	said	VBD	86	masc
+he	120200	PRP	nsubj	120201	calling	VBG	86	masc
+she	120264	PRP	nsubj	120265	looked	VBD	86	fem
+She	120285	PRP	nsubj	120286	asked	VBD	86	fem
+she	120314	PRP	nsubj	120316	shoot	VB	86	fem
+She	120677	PRP	nsubj	120681	blink	VB	86	fem
+she	120691	PRP	nsubj	120692	followed	VBD	86	fem
+he	120753	PRP	nsubj	120754	said	VBD	86	masc
+She	120766	PRP	nsubj	120767	stood	VBD	86	fem
+she	120777	PRP	nsubj	120778	said	VBD	86	fem
+Nelson	120831	NNP	nsubj	120832	said	VBD	87	masc
+He	120840	PRP	nsubj	120841	said	VBD	87	masc
+he	120862	PRP	nsubj	120863	washed	VBD	87	masc
+He	120870	PRP	nsubj	120872	washing	VBG	87	masc
+He	120924	PRP	nsubj	120925	told	VBD	87	masc
+Nelson	120930	NNP	nsubj	120931	sleep	VB	87	masc
+he	120974	PRP	nsubj	120975	turned	VBD	87	masc
+Nelson	121001	NNP	nsubj	121002	slunk	VBD	87	masc
+high-pitched	121203	JJ	amod	121199	Nelson	NNP	87	masc
+he	121266	PRP	nsubj	121268	haul	VB	88	masc
+he	121276	PRP	nsubj	121277	elucidated	VBD	88	masc
+she	121786	PRP	nsubj	121788	take	VB	88	fem
+Nelson	122628	NNP	nsubj	122629	tried	VBD	89	masc
+Nelson	122666	NNP	nsubj	122668	shrugged	VBD	89	masc
+he	123917	PRP	nsubj	123920	send	VB	90	masc
+He	123924	PRP	nsubj	123925	insisted	VBD	90	masc
+He	123934	PRP	nsubj	123936	risking	VBG	90	masc
+he	123958	PRP	nsubj	123959	said	VBD	90	masc
+he	123973	PRP	nsubj	123974	promised	VBD	90	masc
+he	124016	PRP	nsubj	124017	arrived	VBD	90	masc
+He	124031	PRP	nsubj	124032	had	VBD	90	masc
+he	124037	PRP	nsubj	124038	claimed	VBD	90	masc
+he	124891	PRP	nsubj	124893	made	VBD	90	masc
+he	125059	PRP	nsubj	125061	building	VBG	91	masc
+he	125283	PRP	nsubj	125284	asks	VBZ	91	masc
+he	125313	PRP	nsubj	125314	continues	VBZ	91	masc
+Mobutu	125351	NNP	nsubj	125353	speaking	VBG	91	masc
+He	126329	PRP	nsubj	126330	points	VBZ	92	masc
+he	129549	PRP	nsubj	129551	building	VBG	94	masc
+he	129773	PRP	nsubj	129774	asks	VBZ	94	masc
+he	129803	PRP	nsubj	129804	continues	VBZ	94	masc
+Mobutu	129841	NNP	nsubj	129843	speaking	VBG	94	masc
+he	131939	PRP	nsubj	131942	think	VB	97	masc
+he	132668	PRP	nsubj	132670	laughed	VBD	97	masc
+He	132677	PRP	nsubj	132681	African	JJ	97	masc
+he	132770	PRP	nsubj	132773	escape	VB	98	masc
+he	132812	PRP	nsubj	132814	organize	VB	98	masc
+he	132871	PRP	nsubj	132872	discovered	VBD	98	masc
+he	132898	PRP	nsubj	132899	started	VBD	98	masc
+he	134572	PRP	nsubj	134573	lived	VBD	99	masc
+he	134580	PRP	nsubj	134584	used	VBN	99	masc
+he	134785	PRP	nsubj	134789	proud	JJ	99	masc
+he	135183	PRP	nsubj	135184	thought	VBD	99	masc
+He	135193	PRP	nsubj	135194	looked	VBD	99	masc
