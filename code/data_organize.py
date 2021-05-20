@@ -3,6 +3,7 @@ import json
 import csv
 import string
 from collections import Counter
+from nltk.tokenize import sent_tokenize
 
 ROOT = "/mnt/data0/lucy/gpt3_bias/"
 LOGS = ROOT + 'logs/'
@@ -125,14 +126,50 @@ def get_prompt_char_names():
     names = set()
     for f in os.listdir(LOGS + 'original_prompts/'): 
         with open(LOGS + 'original_prompts/' + f, 'r') as infile: 
-           reader = csv.reader(infile, delimiter='\t')
-           for row in reader: 
-               char_name = row[1].lower().translate(str.maketrans('', '', string.punctuation))
-               names.add(char_name)
+            reader = csv.reader(infile, delimiter='\t')
+            for row in reader: 
+                char_name = row[1].lower().translate(str.maketrans('', '', string.punctuation))
+                names.add(char_name)
     with open(LOGS + 'prompt_char_names.txt', 'w') as outfile: 
         for n in names: 
-           outfile.write(n + ' ')
+            outfile.write(n + ' ')
         
+def examine_generated_book_overlap(gen_path): 
+    '''
+    Carlini et al. (2021) has shown that GPT-3 can memorize books (and potentially
+    copyrighted materials). This allows us to see what materials
+    we should not disseminate further. 
+    
+    For each generated story, we break it down into 2 sentence chunks, and see if
+    the original books contain those two consecutive sentences. 
+    '''
+    files = os.listdir(gen_path)
+    lengths = []
+    for filename in files: 
+        bookname = filename.replace('.json', '')
+        gen_sentence_pairs = []
+        with open(gen_path + filename, 'r') as infile: 
+            for line in infile: 
+                d = json.loads(line)
+                lengths.append(len(d['input'].split()))
+                for j in range(len(d['choices'])): 
+                    text = d['choices'][j]['text']
+                    sentences = sent_tokenize(text)
+                    for i in range(len(sentences) - 1): 
+                        gen_sentence_pairs.append((sentences[i].lower(), sentences[i + 1].lower()))
+        orig_sentence_pairs = []
+        with open(ROOT + 'data/originals/' + bookname + '.txt', 'r') as infile: 
+            for line in infile: 
+                sentences = sent_tokenize(line.strip())
+                for i in range(len(sentences) - 1): 
+                    orig_sentence_pairs.append((sentences[i].lower(), sentences[i + 1].lower()))
+        for pair in orig_sentence_pairs: 
+            if pair in gen_sentence_pairs: 
+                if len(pair[0]) > 1 and len(pair[1]) > 1: 
+                    print(filename, pair)
+    print(sum(lengths)/len(lengths))
+    print(max(lengths))
+                    
 
 def main(): 
     #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
@@ -141,6 +178,7 @@ def main():
     #    LOGS + 'generated_0.9/')
     #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'plaintext_stories_0.9/')
     #get_prompt_char_names()
+    examine_generated_book_overlap(LOGS + 'generated_0.9/')
 
 if __name__ == "__main__":
     main()

@@ -14,6 +14,7 @@ DATA = '/mnt/data0/lucy/gpt3_bias/data/'
 
 def get_gendered_prompts(): 
     '''
+    This was not used in our paper. 
     Gather prompts that have consistentally fem or masc characters
     '''
     num_gens = 5
@@ -63,6 +64,9 @@ def get_gendered_prompts():
     return fem_prompts, masc_prompts
 
 def get_embed_sim(fem_prompts, masc_prompts, replaced_name): 
+    '''
+    This was not used in our paper. 
+    '''
     model = SentenceTransformer('stsb-roberta-large')
     start = time.time()
     fem_embed = model.encode(fem_prompts, show_progress_bar=False)
@@ -79,8 +83,7 @@ def get_embed_sim(fem_prompts, masc_prompts, replaced_name):
     
 def get_paired_prompts(): 
     '''
-    Input: list of runs with different gender neutral names
-    
+    This was NOT used in our paper. 
     The output here is a file containing
     two book titles + main character_storyIDx per line,
     separated by a tab character, with their prompts
@@ -115,7 +118,10 @@ def get_paired_prompts():
                 start -= 1
     print("Total pairs:", count)
     
-def get_similarities(): 
+def get_similarities():
+    '''
+    This did not end up being used in our paper. 
+    ''' 
     fem_prompts, masc_prompts = get_gendered_prompts()
     fem_prompts = sorted(fem_prompts)
     masc_prompts = sorted(masc_prompts)
@@ -150,6 +156,9 @@ def get_similarities():
     get_embed_sim(new_f_prompts, new_m_prompts, 'the_person')
 
 def get_same_prompt_diff_gender(): 
+    '''
+    This was the prompt matching part used in our paper. 
+    '''
     num_gens = 5
     num_pairs = 0
     matched_pairs = {}
@@ -204,6 +213,9 @@ def get_same_prompt_diff_gender():
     print(num_pairs)
     
 def get_prompts_with_verbs(): 
+    '''
+    Get prompts with high power or blooms taxonomy verbs. 
+    '''
     num_gens = 5
     lem = WordNetLemmatizer()
     # load verb lexicons
@@ -288,9 +300,7 @@ def get_prompts_with_verbs():
         json.dump(res, outfile)
 
 def main(): 
-    #get_similarities()
-    #get_paired_prompts()
-    #get_same_prompt_diff_gender()
+    get_same_prompt_diff_gender()
     get_prompts_with_verbs()
 
 if __name__ == "__main__":

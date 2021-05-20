@@ -1,5 +1,5 @@
 """
-Gets characters 
+Gets characters and sentences in books that contain them. 
 """
 import csv
 from collections import Counter, defaultdict
