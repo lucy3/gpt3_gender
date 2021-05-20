@@ -12,7 +12,7 @@ See `requirements.txt`. I think I may have switched machines/environments at som
 ## Data
 
 - query\_openai.py: for gathering GPT-3 generated stories
-- TODO: a spreadsheet of book titles and other information
+- data/booklist.csv: list of authors and book titles 
 
 We cannot release the original books because they are copyrighted. Generated stories may also output [copyrighted content](https://bair.berkeley.edu/blog/2020/12/20/lmmem/).
 
