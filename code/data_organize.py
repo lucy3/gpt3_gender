@@ -172,7 +172,7 @@ def examine_generated_book_overlap(gen_path):
                     
 
 def main(): 
-    #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
+    sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
     #sanity_check_redo_outputs(LOGS + 'redo_0.9/', LOGS + 'redo_prompts/')
     #replace_bad_outputs(LOGS + 'redo_0.9/', LOGS + 'old_generated_0.9/', 
     #    LOGS + 'generated_0.9/')
