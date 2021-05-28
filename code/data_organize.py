@@ -169,16 +169,83 @@ def examine_generated_book_overlap(gen_path):
                     print(filename, pair)
     print(sum(lengths)/len(lengths))
     print(max(lengths))
-                    
+    
+def examine_generated_book_overlap2(gen_path): 
+    '''
+    In this version, we show 5-grams from each book are
+    repeated in generated text 
+    
+    The script passes over each book and for every 5-gram window,
+    checks if it is in the generated stories for that book. 
+    It prints out every 5+-gram (continuous ngram that is at least 5 tokens long that
+    appears in the generated stories) and also prints the number of tokens "|#|" that
+    do not appear in generated stories between these ngrams. 
+    
+    This is to give a sense of just how closely the ngrams are in the original text,
+    in case GPT-3 is outputting sentences that are series of copied ngrams stitched
+    together by small differences. 
+    Cases where you see \"| |\" are where different parts of a phrase are overlapping ngrams 
+    that each appear in generated stories, but the entire phrase itself that contains 
+    these ngrams does not appear in generated stories
+    After printing ngrams for a book, I print out the number of non-copied areas in 
+    this book that have less than 5 non-copied tokens in them (aka where the # in each 
+    |#| is less than 5). 
+    '''
+    files = os.listdir(gen_path)
+    for filename in files: 
+        print(filename)
+        bookname = filename.replace('.json', '')
+        gen_sentence_grams = set()
+        with open(gen_path + filename, 'r') as infile: 
+            for line in infile: 
+                d = json.loads(line)
+                for j in range(len(d['choices'])): 
+                    text = d['choices'][j]['text'].lower().split()
+                    for i in range(len(text) - 4): 
+                        gen_sentence_grams.add(tuple(text[i:i+5]))
+        with open(ROOT + 'data/originals/' + bookname + '.txt', 'r') as infile: 
+            non_frag_tokens = 0
+            print_out = ''
+            consec_frags = 0
+            for line in infile: 
+                start = 0
+                prev = False
+                text = line.strip().lower().split()
+                for i in range(len(text) - 4): 
+                    gram = tuple(text[i:i+5])
+                    if gram in gen_sentence_grams: 
+                        if non_frag_tokens > 5: 
+                            print_out += " | " + str(non_frag_tokens - 4) + " | "
+                            if non_frag_tokens - 4 < 5: 
+                                consec_frags += 1
+                        elif non_frag_tokens <= 5 and non_frag_tokens > 0: 
+                            print_out += " | | "
+                        non_frag_tokens = 0
+                        prev = True
+                    else: 
+                        non_frag_tokens += 1
+                        if prev: 
+                            print_out += ' '.join(text[start:i+4])
+                        prev = False
+                        start = i + 1
+                if prev: 
+                    print_out += ' '.join(text[start:i+5])
+                else: 
+                    non_frag_tokens += 4
+            print(print_out)
+            print("NUM OF SHORT PAUSES:", consec_frags, filename)
+        print()
+        break
 
 def main(): 
-    sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
+    #sanity_check_outputs(LOGS + 'generated_0.9/', INPUTS)
     #sanity_check_redo_outputs(LOGS + 'redo_0.9/', LOGS + 'redo_prompts/')
     #replace_bad_outputs(LOGS + 'redo_0.9/', LOGS + 'old_generated_0.9/', 
     #    LOGS + 'generated_0.9/')
     #format_for_booknlp(LOGS + 'generated_0.9/', LOGS + 'plaintext_stories_0.9/')
     #get_prompt_char_names()
-    examine_generated_book_overlap(LOGS + 'generated_0.9/')
+    #examine_generated_book_overlap(LOGS + 'generated_0.9/')
+    examine_generated_book_overlap2(LOGS + 'generated_0.9/')
 
 if __name__ == "__main__":
     main()
